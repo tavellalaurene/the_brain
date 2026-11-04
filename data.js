@@ -10,6 +10,7 @@
 //  life    how it shows up in my day-to-day
 //  counter what I can do about it (for levers: how to use it)
 //  links   ids of related nodes (connections are drawn both ways)
+//  sci     (optional) the scientific name, when my name isn't the official one
 //  mine    (optional) MY OWN NOTES, in my words — shown first, as written
 //  sketch  (optional) "effortCurve" shows my hand-drawn curve
 // ─────────────────────────────────────────────────────────────
@@ -137,11 +138,12 @@ window.BRAIN_NODES = [
   },
   {
     id: "amcc", group: "region", name: "aMCC",
+    sci: "Anterior mid-cingulate cortex",
     tag: "Lights up when resisting",
     mine: [
       "Lights up when resisting an addictive behavior / intentionally engaging in a resisting behavior.",
     ],
-    links: ["fastdopamine", "pushthrough"],
+    links: ["fastdopamine", "pushthrough", "pfc", "procrastination", "habit"],
   },
   {
     id: "dmn", group: "region", name: "Default mode network",
@@ -203,32 +205,35 @@ window.BRAIN_NODES = [
   },
   {
     id: "slowdopamine", group: "mechanism", name: "Slow dopamine",
+    sci: "Effort-based reward (no single official term)",
     tag: "Slowly earned through effort",
     mine: [
       "Slow dopamine → (10 min?) →",
       "Feelings: accomplishment, satisfaction, productive excitement.",
     ],
-    links: ["dopamine", "pushthrough"],
+    links: ["dopamine", "pushthrough", "smallwins", "baseline"],
   },
   {
     id: "fastdopamine", group: "mechanism", name: "Fast dopamine",
+    sci: "High-intensity, low-effort rewards → tolerance (no single official term)",
     tag: "Addictive, exhausts the system",
     mine: [
       "Fast dopamine → addictive →",
       "↳ exhausts the system",
       "Feelings: demotivated, depressive symptoms.",
     ],
-    links: ["dopamine", "amcc"],
+    links: ["dopamine", "amcc", "cheapdopamine", "baseline", "habit", "reward"],
   },
   {
     id: "pushthrough", group: "mechanism", name: "The first 15 minutes",
+    sci: "Task initiation (related: activation energy, behavioral activation)",
     tag: "Need to push through!",
     sketch: "effortCurve",
     mine: [
       "15 min = hardest time, lowest dopamine.",
       "⚠ Need to push through!",
     ],
-    links: ["slowdopamine", "amcc"],
+    links: ["slowdopamine", "amcc", "procrastination", "smallwins"],
   },
   {
     id: "plasticity", group: "mechanism", name: "Neuroplasticity",

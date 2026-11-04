@@ -81,6 +81,8 @@ svg.wires path{fill:none;stroke-width:1.6;opacity:.55}
 .panel .kicker{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--c)}
 .panel h3{font-family:Fraunces,Georgia,serif;font-weight:650;font-size:28px;line-height:1.15;margin:4px 0 2px}
 .panel .tag{color:var(--muted);margin:0 0 16px}
+.panel .sci{font-size:13px;color:var(--muted);margin:0 0 4px}
+.panel .sci b{font-weight:600;color:var(--ink)}
 .panel h4{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:18px 0 4px}
 .panel p{margin:0}
 .panel .counter{background:var(--soft);border-left:3px solid var(--c);padding:10px 12px;border-radius:0 10px 10px 0}
@@ -222,6 +224,7 @@ footer{color:var(--muted);font-size:12.5px;margin-top:28px;max-width:80ch}
     panel.innerHTML = `
       <div class="kicker">${groups[n.group].label.replace(/s$/,"")}</div>
       <h3>${n.name}</h3>
+      ${n.sci ? `<p class="sci">Scientific name: <b>${n.sci}</b></p>` : ""}
       <p class="tag">${n.tag}</p>
       ${n.mine ? `<h4>In my words</h4><div class="mine-box">${n.sketch ? sketches[n.sketch] : ""}${n.mine.map(l => `<p>${l}</p>`).join("")}</div>` : ""}
       ${n.what ? `<h4>What it is</h4><p>${n.what}</p>` : ""}
@@ -260,7 +263,7 @@ footer{color:var(--muted);font-size:12.5px;margin-top:28px;max-width:80ch}
     map.classList.toggle("focus", !!q);
     if (!q) return;
     nodes.forEach(n => {
-      const hay = [n.name,n.tag,n.what,n.life,n.counter,(n.mine||[]).join(" "),store.get(n.id)].join(" ").toLowerCase();
+      const hay = [n.name,n.sci,n.tag,n.what,n.life,n.counter,(n.mine||[]).join(" "),store.get(n.id)].join(" ").toLowerCase();
       if (hay.includes(q)) els[n.id].classList.add("related");
     });
   };
