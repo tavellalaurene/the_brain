@@ -30,8 +30,8 @@ window.BRAIN_NODES = [
     mine: [
       "“Slowly earned” through effort.",
       "Dopamine system:",
-      "• Slow dopamine → (10 min?) → accomplishment, satisfaction, productive excitement",
-      "• Fast dopamine → addictive → demotivated, depressive symptoms. ↳ exhausts the system",
+      "• Slow dopamine → accomplishment, satisfaction, productive excitement",
+      "• Fast dopamine → addictive → demotivated, depressive symptoms. ↳ the system gets used to it, baseline drops",
     ],
     what: "Less about pleasure, more about motivation and anticipation. It spikes when something is better than expected and signals “this is worth effort”. It also sets a baseline: after a big spike, levels dip below where they started.",
     life: "The pull to check my phone. The rush of starting something new, then the flatness after. Feeling unmotivated after a day of easy, fast rewards.",
@@ -208,7 +208,7 @@ window.BRAIN_NODES = [
     sci: "Effort-based reward (no single official term)",
     tag: "Slowly earned through effort",
     mine: [
-      "Slow dopamine → (10 min?) →",
+      "Slow dopamine →",
       "Feelings: accomplishment, satisfaction, productive excitement.",
     ],
     links: ["dopamine", "pushthrough", "smallwins", "baseline"],
@@ -216,10 +216,10 @@ window.BRAIN_NODES = [
   {
     id: "fastdopamine", group: "mechanism", name: "Fast dopamine",
     sci: "High-intensity, low-effort rewards → tolerance (no single official term)",
-    tag: "Addictive, exhausts the system",
+    tag: "Addictive, the baseline drops",
     mine: [
       "Fast dopamine → addictive →",
-      "↳ exhausts the system",
+      "↳ the system gets used to it, baseline drops",
       "Feelings: demotivated, depressive symptoms.",
     ],
     links: ["dopamine", "amcc", "cheapdopamine", "baseline", "habit", "reward"],
@@ -230,7 +230,7 @@ window.BRAIN_NODES = [
     tag: "Need to push through!",
     sketch: "effortCurve",
     mine: [
-      "15 min = hardest time, lowest dopamine.",
+      "The start = hardest time; dopamine builds as I progress.",
       "⚠ Need to push through!",
     ],
     links: ["slowdopamine", "amcc", "procrastination", "smallwins"],
