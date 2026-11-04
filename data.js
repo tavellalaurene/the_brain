@@ -139,9 +139,9 @@ window.BRAIN_NODES = [
   {
     id: "amcc", group: "region", name: "aMCC",
     sci: "Anterior mid-cingulate cortex",
-    tag: "Lights up when resisting",
+    tag: "Is this worth the effort?",
     mine: [
-      "Lights up when resisting an addictive behavior / intentionally engaging in a resisting behavior.",
+      "Weighs: is this worth the effort? Active when I override an urge.",
     ],
     links: ["fastdopamine", "pushthrough", "pfc", "procrastination", "habit"],
   },
@@ -225,7 +225,7 @@ window.BRAIN_NODES = [
     links: ["dopamine", "amcc", "cheapdopamine", "baseline", "habit", "reward"],
   },
   {
-    id: "pushthrough", group: "mechanism", name: "The first 15 minutes",
+    id: "pushthrough", group: "mechanism", name: "The start",
     sci: "Task initiation (related: activation energy, behavioral activation)",
     tag: "Need to push through!",
     sketch: "effortCurve",
