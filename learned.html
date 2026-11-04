@@ -1,0 +1,237 @@
+<title>My Brain Map</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Atkinson+Hyperlegible:wght@400;700&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
+<style>
+/* Layout: concept lanes (chemicals → brain parts → mechanisms → levers) with live wires; my own words on notebook paper beside it */
+:root{
+  --bg:#eef1f4; --surface:#fbfcfd; --ink:#1b2430; --muted:#5d6878; --line:#d5dbe3;
+  --paper:#fffef8; --rule:#bcd3ea; --margin:#e7a3a3; --pen:#1f2f5c;
+  --chemical:#c2410c; --chemical-soft:#fbe7dc;
+  --region:#6d28d9;   --region-soft:#ece5fb;
+  --mechanism:#be123c;--mechanism-soft:#fbe2e8;
+  --lever:#15803d;    --lever-soft:#ddf3e4;
+  --display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
+  --body:"Atkinson Hyperlegible",ui-sans-serif,system-ui,sans-serif;
+  --hand:Caveat,"Segoe Print","Bradley Hand",cursive;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#11161d; --surface:#18202a; --ink:#e7ecf2; --muted:#9aa6b6; --line:#2b3644;
+    --paper:#1d2530; --rule:#2e4258; --margin:#7a3a40; --pen:#c9d8ff;
+    --chemical:#fb923c; --chemical-soft:#3a2418;
+    --region:#a78bfa;   --region-soft:#2a2340;
+    --mechanism:#fb7185;--mechanism-soft:#3d1e26;
+    --lever:#4ade80;    --lever-soft:#183224;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#11161d; --surface:#18202a; --ink:#e7ecf2; --muted:#9aa6b6; --line:#2b3644;
+  --paper:#1d2530; --rule:#2e4258; --margin:#7a3a40; --pen:#c9d8ff;
+  --chemical:#fb923c; --chemical-soft:#3a2418;
+  --region:#a78bfa;   --region-soft:#2a2340;
+  --mechanism:#fb7185;--mechanism-soft:#3d1e26;
+  --lever:#4ade80;    --lever-soft:#183224;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:16px/1.55 var(--body);-webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px;margin:0 auto;padding-block:28px 56px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px 24px;margin-bottom:20px}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(30px,5vw,44px);line-height:1.05;letter-spacing:-.02em;margin:0;text-wrap:balance}
+.count{font-family:var(--hand);font-size:24px;color:var(--pen)}
+
+.layout{display:grid;grid-template-columns:1fr;gap:20px;align-items:start}
+@media (min-width:960px){.layout{grid-template-columns:minmax(0,1fr) 400px}}
+
+.map{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px}
+.lanes{position:relative;z-index:1;display:grid;gap:28px 40px;grid-template-columns:repeat(var(--n),minmax(0,1fr))}
+@media (max-width:620px){.lanes{grid-template-columns:1fr}}
+.lane h2{font-family:var(--display);font-weight:500;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--c);margin:0 0 12px;display:flex;align-items:center;gap:8px}
+.lane h2::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--c)}
+.lane .stack{display:flex;flex-direction:column;gap:14px}
+.node{font:inherit;text-align:left;color:var(--ink);background:var(--soft);border:2px solid var(--c);border-radius:14px;padding:12px 14px;cursor:pointer;transition:opacity .2s,transform .15s,box-shadow .15s}
+.node b{display:block;font-family:var(--display);font-weight:700;font-size:18px;line-height:1.2}
+.node span{display:block;font-size:14px;line-height:1.3;color:var(--muted);margin-top:3px}
+.node:hover{transform:translateY(-2px)}
+.node:focus-visible{outline:3px solid var(--c);outline-offset:3px}
+.map.focus .node{background:var(--surface);border-color:var(--line);color:var(--muted)}
+.map.focus .node.related{background:var(--soft);border-color:var(--c);color:var(--ink)}
+.map.focus .node.active{background:var(--c);border-color:var(--c);box-shadow:0 6px 20px -6px var(--c)}
+.map.focus .node.active b,.map.focus .node.active span{color:var(--surface)}
+svg.wires{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+svg.wires path{fill:none;stroke:var(--muted);stroke-width:1.5;opacity:.35;transition:opacity .2s}
+svg.wires path.on{stroke-width:2.4;opacity:.9}
+svg.wires path.off{opacity:.08}
+.g-chemical{--c:var(--chemical);--soft:var(--chemical-soft)}
+.g-region{--c:var(--region);--soft:var(--region-soft)}
+.g-mechanism{--c:var(--mechanism);--soft:var(--mechanism-soft)}
+.g-lever{--c:var(--lever);--soft:var(--lever-soft)}
+.tip{color:var(--muted);font-size:14px;margin:16px 0 0}
+
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px;min-width:0}
+@media (min-width:960px){.panel{position:sticky;top:calc(16px + env(safe-area-inset-top,0px));max-height:calc(100vh - 32px);overflow:auto}}
+.kicker{font-family:var(--display);font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--c)}
+.panel h3{font-family:var(--display);font-weight:700;font-size:30px;line-height:1.1;letter-spacing:-.01em;margin:4px 0 6px;text-wrap:balance}
+.sci{font-size:14px;color:var(--muted);margin:0}
+.sci b{color:var(--ink)}
+.panel h4{font-family:var(--display);font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:20px 0 8px}
+.paper{position:relative;background:var(--paper);border-radius:6px;padding:6px 14px 10px 40px;
+  background-image:linear-gradient(to right,transparent 28px,var(--margin) 28px,var(--margin) 29.5px,transparent 29.5px),
+                   repeating-linear-gradient(to bottom,transparent 0 31px,var(--rule) 31px 32px);
+  background-position:0 0,0 6px;border:1px solid var(--line)}
+.paper p{font-family:var(--hand);font-size:24px;line-height:32px;color:var(--pen);margin:0}
+.sketch{display:block;width:100%;max-width:300px;height:auto;color:var(--pen);margin:4px 0 2px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font:inherit;font-size:14px;font-weight:700;color:var(--c);background:var(--soft);border:0;border-radius:999px;padding:5px 12px;cursor:pointer}
+.chip:hover{text-decoration:underline}
+.chip:focus-visible{outline:2px solid var(--c);outline-offset:2px}
+textarea{width:100%;min-height:100px;font:inherit;font-size:15px;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px;resize:vertical}
+textarea:focus{outline:2px solid var(--c);outline-offset:1px}
+.saved{font-size:13px;color:var(--muted);min-height:18px;margin-top:4px}
+.empty p{color:var(--muted);margin:0 0 12px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>My Brain Map</h1>
+    <span class="count" id="count"></span>
+  </header>
+  <div class="layout">
+    <section class="map" id="map" aria-label="Concepts I've learned">
+      <svg class="wires" id="wires" aria-hidden="true"></svg>
+      <div class="lanes" id="lanes"></div>
+      <p class="tip">Tap a concept to read my notes and see what it connects to.</p>
+    </section>
+    <aside class="panel" id="panel" aria-live="polite"></aside>
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script>
+(() => {
+  const groups = window.BRAIN_GROUPS;
+  // Only concepts I've learned (the ones with my own words)
+  const nodes = window.BRAIN_NODES.filter(n => n.mine);
+  const byId = Object.fromEntries(nodes.map(n => [n.id, n]));
+  const links = Object.fromEntries(nodes.map(n => [n.id, new Set()]));
+  nodes.forEach(n => n.links.forEach(l => { if (byId[l] && l !== n.id) { links[n.id].add(l); links[l].add(n.id); } }));
+  const edges = [];
+  nodes.forEach(n => links[n.id].forEach(l => { if (n.id < l) edges.push([n.id, l]); }));
+
+  const store = {
+    get(k){ try { return localStorage.getItem("brainmap:" + k) || ""; } catch { return ""; } },
+    set(k,v){ try { v ? localStorage.setItem("brainmap:" + k, v) : localStorage.removeItem("brainmap:" + k); } catch {} },
+  };
+  const $ = s => document.querySelector(s);
+  const map = $("#map"), lanes = $("#lanes"), wires = $("#wires"), panel = $("#panel");
+  const els = {};
+  let active = null;
+
+  $("#count").textContent = `${nodes.length} concepts learned so far`;
+
+  const used = Object.keys(groups).filter(g => nodes.some(n => n.group === g));
+  lanes.style.setProperty("--n", used.length);
+  used.forEach(g => {
+    const lane = document.createElement("div");
+    lane.className = "lane g-" + g;
+    lane.innerHTML = `<h2>${groups[g].label}</h2><div class="stack"></div>`;
+    nodes.filter(n => n.group === g).forEach(n => {
+      const b = document.createElement("button");
+      b.className = "node g-" + g; b.id = "node-" + n.id;
+      b.innerHTML = `<b>${n.name}</b><span>${n.tag}</span>`;
+      b.onclick = () => select(active === n.id ? null : n.id);
+      els[n.id] = b; lane.querySelector(".stack").appendChild(b);
+    });
+    lanes.appendChild(lane);
+  });
+
+  function drawWires(){
+    const box = map.getBoundingClientRect();
+    wires.setAttribute("viewBox", `0 0 ${box.width} ${box.height}`);
+    wires.innerHTML = "";
+    const pt = (id, side) => { const r = els[id].getBoundingClientRect();
+      return { x: (side > 0 ? r.right : side < 0 ? r.left : r.left + r.width/2) - box.left, y: r.top + r.height/2 - box.top, r }; };
+    edges.forEach(([a,b]) => {
+      const ra = els[a].getBoundingClientRect(), rb = els[b].getBoundingClientRect();
+      let d;
+      if (Math.abs(ra.left - rb.left) < 20) { // same lane: arc out to the right
+        const A = pt(a, 1), B = pt(b, 1), bulge = Math.min(34 + Math.abs(A.y - B.y) * .12, box.width - Math.max(A.x, B.x) - 4) / .75;
+        d = `M${A.x},${A.y} C${A.x+bulge},${A.y} ${B.x+bulge},${B.y} ${B.x},${B.y}`;
+      } else {
+        const [L,R] = ra.left < rb.left ? [a,b] : [b,a];
+        const A = pt(L, 1), B = pt(R, -1), dx = (B.x - A.x) * .5;
+        d = `M${A.x},${A.y} C${A.x+dx},${A.y} ${B.x-dx},${B.y} ${B.x},${B.y}`;
+      }
+      const p = document.createElementNS("http://www.w3.org/2000/svg","path");
+      p.setAttribute("d", d);
+      if (active) {
+        if (a === active || b === active) { p.classList.add("on"); p.style.stroke = getComputedStyle(els[active]).getPropertyValue("--c"); }
+        else p.classList.add("off");
+      }
+      wires.appendChild(p);
+    });
+  }
+  new ResizeObserver(drawWires).observe(map);
+
+  const sketches = {
+    effortCurve: `<svg class="sketch" viewBox="0 0 300 150" role="img" aria-label="Dopamine curve over time: low at the start, then rising to a peak and falling">
+      <g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <path d="M30 120 V14 M24 22 L30 12 L36 22"/><path d="M30 120 H270 M262 114 L272 120 L262 126"/>
+        <path d="M30 118 C70 116 100 40 150 38 C200 36 220 100 250 108" stroke-width="2.4"/>
+        <path d="M150 38 V120" stroke-dasharray="4 4" opacity=".5"/>
+        <path d="M34 136 H74 M38 132 L32 136 L38 140 M70 132 L76 136 L70 140" stroke="var(--c)"/>
+      </g>
+      <text x="38" y="14" font-family="Caveat, cursive" font-size="18" fill="currentColor">dopamine</text>
+      <text x="82" y="142" font-family="Caveat, cursive" font-size="18" fill="var(--c)">the start</text>
+    </svg>`,
+  };
+  const chip = id => `<button class="chip g-${byId[id].group}" data-id="${id}">${byId[id].name}</button>`;
+  const wireChips = () => panel.querySelectorAll(".chip").forEach(c => c.onclick = () => select(c.dataset.id));
+
+  function renderEmpty(){
+    panel.className = "panel empty";
+    panel.innerHTML = `<div class="kicker" style="--c:var(--muted)">My notes</div>
+      <h3>Pick a concept</h3>
+      <p>Each one opens my notes in my own words, its scientific name, and what it's connected to.</p>
+      <div class="chips">${nodes.map(n => chip(n.id)).join("")}</div>`;
+    wireChips();
+  }
+  function renderNode(n){
+    panel.className = "panel g-" + n.group;
+    const order = Object.keys(groups);
+    const rel = [...links[n.id]].sort((a,b) => order.indexOf(byId[a].group) - order.indexOf(byId[b].group));
+    panel.innerHTML = `
+      <div class="kicker">${groups[n.group].label}</div>
+      <h3>${n.name}</h3>
+      ${n.sci ? `<p class="sci">Scientific name: <b>${n.sci}</b></p>` : ""}
+      <h4>In my words</h4>
+      <div class="paper">${n.sketch ? sketches[n.sketch] : ""}${n.mine.map(l => `<p>${l}</p>`).join("")}</div>
+      ${rel.length ? `<h4>Connected to</h4><div class="chips">${rel.map(chip).join("")}</div>` : ""}
+      <h4>Notes to self</h4>
+      <textarea id="note-${n.id}" placeholder="What I've noticed in myself, what worked, what didn't…"></textarea>
+      <div class="saved" id="saved"></div>`;
+    wireChips();
+    const ta = panel.querySelector("textarea"), saved = $("#saved");
+    ta.value = store.get(n.id);
+    let t; ta.oninput = () => { clearTimeout(t); t = setTimeout(() => { store.set(n.id, ta.value.trim()); saved.textContent = "Saved in this browser"; }, 400); };
+  }
+  function select(id){
+    active = id;
+    nodes.forEach(n => els[n.id].classList.remove("active","related"));
+    map.classList.toggle("focus", !!id);
+    if (id) {
+      els[id].classList.add("active");
+      links[id].forEach(l => els[l].classList.add("related"));
+      renderNode(byId[id]);
+      if (innerWidth < 960) panel.scrollIntoView({behavior:"smooth", block:"start"});
+    } else renderEmpty();
+    drawWires();
+  }
+  renderEmpty();
+  document.fonts?.ready.then(drawWires);
+})();
+</script>
