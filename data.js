@@ -10,6 +10,8 @@
 //  life    how it shows up in my day-to-day
 //  counter what I can do about it (for levers: how to use it)
 //  links   ids of related nodes (connections are drawn both ways)
+//  mine    (optional) MY OWN NOTES, in my words — shown first, as written
+//  sketch  (optional) "effortCurve" shows my hand-drawn curve
 // ─────────────────────────────────────────────────────────────
 
 window.BRAIN_GROUPS = {
@@ -24,6 +26,12 @@ window.BRAIN_NODES = [
   {
     id: "dopamine", group: "chemical", name: "Dopamine",
     tag: "Wanting, drive, “go get it”",
+    mine: [
+      "“Slowly earned” through effort.",
+      "Dopamine system:",
+      "• Slow dopamine → (10 min?) → accomplishment, satisfaction, productive excitement",
+      "• Fast dopamine → addictive → demotivated, depressive symptoms. ↳ exhausts the system",
+    ],
     what: "Less about pleasure, more about motivation and anticipation. It spikes when something is better than expected and signals “this is worth effort”. It also sets a baseline: after a big spike, levels dip below where they started.",
     life: "The pull to check my phone. The rush of starting something new, then the flatness after. Feeling unmotivated after a day of easy, fast rewards.",
     counter: "Protect the baseline: fewer cheap spikes (scrolling, sugar, constant novelty). Earn it through effort — reward the effort itself, not only the result. Break goals into small wins so it fires along the way.",
@@ -128,6 +136,14 @@ window.BRAIN_NODES = [
     links: ["meditation", "labeling", "breathing"],
   },
   {
+    id: "amcc", group: "region", name: "aMCC",
+    tag: "Lights up when resisting",
+    mine: [
+      "Lights up when resisting an addictive behavior / intentionally engaging in a resisting behavior.",
+    ],
+    links: ["fastdopamine", "pushthrough"],
+  },
+  {
     id: "dmn", group: "region", name: "Default mode network",
     tag: "The wandering, self-talk mind",
     what: "A set of regions active when I’m not focused on a task: daydreaming, thinking about myself, past and future. Useful for creativity, but it can loop into worry.",
@@ -184,6 +200,35 @@ window.BRAIN_NODES = [
     life: "Cleaning the kitchen instead of the thing that matters. Guilt making it even harder.",
     counter: "Name the feeling. Shrink the first step to 2 minutes. Self-compassion instead of guilt. Start before you feel ready — motivation follows action.",
     links: ["amygdala", "pfc", "smallwins", "labeling", "adrenaline", "dopamine"],
+  },
+  {
+    id: "slowdopamine", group: "mechanism", name: "Slow dopamine",
+    tag: "Slowly earned through effort",
+    mine: [
+      "Slow dopamine → (10 min?) →",
+      "Feelings: accomplishment, satisfaction, productive excitement.",
+    ],
+    links: ["dopamine", "pushthrough"],
+  },
+  {
+    id: "fastdopamine", group: "mechanism", name: "Fast dopamine",
+    tag: "Addictive, exhausts the system",
+    mine: [
+      "Fast dopamine → addictive →",
+      "↳ exhausts the system",
+      "Feelings: demotivated, depressive symptoms.",
+    ],
+    links: ["dopamine", "amcc"],
+  },
+  {
+    id: "pushthrough", group: "mechanism", name: "The first 15 minutes",
+    tag: "Need to push through!",
+    sketch: "effortCurve",
+    mine: [
+      "15 min = hardest time, lowest dopamine.",
+      "⚠ Need to push through!",
+    ],
+    links: ["slowdopamine", "amcc"],
   },
   {
     id: "plasticity", group: "mechanism", name: "Neuroplasticity",

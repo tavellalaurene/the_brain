@@ -60,6 +60,10 @@ input.search{font:inherit;font-size:13px;color:var(--ink);background:var(--surfa
 .node span{display:block;font-size:12px;color:var(--muted);line-height:1.35}
 .node:hover{transform:translateY(-1px);border-color:var(--c)}
 .node:focus-visible{outline:2px solid var(--c);outline-offset:2px}
+.node.mine b::before{content:"● ";color:var(--c);font-size:10px;vertical-align:2px}
+.mine-box{border:1.5px dashed var(--c);border-radius:12px;padding:10px 14px;margin-top:6px;font-family:Fraunces,Georgia,serif;font-size:16px;line-height:1.5}
+.mine-box p{margin:0 0 4px}
+.sketch{display:block;width:100%;max-width:300px;margin:6px 0 2px;color:var(--ink)}
 .node.has-note b::after{content:" ✎";color:var(--c);font-weight:500}
 .map.focus .node{opacity:.28}
 .map.focus .node.related{opacity:1;border-color:var(--c)}
@@ -153,6 +157,7 @@ footer{color:var(--muted);font-size:12.5px;margin-top:28px;max-width:80ch}
     });
     cols.appendChild(col);
   });
+  nodes.forEach(n => els[n.id].classList.toggle("mine", !!n.mine));
   const markNotes = () => nodes.forEach(n => els[n.id].classList.toggle("has-note", !!store.get(n.id)));
   markNotes();
 
@@ -197,6 +202,18 @@ footer{color:var(--muted);font-size:12.5px;margin-top:28px;max-width:80ch}
   function chip(id){ const n = byId[id]; return `<button class="chip g-${n.group}" data-id="${id}">${n.name}</button>`; }
   function wireChips(){ panel.querySelectorAll(".chip").forEach(c => c.onclick = () => select(c.dataset.id)); }
 
+  const sketches = {
+    effortCurve: `<svg class="sketch" viewBox="0 0 300 150" aria-label="Dopamine curve over time: low for the first 15 minutes, then rising to a peak and falling">
+      <g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+        <path d="M30 120 V14 M24 22 L30 12 L36 22"/><path d="M30 120 H270 M262 114 L272 120 L262 126"/>
+        <path d="M30 118 C70 116 100 40 150 38 C200 36 220 100 250 108" stroke-width="2.2"/>
+        <path d="M150 38 V120" stroke-dasharray="4 4" opacity=".5"/>
+        <path d="M34 136 H74 M38 132 L32 136 L38 140 M70 132 L76 136 L70 140" stroke="var(--c)"/>
+      </g>
+      <text x="36" y="12" font-size="12" fill="currentColor">dopamine</text>
+      <text x="80" y="140" font-size="12" fill="var(--c)">15 min</text>
+    </svg>`,
+  };
   function renderNode(n){
     panel.className = "panel g-" + n.group;
     const rel = [...links[n.id]];
@@ -206,9 +223,10 @@ footer{color:var(--muted);font-size:12.5px;margin-top:28px;max-width:80ch}
       <div class="kicker">${groups[n.group].label.replace(/s$/,"")}</div>
       <h3>${n.name}</h3>
       <p class="tag">${n.tag}</p>
-      <h4>What it is</h4><p>${n.what}</p>
-      <h4>How it shows up in my life</h4><p>${n.life}</p>
-      <h4>${n.group === "lever" ? "How to use it" : "What helps"}</h4><p class="counter">${n.counter}</p>
+      ${n.mine ? `<h4>In my words</h4><div class="mine-box">${n.sketch ? sketches[n.sketch] : ""}${n.mine.map(l => `<p>${l}</p>`).join("")}</div>` : ""}
+      ${n.what ? `<h4>What it is</h4><p>${n.what}</p>` : ""}
+      ${n.life ? `<h4>How it shows up in my life</h4><p>${n.life}</p>` : ""}
+      ${n.counter ? `<h4>${n.group === "lever" ? "How to use it" : "What helps"}</h4><p class="counter">${n.counter}</p>` : ""}
       <h4>Connected to</h4><div class="chips">${rel.map(chip).join("")}</div>
       <h4>My notes</h4>
       <textarea id="note" placeholder="What I’ve noticed in myself, what worked, what didn’t…"></textarea>
@@ -242,7 +260,7 @@ footer{color:var(--muted);font-size:12.5px;margin-top:28px;max-width:80ch}
     map.classList.toggle("focus", !!q);
     if (!q) return;
     nodes.forEach(n => {
-      const hay = [n.name,n.tag,n.what,n.life,n.counter,store.get(n.id)].join(" ").toLowerCase();
+      const hay = [n.name,n.tag,n.what,n.life,n.counter,(n.mine||[]).join(" "),store.get(n.id)].join(" ").toLowerCase();
       if (hay.includes(q)) els[n.id].classList.add("related");
     });
   };
