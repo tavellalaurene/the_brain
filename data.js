@@ -210,8 +210,9 @@ window.BRAIN_NODES = [
     mine: [
       "Slow dopamine →",
       "Feelings: accomplishment, satisfaction, productive excitement.",
+      "My slow dopamine activities: crochet, parkour, reading, cooking, gym, work / projects.",
     ],
-    links: ["dopamine", "pushthrough", "smallwins", "baseline"],
+    links: ["dopamine", "pushthrough", "smallwins", "baseline", "flow"],
   },
   {
     id: "fastdopamine", group: "mechanism", name: "Fast dopamine",
@@ -221,6 +222,7 @@ window.BRAIN_NODES = [
       "Fast dopamine → addictive →",
       "↳ the system gets used to it, baseline drops",
       "Feelings: demotivated, depressive symptoms.",
+      "My fast dopamine activities: LinkedIn feed, YouTube white-noise videos, YouTube Shorts, very sugary food.",
     ],
     links: ["dopamine", "amcc", "cheapdopamine", "baseline", "habit", "reward"],
   },
@@ -233,7 +235,17 @@ window.BRAIN_NODES = [
       "The start = hardest time; dopamine builds as I progress.",
       "⚠ Need to push through!",
     ],
-    links: ["slowdopamine", "amcc", "procrastination", "smallwins"],
+    links: ["slowdopamine", "amcc", "procrastination", "smallwins", "flow", "discipline"],
+  },
+  {
+    id: "flow", group: "mechanism", name: "Flow state",
+    sci: "Flow (Mihaly Csikszentmihalyi)",
+    tag: "Absorbed in what I'm doing",
+    mine: [
+      "Find the flow state ⇒ it enables me to stay engaged in activities where slow dopamine is produced.",
+      "Force the start, through discipline → need to push through!",
+    ],
+    links: ["slowdopamine", "pushthrough", "discipline", "dmn", "rumination"],
   },
   {
     id: "plasticity", group: "mechanism", name: "Neuroplasticity",
@@ -348,5 +360,27 @@ window.BRAIN_NODES = [
     life: "Alert and upbeat after a cold shower ending.",
     counter: "End the shower with 30–60 s cold. Optional — skip it if it doesn’t suit you or you have heart issues.",
     links: ["dopamine", "adrenaline", "baseline"],
+  },
+  {
+    id: "discipline", group: "lever", name: "Discipline",
+    sci: "Self-control / self-regulation",
+    tag: "Gets me through the start",
+    mine: [
+      "Discipline gets me through the start; the effort and progress that follow bring the reward (slow dopamine).",
+      "Discipline → self-control.",
+    ],
+    links: ["pushthrough", "flow", "slowdopamine", "environment", "amcc", "pfc", "procrastination", "habit"],
+  },
+  {
+    id: "environment", group: "lever", name: "My environment",
+    sci: "Situational self-control",
+    tag: "Fewer temptations in the first place",
+    mine: [
+      "Discipline is developed through how I engage with my environment.",
+      "People with strong self-control don't resist temptation more: they change their environment to face fewer temptations in the first place.",
+      "↳ Task: nurture my bedroom, my workspace, my home. One day at a time.",
+      "Ask the other people in my household to contribute?",
+    ],
+    links: ["discipline", "fastdopamine", "habit", "cheapdopamine"],
   },
 ];
