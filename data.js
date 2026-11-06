@@ -65,6 +65,9 @@ window.BRAIN_NODES = [
   {
     id: "cortisol", group: "chemical", name: "Cortisol",
     tag: "The stress hormone (not the enemy)",
+    mine: [
+      "A stress hormone: when I’m stressed, my body produces it.",
+    ],
     what: "Released by the stress system (HPA axis). Naturally high in the morning to wake me up. Helpful in short bursts; harmful when stuck high for weeks — it disrupts sleep, memory and mood.",
     life: "Wired-but-tired. Waking at 4am with a busy mind. Feeling under constant pressure.",
     counter: "Close the stress cycle: move, breathe with long exhales, sleep, connect. Get morning light so the cortisol peak happens early, not at night.",
@@ -73,10 +76,13 @@ window.BRAIN_NODES = [
   {
     id: "adrenaline", group: "chemical", name: "Adrenaline / Noradrenaline",
     tag: "Alert, fight-or-flight",
+    mine: [
+      "A stress hormone: when I’m stressed, my body produces it.",
+    ],
     what: "Fast arousal chemicals: heart up, focus narrows, energy rises. Noradrenaline in the brain sharpens attention; too much feels like anxiety.",
     life: "Racing heart before a hard conversation. The focus that kicks in right before a deadline.",
     counter: "Use it: reframe nerves as “my body getting ready”. Calm it: slow exhale breathing. Cold water raises it on purpose.",
-    links: ["stress", "amygdala", "breathing", "cold", "procrastination"],
+    links: ["stress", "amygdala", "breathing", "cold", "procrastination", "anxiety"],
   },
   {
     id: "gaba", group: "chemical", name: "GABA",
@@ -324,26 +330,26 @@ window.BRAIN_NODES = [
     links: ["anxiety", "amygdala", "procrastination", "control", "smallwins"],
   },
   {
-    id: "nightmares", group: "mechanism", name: "Nightmares",
-    sci: "Nightmares (researcher to explore: Antonio Zadra)",
+    id: "nightmares", group: "mechanism", name: "Nightmares & night terrors",
+    sci: "Nightmares (REM sleep) and night terrors / sleep terrors (deep non-REM sleep)",
     tag: "When the alarm keeps going at night",
-    what: "Disturbing dreams that wake me up. Linked to stress and to a more reactive amygdala; they disturb sleep, which makes the amygdala even more reactive the next day.",
+    mine: [
+      "Idea → to dig into the science of nightmares and night terrors: Antonio Zadra.",
+    ],
+    what: "Nightmares are disturbing dreams in REM sleep that wake me up and that I remember. Night terrors happen in deep sleep, earlier in the night: sudden panic, screaming or thrashing, often with little or no memory after. Both are linked to stress, and nightmares to a more reactive amygdala.",
     life: "Waking up with my heart racing after a bad dream, tired and on edge.",
-    counter: "Lower daytime stress, protect sleep. For recurring nightmares, imagery rehearsal therapy (rewriting the dream while awake) has good evidence — worth asking a professional.",
-    links: ["amygdala", "sleep", "stress"],
+    counter: "Lower daytime stress, protect sleep (lack of sleep makes night terrors more likely). For recurring nightmares, imagery rehearsal therapy (rewriting the dream while awake) has good evidence — worth asking a professional.",
+    links: ["amygdala", "sleep", "stress", "cortisol"],
   },
 
   // ── LEVERS ───────────────────────────────────────────────
   {
     id: "sleep", group: "lever", name: "Sleep",
     tag: "The foundation of everything",
-    mine: [
-      "Idea → to dig into the science of sleep and nightmares: Antonio Zadra.",
-    ],
     what: "Clears waste, consolidates memory and resets emotional reactivity. One bad night makes the amygdala more reactive and the PFC weaker.",
     life: "Everything feels harder and more personal after poor sleep.",
     counter: "Same wake time every day, morning light, dim evenings, cool dark room, no caffeine late.",
-    links: ["pfc", "amygdala", "hippocampus", "melatonin", "cortisol", "plasticity", "light", "nightmares"],
+    links: ["pfc", "amygdala", "hippocampus", "melatonin", "cortisol", "plasticity", "light"],
   },
   {
     id: "light", group: "lever", name: "Morning light",
