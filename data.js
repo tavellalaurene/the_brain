@@ -210,7 +210,7 @@ window.BRAIN_NODES = [
   },
   {
     id: "anxiety", group: "mechanism", name: "Anxiety",
-    sci: "Anxiety (anticipatory stress response)",
+    sci: "Anxiety",
     mine: [
       "Stress ≠ Anxiety",
       "Stress → “danger” that is immediate. Anxiety → “danger” that is potential or in the future.",
@@ -319,7 +319,7 @@ window.BRAIN_NODES = [
 
   {
     id: "avoidance", group: "mechanism", name: "Avoidance",
-    sci: "Avoidance (safety behaviours) — the loop that maintains anxiety",
+    sci: "Avoidance",
     tag: "The fuel of anxiety",
     mine: [
       "Avoidance = the fuel of anxiety. Don’t avoid!",
@@ -331,7 +331,7 @@ window.BRAIN_NODES = [
   },
   {
     id: "nightmares", group: "mechanism", name: "Nightmares & night terrors",
-    sci: "Nightmares (REM sleep) and night terrors / sleep terrors (deep non-REM sleep)",
+    sci: "Nightmares; night terrors (sleep terrors)",
     tag: "When the alarm keeps going at night",
     mine: [
       "Idea → to dig into the science of nightmares and night terrors: Antonio Zadra.",
