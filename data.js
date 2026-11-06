@@ -184,10 +184,11 @@ window.BRAIN_NODES = [
   },
   {
     id: "cine", group: "mechanism", name: "The stress recipe (C.I.N.E.)",
-    sci: "C.I.N.É. — Sonia Lupien, Centre for Studies on Human Stress",
+    sci: "C.I.N.É. (in English: N.U.T.S.) — Sonia Lupien, Centre for Studies on Human Stress",
     mine: [
       "There are 4 characteristics that make a situation stressful, whoever the person is.",
       "The more characteristics, the stronger the response.",
+      "Acronym: C.I.N.É. — in English: N.U.T.S.",
       "1. Feeling that I don’t have control over the situation",
       "2. Unexpected or unpredictable",
       "3. New",
@@ -467,7 +468,8 @@ window.BRAIN_NODES = [
     sci: "Perceived control",
     tag: "My biggest stress ingredient",
     mine: [
-      "↳ Find a way to have the feeling of control.",
+      "↳ Find a way to have the feeling of controlling something.",
+      "To help: take action.",
     ],
     what: "Low control is one of the four stress ingredients. Feeling that I can act on even a small part of a situation lowers the stress response — the frontal lobe can then tell the amygdala to calm down.",
     life: "Spiralling when plans change or when I’m waiting on someone else’s decision.",
