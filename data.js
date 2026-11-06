@@ -99,6 +99,9 @@ window.BRAIN_NODES = [
   {
     id: "pfc", group: "region", name: "Prefrontal cortex",
     tag: "The planner, the CEO",
+    mine: [
+      "One of the 2 brain parts that stop the stress response (with the hippocampus).",
+    ],
     what: "Behind the forehead. Plans, chooses, holds goals in mind, calms emotional reactions. The first part to go offline when I’m tired, stressed or overloaded.",
     life: "Good decisions in the morning, bad ones at midnight. Knowing what to do but not doing it.",
     counter: "Sleep, fewer decisions (routines), write the plan down, name emotions to bring it back online, movement.",
@@ -107,6 +110,14 @@ window.BRAIN_NODES = [
   {
     id: "amygdala", group: "region", name: "Amygdala",
     tag: "The smoke detector",
+    mine: [
+      "Amygdala = fear detection; it activates the stress response.",
+      "Some people have an amygdala that is triggered easily / hyperactive, because of:",
+      "1. trauma",
+      "2. growing up in a very stressful environment",
+      "3. genetics",
+      "Hyperactive amygdala ⇒ nightmares.",
+    ],
     what: "Scans for threats and triggers the alarm, fast and before thinking. Tuned to be over-sensitive: better a false alarm than a missed danger.",
     life: "Overreacting to an email. That jolt when someone sounds annoyed. Avoiding a task that feels “dangerous”.",
     counter: "Name the feeling (it calms the alarm), slow exhales, ask “am I actually in danger?”. Repeated safe exposure retrains it.",
@@ -115,7 +126,10 @@ window.BRAIN_NODES = [
   {
     id: "hippocampus", group: "region", name: "Hippocampus",
     tag: "Memory and context",
-    what: "Stores new memories and gives them context (“this was then, this is now”). Sensitive to chronic stress; grows with exercise and is supported by sleep.",
+    mine: [
+      "One of the 2 brain parts that stop the stress response (with the frontal lobe).",
+    ],
+    what: "Stores new memories and gives them context (“this was then, this is now”). It also helps switch the stress response off. Sensitive to chronic stress; grows with exercise and is supported by sleep.",
     life: "Forgetting things when overwhelmed. Old memories coloring how I see today.",
     counter: "Exercise, sleep, learning new things, lowering chronic stress.",
     links: ["sleep", "exercise", "cortisol", "plasticity"],
@@ -158,6 +172,11 @@ window.BRAIN_NODES = [
   {
     id: "stress", group: "mechanism", name: "Stress response",
     tag: "Alarm → hormones → body ready",
+    mine: [
+      "Stress is INDIVIDUAL. When I’m stressed → my body produces stress hormones.",
+      "Transition ⇒ STRESS! It will last a few days, then it will pass.",
+      "The signs of stress are temporary!",
+    ],
     what: "Amygdala sounds the alarm → adrenaline (seconds) and cortisol via the HPA axis (minutes). Built for short threats. Modern stress rarely ends, so the cycle never “completes”.",
     life: "Carrying tension all day even after the stressful thing is over.",
     counter: "Complete the cycle with the body: movement, a long exhale, a hug, crying, laughing. Stress is not the problem — never recovering from it is.",
@@ -166,6 +185,16 @@ window.BRAIN_NODES = [
   {
     id: "cine", group: "mechanism", name: "The stress recipe (C.I.N.E.)",
     sci: "C.I.N.É. — Sonia Lupien, Centre for Studies on Human Stress",
+    mine: [
+      "There are 4 characteristics that make a situation stressful, whoever the person is.",
+      "The more characteristics, the stronger the response.",
+      "1. Feeling that I don’t have control over the situation",
+      "2. Unexpected or unpredictable",
+      "3. New",
+      "4. My ego or personality feels threatened",
+      "Understand a stressful situation by deconstructing it with the 4 characteristics. Understand the stressors in my life.",
+      "The worst of the 4 for me: the sense of control.",
+    ],
     tag: "What makes a situation stressful",
     what: "A situation triggers the stress response when it has at least one of four ingredients: Control is low, it is Unpredictable, it is New, or my Ego feels threatened. The more ingredients, the stronger the response. Stress is not caused by the situation itself but by how my brain reads it.",
     life: "A vague email from my manager (unpredictable + ego). A new job (new + low control). Waiting for results (low control + unpredictable).",
@@ -175,6 +204,13 @@ window.BRAIN_NODES = [
   {
     id: "anxiety", group: "mechanism", name: "Anxiety",
     sci: "Anxiety (anticipatory stress response)",
+    mine: [
+      "Stress ≠ Anxiety",
+      "Stress → “danger” that is immediate. Anxiety → “danger” that is potential or in the future.",
+      "The brain = a threat detector. Real or potential, the amygdala’s response is the same.",
+      "I need to be able to tell my brain: “it’s OK, calm down”.",
+      "I need to teach my brain that I’m in control.",
+    ],
     tag: "Stress about a threat that isn't here",
     what: "Stress is the body's response to a threat that is real and present. Anxiety is the same response triggered by a threat that is anticipated or imagined — “what if…”. The body can't tell the difference: the same alarm, the same hormones.",
     life: "Heart racing the night before something that hasn't happened yet. Running worst-case scenarios. Feeling tense with no clear reason.",
@@ -274,14 +310,39 @@ window.BRAIN_NODES = [
     links: ["habit", "sleep", "hippocampus", "meditation"],
   },
 
+  {
+    id: "avoidance", group: "mechanism", name: "Avoidance",
+    sci: "Avoidance (safety behaviours) — the loop that maintains anxiety",
+    tag: "The fuel of anxiety",
+    mine: [
+      "Avoidance = the fuel of anxiety. Don’t avoid!",
+    ],
+    what: "Avoiding what scares me brings instant relief, so the brain learns two things: “that really was dangerous” and “avoiding works”. The amygdala never gets the chance to learn the situation is safe, so the fear grows and the world gets smaller.",
+    life: "Not answering a call I’m dreading, then dreading it more. Putting off a task because it makes me anxious.",
+    counter: "Approach instead, in small steps (gradual exposure): pick the smallest version of what I avoid, stay until the alarm settles, repeat. Each time teaches the amygdala “I survived, it’s OK”.",
+    links: ["anxiety", "amygdala", "procrastination", "control", "smallwins"],
+  },
+  {
+    id: "nightmares", group: "mechanism", name: "Nightmares",
+    sci: "Nightmares (researcher to explore: Antonio Zadra)",
+    tag: "When the alarm keeps going at night",
+    what: "Disturbing dreams that wake me up. Linked to stress and to a more reactive amygdala; they disturb sleep, which makes the amygdala even more reactive the next day.",
+    life: "Waking up with my heart racing after a bad dream, tired and on edge.",
+    counter: "Lower daytime stress, protect sleep. For recurring nightmares, imagery rehearsal therapy (rewriting the dream while awake) has good evidence — worth asking a professional.",
+    links: ["amygdala", "sleep", "stress"],
+  },
+
   // ── LEVERS ───────────────────────────────────────────────
   {
     id: "sleep", group: "lever", name: "Sleep",
     tag: "The foundation of everything",
+    mine: [
+      "Idea → to dig into the science of sleep and nightmares: Antonio Zadra.",
+    ],
     what: "Clears waste, consolidates memory and resets emotional reactivity. One bad night makes the amygdala more reactive and the PFC weaker.",
     life: "Everything feels harder and more personal after poor sleep.",
     counter: "Same wake time every day, morning light, dim evenings, cool dark room, no caffeine late.",
-    links: ["pfc", "amygdala", "hippocampus", "melatonin", "cortisol", "plasticity", "light"],
+    links: ["pfc", "amygdala", "hippocampus", "melatonin", "cortisol", "plasticity", "light", "nightmares"],
   },
   {
     id: "light", group: "lever", name: "Morning light",
@@ -400,5 +461,17 @@ window.BRAIN_NODES = [
       "Ask the other people in my household to contribute?",
     ],
     links: ["discipline", "fastdopamine", "habit", "cheapdopamine"],
+  },
+  {
+    id: "control", group: "lever", name: "Feeling in control",
+    sci: "Perceived control",
+    tag: "My biggest stress ingredient",
+    mine: [
+      "↳ Find a way to have the feeling of control.",
+    ],
+    what: "Low control is one of the four stress ingredients. Feeling that I can act on even a small part of a situation lowers the stress response — the frontal lobe can then tell the amygdala to calm down.",
+    life: "Spiralling when plans change or when I’m waiting on someone else’s decision.",
+    counter: "Split the situation: what I control / what I don’t. Pick one small action on my side. Make a plan, write it down, prepare. Routines and my environment give me control over my day.",
+    links: ["cine", "anxiety", "pfc", "smallwins", "journaling", "environment", "avoidance"],
   },
 ];
