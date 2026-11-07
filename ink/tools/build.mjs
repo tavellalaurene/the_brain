@@ -26,7 +26,7 @@ const validate = (schemaId, data, file) => {
 
 // ── 1. Forme ──────────────────────────────────────────────────
 const entities = {};
-for (const name of ['evidence-levels', 'messengers', 'structures', 'pathways', 'sources', 'gauges']) {
+for (const name of ['evidence-levels', 'messengers', 'structures', 'pathways', 'sources', 'gauges', 'levers']) {
   entities[name] = read(`entities/${name}.json`);
   validate(`${name}.schema.json`, entities[name], `entities/${name}.json`);
 }
@@ -79,6 +79,15 @@ for (const sc of Object.values(scenarios)) {
     });
   }
 }
+const stepIds = new Set(Object.values(scenarios).flatMap(sc => sc.steps.map(s => s.id)));
+for (const l of entities.levers) {
+  const w = `levers/${l.id}`;
+  l.steps.forEach(s => { if (!stepIds.has(s)) errors.push(`${w}.steps : étape inconnue "${s}"`); });
+  (l.actsOn.structures || []).forEach(s => ref('structure', s, `${w}.actsOn`));
+  (l.actsOn.pathways || []).forEach(p => ref('pathway', p, `${w}.actsOn`));
+  l.evidence.forEach(e => ref('evidence', e, `${w}.evidence`));
+  l.sources.forEach(s => { ref('source', s, `${w}.sources`); used.source.add(s); });
+}
 // Avertissements : données présentes mais jamais utilisées (pas bloquant)
 const warnings = [];
 for (const k of ['source', 'pathway']) for (const id of ids[k]) if (!used[k].has(id)) warnings.push(`${k} jamais utilisé(e) : ${id}`);
@@ -90,7 +99,7 @@ if (errors.length) {
   console.error(`\n${errors.length} erreur(s). Rien n'a été écrit.`);
   process.exit(1);
 }
-const counts = `${ids.structure.size} structures, ${ids.pathway.size} voies, ${ids.messenger.size} messagers, ${ids.source.size} sources, ${Object.keys(scenarios).length} scénario(s)`;
+const counts = `${ids.structure.size} structures, ${ids.pathway.size} voies, ${ids.messenger.size} messagers, ${ids.source.size} sources, ${entities.levers.length} leviers, ${Object.keys(scenarios).length} scénario(s)`;
 console.log(`✓ Données valides : ${counts}`);
 if (checkOnly) process.exit(0);
 

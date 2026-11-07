@@ -11,6 +11,7 @@ data/
     messengers.json    ce qui se déplace (neurotransmetteurs, hormones)
     pathways.json      les flèches : structure → messager → structure, avec un effet
     sources.json       références scientifiques, chacune avec un niveau de preuve
+    levers.json        ce qu'on peut faire : éviter, réduire, accepter ; sur quoi ça agit ; preuves
     evidence-levels.json
     gauges.json        courbes schématiques (pas des mesures)
   scenarios/         les histoires : étapes, découpées en temps courts (beats)

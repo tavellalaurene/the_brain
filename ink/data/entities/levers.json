@@ -1,0 +1,145 @@
+[
+  {
+    "id": "reevaluation",
+    "label": "Réévaluer la situation",
+    "goal": "eviter",
+    "steps": [
+      "detection",
+      "prefrontal"
+    ],
+    "actsOn": {
+      "structures": [
+        "pfc",
+        "amygdale"
+      ],
+      "pathways": [
+        "p-ctx-amy",
+        "p-thal-amy"
+      ]
+    },
+    "how": "Changer l'interprétation avant qu'elle ne s'emballe : « c'est un défi », « je peux apprendre de ça ».",
+    "mechanism": "La réévaluation mobilise des régions de contrôle (préfrontales et pariétales) qui modulent la réponse de l'amygdale.",
+    "effect": "Effet petit à moyen sur les émotions (méta-analyse de 306 comparaisons expérimentales).",
+    "caveat": "Le stress aigu dégrade justement cette capacité (le préfrontal décroche) : elle s'entraîne à froid, et s'utilise tôt.",
+    "evidence": [
+      "meta-analyse"
+    ],
+    "sources": [
+      "buhle-2014",
+      "webb-2012",
+      "raio-2013"
+    ]
+  },
+  {
+    "id": "controle",
+    "label": "Retrouver du contrôle",
+    "goal": "eviter",
+    "steps": [
+      "cascade"
+    ],
+    "actsOn": {
+      "structures": [
+        "hypothalamus"
+      ],
+      "pathways": [
+        "p-hyp-hypo"
+      ]
+    },
+    "how": "Préparer, découper la tâche, savoir ce qui va se passer, repérer ce qui dépend de soi.",
+    "mechanism": "Les situations incontrôlables et jugées par les autres déclenchent les plus fortes réponses de cortisol.",
+    "effect": "Incontrôlabilité et jugement social : la combinaison associée aux plus fortes montées de cortisol (méta-analyse de 208 études).",
+    "caveat": "La méta-analyse montre l'effet de l'incontrôlabilité. Qu'un contrôle retrouvé réduise la réponse est une déduction raisonnable, moins testée directement.",
+    "evidence": [
+      "meta-analyse"
+    ],
+    "sources": [
+      "dickerson-kemeny-2004"
+    ]
+  },
+  {
+    "id": "respiration",
+    "label": "Respirer lentement, expirer longtemps",
+    "goal": "reduire",
+    "steps": [
+      "alerte",
+      "retour"
+    ],
+    "actsOn": {
+      "structures": [
+        "tronc",
+        "corps"
+      ],
+      "pathways": [
+        "p-tronc-corps"
+      ]
+    },
+    "how": "Quelques minutes d'expirations plus longues que les inspirations. Exemple : le soupir cyclique, deux inspirations par le nez puis une longue expiration par la bouche.",
+    "mechanism": "Ralentir la respiration sollicite le parasympathique (nerf vague), qui ralentit le cœur.",
+    "effect": "Essai randomisé : 5 minutes par jour pendant un mois améliorent l'humeur et réduisent la fréquence respiratoire, davantage que la méditation de pleine conscience.",
+    "caveat": "Effet mesuré sur une pratique quotidienne, pas sur l'effet immédiat en pleine situation de stress.",
+    "evidence": [
+      "essai-randomise",
+      "revue"
+    ],
+    "sources": [
+      "balban-2023",
+      "zaccaro-2018"
+    ]
+  },
+  {
+    "id": "soutien",
+    "label": "S'entourer",
+    "goal": "reduire",
+    "steps": [
+      "cascade"
+    ],
+    "actsOn": {
+      "structures": [
+        "hypothalamus",
+        "cortico"
+      ],
+      "pathways": [
+        "p-hypo-cort"
+      ]
+    },
+    "how": "La présence et le soutien d'une personne de confiance avant une épreuve.",
+    "mechanism": "Le soutien social atténue la montée du cortisol face à un stress psychosocial.",
+    "effect": "Essai randomisé : le soutien d'un ami proche pendant la préparation a réduit la réponse de cortisol à un test de stress.",
+    "caveat": "Petite étude (37 hommes). L'effet dépend sans doute de la relation et du contexte.",
+    "evidence": [
+      "essai-randomise",
+      "etude-limitee"
+    ],
+    "sources": [
+      "heinrichs-2003"
+    ]
+  },
+  {
+    "id": "activation-ressource",
+    "label": "Voir l'activation comme une ressource",
+    "goal": "accepter",
+    "steps": [
+      "alerte",
+      "au-dela"
+    ],
+    "actsOn": {
+      "structures": [
+        "corps"
+      ],
+      "pathways": [
+        "p-med-corps"
+      ]
+    },
+    "how": "Se dire que le cœur qui bat et l'énergie qui monte préparent le corps à agir, plutôt que lutter contre.",
+    "mechanism": "Réinterpréter l'activation physiologique comme utile modifie la réponse cardiovasculaire.",
+    "effect": "Essai randomisé : profil cardiovasculaire plus adaptatif (meilleure efficacité cardiaque, moindre résistance vasculaire) et moins d'attention captée par le négatif.",
+    "caveat": "Études de taille limitée, surtout en laboratoire.",
+    "evidence": [
+      "essai-randomise",
+      "etude-limitee"
+    ],
+    "sources": [
+      "jamieson-2012"
+    ]
+  }
+]

@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "levers.schema.json",
+  "title": "Leviers",
+  "description": "Ce qu'on peut faire. goal : éviter la réaction, réduire ses effets, ou la comprendre pour l'accepter. steps : étapes du scénario où le levier est présenté. actsOn : sur quoi il agit.",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": [
+      "id",
+      "label",
+      "goal",
+      "steps",
+      "actsOn",
+      "how",
+      "mechanism",
+      "effect",
+      "evidence",
+      "sources"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "id": {
+        "type": "string",
+        "pattern": "^[a-z0-9-]+$"
+      },
+      "label": {
+        "type": "string"
+      },
+      "goal": {
+        "enum": [
+          "eviter",
+          "reduire",
+          "accepter"
+        ]
+      },
+      "steps": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "pattern": "^[a-z0-9-]+$"
+        },
+        "minItems": 1
+      },
+      "actsOn": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "structures": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z0-9-]+$"
+            }
+          },
+          "pathways": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z0-9-]+$"
+            }
+          }
+        }
+      },
+      "how": {
+        "type": "string",
+        "description": "Ce qu'on fait, concrètement."
+      },
+      "mechanism": {
+        "type": "string",
+        "description": "Pourquoi ça marche, en une phrase."
+      },
+      "effect": {
+        "type": "string",
+        "description": "Ce que montrent les études."
+      },
+      "caveat": {
+        "type": "string",
+        "description": "Limites."
+      },
+      "evidence": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "pattern": "^[a-z0-9-]+$"
+        },
+        "minItems": 1
+      },
+      "sources": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "pattern": "^[a-z0-9-]+$"
+        },
+        "minItems": 1
+      }
+    }
+  }
+}
