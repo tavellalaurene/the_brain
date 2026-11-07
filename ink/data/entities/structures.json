@@ -21,11 +21,13 @@
     "anatomy": {
       "space": "mni",
       "mm": [
-        -10,
-        -18,
-        6
+        -9.8,
+        -19.2,
+        6.2
       ],
-      "status": "a-verifier"
+      "status": "source",
+      "source": "harvard-oxford",
+      "note": "Centre du thalamus gauche, calculé dans l'atlas (tools/atlas_centroids.py)."
     }
   },
   {
@@ -35,12 +37,13 @@
     "anatomy": {
       "space": "mni",
       "mm": [
-        -10,
-        -85,
-        5
+        -6,
+        -101,
+        15
       ],
-      "status": "a-verifier",
-      "note": "Ici : cortex visuel primaire (V1)."
+      "status": "source",
+      "note": "Cortex visuel primaire gauche (calcarine, partie dorsale V1/V2).",
+      "source": "liu-ioannides-2010"
     },
     "detail": "Ici : cortex visuel primaire"
   },
@@ -51,12 +54,13 @@
     "anatomy": {
       "space": "mni",
       "mm": [
-        -44,
-        40,
-        20
+        -42,
+        29,
+        23
       ],
-      "status": "a-verifier",
-      "note": "Cortex préfrontal dorsolatéral (aire 46)."
+      "status": "source",
+      "note": "Préfrontal dorsolatéral gauche (homologue du cluster postéro-dorsal).",
+      "source": "cieslik-2013"
     }
   },
   {
@@ -66,11 +70,13 @@
     "anatomy": {
       "space": "mni",
       "mm": [
-        -23,
-        -5,
-        -18
+        -22.6,
+        -4.9,
+        -18.1
       ],
-      "status": "a-verifier"
+      "status": "source",
+      "source": "harvard-oxford",
+      "note": "Centre de l'amygdale gauche, calculé dans l'atlas (tools/atlas_centroids.py)."
     }
   },
   {
@@ -80,11 +86,13 @@
     "anatomy": {
       "space": "mni",
       "mm": [
-        -28,
-        -22,
-        -12
+        -24.8,
+        -22.2,
+        -14.4
       ],
-      "status": "a-verifier"
+      "status": "source",
+      "source": "harvard-oxford",
+      "note": "Centre de l'hippocampe gauche, calculé dans l'atlas (tools/atlas_centroids.py)."
     }
   },
   {
@@ -94,11 +102,13 @@
     "anatomy": {
       "space": "mni",
       "mm": [
-        -4,
-        -2,
-        -8
+        -1.8,
+        -0.5,
+        -10.5
       ],
-      "status": "a-verifier"
+      "status": "source",
+      "source": "rison-2024",
+      "note": "Repère : noyau paraventriculaire, celui qui libère la CRH."
     }
   },
   {
@@ -124,12 +134,13 @@
     "anatomy": {
       "space": "mni",
       "mm": [
-        -5,
-        -36,
+        -3.7,
+        -37.0,
         -24
       ],
-      "status": "a-verifier",
-      "note": "Repère : locus coeruleus."
+      "status": "source",
+      "note": "Repère : locus coeruleus gauche (moyenne de 44 sujets).",
+      "source": "keren-2009"
     }
   },
   {

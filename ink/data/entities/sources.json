@@ -43,5 +43,30 @@
     "cite": "Rucker & Ikuta (2019). Pituitary gland functional connectivity and BMI. Frontiers in Neuroscience.",
     "url": "https://doi.org/10.3389/fnins.2019.00120",
     "level": "etude-limitee"
+  },
+  "harvard-oxford": {
+    "cite": "Atlas sous-cortical Harvard-Oxford (Center for Morphometric Analysis, MGH), distribué avec FSL.",
+    "url": "https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/Atlases",
+    "level": "consensus"
+  },
+  "liu-ioannides-2010": {
+    "cite": "Liu & Ioannides (2010). Emotion separation is completed early and it depends on visual field presentation. PLoS ONE.",
+    "url": "https://doi.org/10.1371/journal.pone.0009790",
+    "level": "etude-limitee"
+  },
+  "cieslik-2013": {
+    "cite": "Cieslik et al. (2013). Is there “one” DLPFC in cognitive action control? Evidence for heterogeneity from co-activation-based parcellation. Cerebral Cortex.",
+    "url": "https://doi.org/10.1093/cercor/bhs256",
+    "level": "meta-analyse"
+  },
+  "rison-2024": {
+    "cite": "Rison, Ogawa, Osada, Konishi et al. (2024). Stereotaxic coordinates of human hypothalamic nuclei used for region of interest analyses in fMRI. Juntendo Medical Journal.",
+    "url": "https://doi.org/10.14789/jmj.JMJ24-0009-P",
+    "level": "etude-limitee"
+  },
+  "keren-2009": {
+    "cite": "Keren et al. (2009). In vivo mapping of the human locus coeruleus. NeuroImage.",
+    "url": "https://doi.org/10.1016/j.neuroimage.2009.06.012",
+    "level": "etude-limitee"
   }
 }
