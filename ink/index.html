@@ -229,67 +229,11 @@ function envelope(yTop, yBot, rFn, fadeFrom) {
 const bodyMat = fresnel(0xcfdcff, 2.6, .9);
 bodyG.add(new THREE.Mesh(envelope(HEAD.y + HEAD.ry - .001, -5.4, radius, -3.6), bodyMat));
 
-// ── Cerveau : faisceaux de fibres « dans l'esprit de la tractographie » (générés, pas des données réelles) ──
+// ── Cerveau : simple contour de verre (visualisation à repenser) ──
 const BRAIN = { y: 1.75, ry: 1.05, rx: 1.12, rz: 1.45, z: 0.05 };
 const brainMat = fresnel(0xffe9c8, 4.5, .22);
 bodyG.add(new THREE.Mesh(envelope(BRAIN.y + BRAIN.ry - .001, BRAIN.y - BRAIN.ry + .001, y => {
   const k = Math.sqrt(Math.max(0, 1 - ((y - BRAIN.y) / BRAIN.ry) ** 2)); return [BRAIN.rx * k, BRAIN.rz * k, BRAIN.z]; }), brainMat));
-const rnd = (() => { let x = 11; return () => (x = (x * 16807) % 2147483647) / 2147483647; })();   // aléa reproductible
-const jit = (v, a) => v.clone().add(new THREE.Vector3((rnd() - .5) * a, (rnd() - .5) * a, (rnd() - .5) * a));
-const onBrain = (x, y, z) => {   // ramène un point à l'intérieur, juste sous la surface du cerveau
-  const v = new THREE.Vector3(x / BRAIN.rx, (y - BRAIN.y) / BRAIN.ry, (z - BRAIN.z) / BRAIN.rz);
-  const l = v.length(), k = .9 / Math.max(l, .001);
-  return new THREE.Vector3(x * (l > .9 ? k : 1), BRAIN.y + (y - BRAIN.y) * (l > .9 ? k : 1), BRAIN.z + (z - BRAIN.z) * (l > .9 ? k : 1));
-};
-const tractPos = [], tractCol = [], tractSeed = [];
-const pale = new THREE.Color(0xf3e6d0);
-function tract(ctrl, w = 1) {
-  const c = new THREE.CatmullRomCurve3(ctrl), pts = c.getPoints(70), seed = rnd() * 10;
-  const add = (pa, pb) => {
-    const d = pb.clone().sub(pa).normalize();
-    // couleur selon la direction (convention : x rouge, z vert, y bleu), pâlie vers l'ivoire
-    const col = new THREE.Color(Math.abs(d.x), Math.abs(d.z), Math.abs(d.y)).lerp(pale, .45).multiplyScalar(w);
-    tractPos.push(pa.x, pa.y, pa.z, pb.x, pb.y, pb.z);
-    tractCol.push(col.r, col.g, col.b, col.r, col.g, col.b); tractSeed.push(seed, seed);
-  };
-  for (let i = 0; i < pts.length - 1; i++) add(pts[i], pts[i + 1]);
-  // terminaisons ramifiées, à la manière d'un dessin à l'encre
-  const end = pts[pts.length - 1], dir = end.clone().sub(pts[pts.length - 4]).normalize();
-  for (let k = 0; k < 3; k++) {
-    let a = end.clone(), d = jit(dir, 1.4).normalize();
-    for (let s2 = 0; s2 < 4; s2++) { const b = a.clone().addScaledVector(d, .035 + rnd() * .03); add(a, b); a = b; d = jit(d, .8).normalize(); }
-  }
-}
-const stemTop = new THREE.Vector3(0, .75, -.3);
-for (let i = 0; i < 70; i++) {   // projections : éventail du tronc cérébral vers le cortex (haut-bas)
-  const side = rnd() < .5 ? -1 : 1, th = rnd() * Math.PI * 2, ph = rnd() * 1.2;
-  const end = onBrain(Math.sin(ph) * Math.cos(th) * BRAIN.rx, BRAIN.y + Math.cos(ph) * BRAIN.ry, BRAIN.z + Math.sin(ph) * Math.sin(th) * BRAIN.rz);
-  tract([jit(stemTop, .1), jit(new THREE.Vector3(side * .3, 1.3, 0), .15), jit(end.clone().lerp(new THREE.Vector3(side * .3, 1.4, 0), .4), .15), end], .9);
-}
-for (let i = 0; i < 45; i++) {   // commissures : arches gauche-droite (corps calleux)
-  const y = 1.75 + rnd() * .55, z = (rnd() - .5) * 1.8;
-  tract([onBrain(-1.2, y + .2, z), jit(new THREE.Vector3(-.4, 2.15, z * .8), .1), jit(new THREE.Vector3(0, 2.05, z * .7), .05),
-         jit(new THREE.Vector3(.4, 2.15, z * .8), .1), onBrain(1.2, y + .2, z)], 1);
-}
-for (let i = 0; i < 44; i++) {   // associations : longues arches avant-arrière, de chaque côté
-  const x = (rnd() < .5 ? -1 : 1) * (.55 + rnd() * .3), y = 1.35 + rnd() * .6;
-  tract([onBrain(x * .9, y, 1.5), jit(new THREE.Vector3(x, y + .35, .4), .12), jit(new THREE.Vector3(x, y + .3, -.5), .12), onBrain(x * .9, y - .2, -1.5)], .95);
-}
-const tg = new THREE.BufferGeometry();
-tg.setAttribute('position', new THREE.Float32BufferAttribute(tractPos, 3));
-tg.setAttribute('color', new THREE.Float32BufferAttribute(tractCol, 3));
-tg.setAttribute('aSeed', new THREE.Float32BufferAttribute(tractSeed, 1));
-// reflets qui glissent le long des fibres (évoque la feuille d'or gravée)
-const tractMat = new THREE.ShaderMaterial({
-  transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, vertexColors: true,
-  uniforms: { uTime: { value: 0 } },
-  vertexShader: `attribute float aSeed; varying vec3 vC; varying float vS; varying vec3 vP;
-    void main() { vC = color; vS = aSeed; vP = position; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
-  fragmentShader: `uniform float uTime; varying vec3 vC; varying float vS; varying vec3 vP;
-    void main() { float sheen = .35 + .65 * pow(.5 + .5 * sin(dot(vP, vec3(2.1, 3.3, 1.7)) * 2.0 - uTime * .8 + vS), 3.0);
-      gl_FragColor = vec4(vC * sheen, .75); }`,
-});
-bodyG.add(new THREE.LineSegments(tg, tractMat));
 
 // ── Structures ───────────────────────────────────────────────
 const nodes = {};
@@ -494,7 +438,7 @@ renderer.setAnimationLoop(() => {
   hPhase += dt * (1.0 + heart * 1.0); bPhase += dt * (.22 + vig * .25);   // fréquences schématiques
   const beat = Math.pow(Math.max(0, Math.sin(hPhase * Math.PI * 2)), 14), breath = Math.sin(bPhase * Math.PI * 2);
   bodyG.scale.set(1 + .012 * breath, 1, 1 + .016 * breath);
-  bodyMat.uniforms.uPulse.value = beat * (.15 + heart * .6); tractMat.uniforms.uTime.value = t;
+  bodyMat.uniforms.uPulse.value = beat * (.15 + heart * .6);
   const hn = nodes.corps; hn.halo.material.opacity = Math.max(hn.halo.material.opacity, beat * (.25 + heart * .6));
   hn.halo.scale.setScalar(hn.s.size * 5 * (1 + beat * .25));
   for (const p of Object.values(paths)) {

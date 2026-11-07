@@ -31,7 +31,7 @@ Objectifs d'apprentissage : **3D web** et **architecture orientée données**.
 | Inspirations | Encre sur papier (sumi-e) ; filaments de génériques de séries ; formes mathématiques ; couleurs et pulsations |
 | Couleurs | Libres pour ce début de projet |
 | Corps | Enveloppe de verre (effet de Fresnel : seuls les bords s'allument), couleur froide et pâle |
-| Cerveau | Faisceaux fins « dans l'esprit de la tractographie » (générés, pas des données réelles), couleur selon la direction, pâlie ; reflets glissants. Référence principale : Greg Dunn (finesse, ramifications, reflets d'or) |
+| Cerveau | À repenser. Les faisceaux façon tractographie sont retirés (ils masquaient l'information). Contour de verre conservé |
 | Expérience principale | Le mode « Jouer » : une histoire scénarisée qui se déroule seule. Le rythme lent peut devenir un choix contemplatif |
 | Emplacement | Dossier à part (`ink/`), la carte existante n'est pas touchée |
 | Techno 3D | Three.js seul, sans build (CDN), données en JSON |
