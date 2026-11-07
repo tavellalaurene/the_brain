@@ -15,7 +15,8 @@ Objectifs d'apprentissage : **3D web** et **architecture orientée données**.
 - Rien n'est ajouté sans accord explicite.
 - Aucun compromis scientifique : toute simplification est signalée et sourcée.
 - Signaler tout point douteux (scientifique, éthique, moral).
-- **Aucune information personnelle dans le dépôt.** Jamais.
+- **Aucune information personnelle dans le dépôt.** Jamais. Le contenu
+  existant reste tel quel ; la règle s'applique à tout nouvel ajout.
 
 ## Décisions
 
@@ -25,7 +26,9 @@ Objectifs d'apprentissage : **3D web** et **architecture orientée données**.
 | Scénario suivant (pressenti) | Anxiété d'anticipation (s'appuie sur le premier) |
 | Interaction | Scénario joué étape par étape. Plus tard : paramètres modifiables. Bonus : exploration libre |
 | Rôle de la 3D | Montrer la **profondeur** (structures superficielles / profondes) et le **temps** |
-| Direction artistique | Encre noire sur papier, lavis (esprit sumi-e) |
+| Direction artistique | Hybride : lavis d'encre pour le décor et la profondeur (le *où*) + filaments colorés et pulsants pour les signaux (le *quoi* et le *quand*) |
+| Inspirations | Encre sur papier (sumi-e) ; filaments de génériques de séries ; formes mathématiques ; couleurs et pulsations |
+| Couleurs | 4–5 messagers maximum, palette lisible par les daltoniens |
 | Rigueur | Chaque affirmation liée à une source, avec un niveau de preuve |
 
 ## L'encre comme langage
@@ -37,6 +40,12 @@ Objectifs d'apprentissage : **3D web** et **architecture orientée données**.
 | Retour au calme (rétrocontrôle) | Encre qui sèche et pâlit |
 | Profondeur anatomique | Perspective du lavis : proche = sombre, lointain = pâle |
 | Niveau de preuve | Netteté du trait : solide = franc, fragile = estompé |
+| Voies nerveuses (axones) | Filaments lumineux |
+| Influx nerveux / sécrétion pulsatile du cortisol | Pulsations de lumière le long des filaments |
+| Dynamique d'un messager (montée, décroissance) | Courbes mathématiques réelles du phénomène |
+
+Premier effet visuel après le jalon 1 : filaments lumineux (lignes + *bloom*),
+plus simples que la simulation d'encre.
 
 ## Niveaux de preuve
 
@@ -63,4 +72,3 @@ La scène lit les données ; ajouter une connaissance = ajouter une entrée sour
 
 - Ce projet vit-il à côté de la carte existante (`index.html`) ou la remplace-t-il à terme ?
 - Choix technique 3D : Three.js « nu » ou React Three Fiber ?
-- Ce qui plaît précisément dans chaque référence visuelle.
