@@ -50,8 +50,8 @@ window.INK_SCENARIO = {
     { "id": "p-thal-amy",    "from": "thalamus",     "to": "amygdale",     "messenger": "glutamate", "effect": "transmet l'information" },
     { "id": "p-thal-ctx",    "from": "thalamus",     "to": "cortex",       "messenger": "glutamate", "effect": "transmet pour une analyse détaillée" },
     { "id": "p-ctx-amy",     "from": "cortex",       "to": "amygdale",     "messenger": "glutamate", "effect": "transmet l'information analysée" },
-    { "id": "p-amy-hyp",     "from": "amygdale",     "to": "hypothalamus", "messenger": "gaba", "effect": "active la réponse de stress", "note": "Voie surtout indirecte (relais comme le BNST) : l'amygdale active l'hypothalamus en levant des freins (désinhibition). Simplifié ici." },
-    { "id": "p-amy-tronc",   "from": "amygdale",     "to": "tronc",        "messenger": "crf", "effect": "active le locus coeruleus", "note": "Décrit surtout chez le rongeur. Même molécule que l'hormone CRH, utilisée ici comme neurotransmetteur." },
+    { "id": "p-amy-hyp",     "from": "amygdale",     "to": "hypothalamus", "messenger": "gaba", "effect": "active la réponse de stress", "note": "Simplifié. La sortie de l'amygdale centrale est GABAergique et passe surtout par des relais (BNST) : elle active l'hypothalamus en levant des freins. L'amygdale médiane envoie aussi du glutamate, plus directement." },
+    { "id": "p-amy-tronc",   "from": "amygdale",     "to": "tronc",        "messenger": "crf", "effect": "active le locus coeruleus", "note": "Montré chez le rongeur (McCall et al., 2015). Même molécule que l'hormone CRH, utilisée ici comme neurotransmetteur. D'autres signaux accompagnent la CRH sur cette voie." },
     { "id": "p-lc-ctx",      "from": "tronc",        "to": "cortex",       "messenger": "noradrenaline", "effect": "augmente la vigilance" },
     { "id": "p-lc-pfc",      "from": "tronc",        "to": "pfc",          "messenger": "noradrenaline", "effect": "modifie son fonctionnement" },
     { "id": "p-hyp-med",     "from": "hypothalamus", "to": "medullo",      "messenger": "acetylcholine", "channel": "nerfs sympathiques", "effect": "déclenche la libération d'adrénaline", "note": "Relais par la moelle épinière ; la dernière fibre libère de l'acétylcholine sur la médullosurrénale.", "via": [0.2, -1.6, -0.6] },
@@ -89,7 +89,7 @@ window.INK_SCENARIO = {
         { "t": 8,   "say": "Elle libère de l'adrénaline dans le sang : le cœur accélère, la tension monte, le glucose est mobilisé.", "light": ["medullo", "corps"], "show": ["p-med-corps"] }
       ],
       "evidence": ["consensus", "revue"],
-      "sources": ["ulrich-lai-herman-2009"]
+      "sources": ["ulrich-lai-herman-2009", "herman-2003", "mccall-2015"]
     },
     {
       "id": "prefrontal", "title": "Le préfrontal décroche", "time": "secondes → minutes",
@@ -172,6 +172,14 @@ window.INK_SCENARIO = {
     "ledoux-pine-2016": {
       "cite": "LeDoux & Pine (2016). Using neuroscience to help understand fear and anxiety: a two-system framework. American Journal of Psychiatry.",
       "url": "https://doi.org/10.1176/appi.ajp.2016.16030353", "level": "revue"
+    },
+    "herman-2003": {
+      "cite": "Herman et al. (2003). Central mechanisms of stress integration: hierarchical circuitry controlling hypothalamo-pituitary-adrenocortical responsiveness. Frontiers in Neuroendocrinology.",
+      "url": "https://doi.org/10.1016/j.yfrne.2003.07.001", "level": "revue"
+    },
+    "mccall-2015": {
+      "cite": "McCall et al. (2015). CRH engagement of the locus coeruleus noradrenergic system mediates stress-induced anxiety. Neuron.",
+      "url": "https://doi.org/10.1016/j.neuron.2015.07.002", "level": "modele-animal"
     },
     "taylor-2000": {
       "cite": "Taylor et al. (2000). Biobehavioral responses to stress in females: tend-and-befriend, not fight-or-flight. Psychological Review.",
