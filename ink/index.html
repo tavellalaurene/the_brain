@@ -25,12 +25,6 @@
   .sig.on { opacity: 1; }
 
   /* Jauges */
-  #gauges { position: fixed; top: 96px; left: 16px; width: 316px; padding: 10px 8px 6px; border-radius: 12px; background: var(--panel); backdrop-filter: blur(8px); }
-  .g { display: grid; grid-template-columns: 1fr auto; align-items: end; margin-bottom: 10px; }
-  .g span { font: 16px system-ui, sans-serif; color: var(--ink); }
-  .g span + span { color: var(--muted); }
-  .g canvas { grid-column: 1 / 3; width: 100%; height: 46px; cursor: ew-resize; touch-action: none; }
-  #gauges small { font: 13px system-ui, sans-serif; color: var(--muted); opacity: .7; }
 
   /* Panneau */
   #panel { position: fixed; right: 24px; top: 50%; transform: translateY(-50%); width: min(440px, calc(100vw - 48px));
@@ -44,7 +38,7 @@
   .cause { font: 14px/1.4 system-ui, sans-serif; color: #d9d3c9; margin: 6px 0; }
   .cause b { font-weight: 600; }
   .cause small { display: block; color: var(--muted); font-size: 12px; margin-top: 2px; }
-  #play { font: 14px system-ui, sans-serif; background: none; color: var(--ink); border: 1px solid var(--accent); border-radius: 8px; padding: 4px 12px; cursor: pointer; margin-right: 12px; }
+  #play { margin-right: 0 !important; font: 14px system-ui, sans-serif; background: none; color: var(--ink); border: 1px solid var(--accent); border-radius: 8px; padding: 4px 12px; cursor: pointer; margin-right: 12px; }
   #caption { position: fixed; left: 24px; right: 24px; bottom: 100px; text-align: center; font-size: 26px; line-height: 1.4; text-shadow: 0 0 12px #000, 0 0 4px #000; opacity: 0; transition: opacity .5s; pointer-events: none; }
   #caption small { display: block; font: 13px system-ui, sans-serif; color: var(--accent); text-transform: uppercase; letter-spacing: .1em; }
   body.playing #caption { opacity: 1; }
@@ -74,8 +68,8 @@
   #stage button { font: 16px system-ui, sans-serif; background: none; color: var(--ink); border: 1px solid var(--line); border-radius: 8px; padding: 10px 18px; cursor: pointer; }
   #stage button.primary { border-color: var(--accent); }
   body:not(.staged) #stage { opacity: 0; pointer-events: none; }
-  body.staged #panel, body.staged #timeline, body.staged #gauges, body.staged header { opacity: 0; pointer-events: none; }
-  #timeline, #gauges, header { transition: opacity 1s; }
+  body.staged #panel, body.staged #timeline, body.staged header { opacity: 0; pointer-events: none; }
+  #timeline, header { transition: opacity 1s; }
   body.staged .sig, body.staged .label { opacity: 0 !important; }
   .cause .arrow { white-space: nowrap; font-weight: 600; }
   .dots { display: flex; gap: 6px; margin: 16px 0 0; }
@@ -104,12 +98,20 @@
   #timeline { position: fixed; left: 24px; right: 500px; bottom: 22px; font: 12px system-ui, sans-serif; color: var(--muted); }
   #timeline .row { display: flex; justify-content: space-between; margin-bottom: 4px; }
   #now { color: var(--ink); font-size: 14px; }
-  #scrub { width: 100%; accent-color: var(--accent); cursor: pointer; }
+  #timeline::before { content: ''; position: absolute; inset: -14px -16px -10px; z-index: -1; border-radius: 12px;
+    background: rgba(14,13,12,.82); backdrop-filter: blur(6px); }
+  #timeline .left { display: flex; align-items: center; flex-wrap: wrap; gap: 4px 14px; }
+  #legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 13px; color: var(--ink); }
+  #legend i { display: inline-block; width: 12px; height: 3px; border-radius: 2px; vertical-align: middle; margin-right: 5px; }
+  #legend b { font-weight: 600; margin-left: 4px; font-variant-numeric: tabular-nums; }
+  #track { position: relative; height: 86px; margin-top: 6px; }
+  #curves { position: absolute; left: 0; right: 0; top: 0; width: 100%; height: 72px; cursor: ew-resize; touch-action: none; }
+  #scrub { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; margin: 0; accent-color: var(--accent); cursor: pointer; }
+  #timeline .note { font-size: 11px; opacity: .7; margin-top: 2px; }
   #ticks { position: relative; height: 16px; }
   #ticks span { position: absolute; transform: translateX(-50%); white-space: nowrap; }
 
   @media (max-width: 860px) {
-    #gauges { display: none; }
     #panel { top: auto; bottom: 96px; transform: none; max-height: 52vh; right: 16px; }
     #say { font-size: 19px; }
     #timeline { left: 16px; right: 16px; bottom: 16px; }
@@ -122,7 +124,6 @@
 <header><h1 id="title"></h1><p id="subtitle"></p></header>
 <a id="credit" class="sans" href="https://sketchfab.com/3d-models/venus-de-milo-statuestexturingchallenge-smk-2983d92ac4e744f485492580ca7629f2" target="_blank" rel="noopener">Vénus de Milo : scan SMK, CC0</a>
 
-<section id="gauges" aria-label="Jauges"></section>
 
 <aside id="panel" aria-live="polite">
   <div id="kicker"></div>
@@ -145,9 +146,11 @@
 </div></div>
 <div id="caption"><small id="capStep"></small><span id="capSay"></span></div>
 <div id="timeline">
-  <div class="row"><span><button id="play">▶ Jouer</button>Fais glisser le temps, ou une courbe</span><span id="now"></span></div>
-  <input id="scrub" type="range" min="0" max="1000" step="1" aria-label="Temps écoulé depuis le stimulus">
+  <div class="row"><span class="left"><button id="play">▶ Jouer</button><span id="legend"></span></span><span id="now"></span></div>
+  <div id="track"><canvas id="curves" aria-hidden="true"></canvas>
+    <input id="scrub" type="range" min="0" max="1000" step="1" aria-label="Temps écoulé depuis le stimulus"></div>
   <div id="ticks"></div>
+  <div class="note">Courbes schématiques, pas des mesures. Fais glisser sur la frise pour avancer dans le temps.</div>
 </div>
 
 <script src="data/bundle.js"></script>
@@ -324,23 +327,27 @@ const fmt = t => t < 1 ? `${(t * 1000).toFixed(0)} ms` : t < 60 ? `${t.toFixed(t
 for (const [t, s] of [[0.01, '10 ms'], [0.1, '0,1 s'], [1, '1 s'], [10, '10 s'], [60, '1 min'], [600, '10 min'], [3600, '1 h']])
   $('ticks').insertAdjacentHTML('beforeend', `<span style="left:${toU(t) * 100}%">${s}</span>`);
 
-// ── Jauges schématiques (définies dans les données) ──────────
+// ── Courbes schématiques (définies dans les données), dessinées dans la frise ──
 const gauges = D.gauges.map(g => {
-  $('gauges').insertAdjacentHTML('beforeend',
-    `<div class="g"><span>${esc(g.label)}</span><span id="v-${g.id}"></span><canvas id="c-${g.id}"></canvas></div>`);
-  return { ...g, fn: new Function('t', `return ${g.f};`), cv: $('c-' + g.id) };
+  $('legend').insertAdjacentHTML('beforeend', `<span><i style="background:${g.color}"></i>${esc(g.label)}<b id="v-${g.id}"></b></span>`);
+  return { ...g, fn: new Function('t', `return ${g.f};`) };
 });
-$('gauges').insertAdjacentHTML('beforeend', '<small>Courbes schématiques, pas des mesures.</small>');
 function drawGauges(t) {
+  const c = $('curves'), dpr = devicePixelRatio, w = c.clientWidth, h = c.clientHeight;
+  if (c.width !== Math.round(w * dpr) || c.height !== Math.round(h * dpr)) { c.width = Math.round(w * dpr); c.height = Math.round(h * dpr); }
+  const x = c.getContext('2d'); x.setTransform(dpr, 0, 0, dpr, 0, 0); x.clearRect(0, 0, w, h);
+  const Y = v => h - 3 - v * (h - 8), now = toU(t) * w;
   for (const g of gauges) {
-    const c = g.cv, dpr = devicePixelRatio, w = c.clientWidth, h = c.clientHeight;
-    if (c.width !== w * dpr) { c.width = w * dpr; c.height = h * dpr; }
-    const x = c.getContext('2d'); x.setTransform(dpr, 0, 0, dpr, 0, 0); x.clearRect(0, 0, w, h);
+    x.beginPath(); x.moveTo(0, h);
+    for (let i = 0; i <= 160; i++) { const u = i / 160; x.lineTo(u * w, Y(g.fn(fromU(u)))); }
+    x.lineTo(w, h); x.closePath(); x.fillStyle = g.color + '14'; x.fill();   // aire très légère sous la courbe
     x.beginPath();
-    for (let i = 0; i <= 120; i++) { const u = i / 120, v = g.fn(fromU(u)); x.lineTo(u * w, h - 2 - v * (h - 6)); }
-    x.strokeStyle = g.color + 'aa'; x.lineWidth = 1.5; x.stroke();
-    const u = toU(t), v = g.fn(t);
-    x.beginPath(); x.arc(u * w, h - 2 - v * (h - 6), 3.5, 0, 7); x.fillStyle = g.color; x.fill();
+    for (let i = 0; i <= 160; i++) { const u = i / 160; x.lineTo(u * w, Y(g.fn(fromU(u)))); }
+    x.strokeStyle = g.color + 'cc'; x.lineWidth = 1.6; x.stroke();
+  }
+  x.fillStyle = 'rgba(242,237,228,.5)'; x.fillRect(now - .5, 0, 1, h);     // l'instant présent
+  for (const g of gauges) {
+    const v = g.fn(t); x.beginPath(); x.arc(now, Y(v), 4, 0, 7); x.fillStyle = g.color; x.fill();
     $('v-' + g.id).textContent = Math.round(v * 100) + ' %';
   }
 }
@@ -409,6 +416,7 @@ $('play').onclick = play;
 $('prev').onclick = () => { stop(); go(cur - 1); };
 $('next').onclick = () => { stop(); go(cur + 1); };
 addEventListener('keydown', e => {
+  if (mode !== 'story') return;   // écran d'ouverture / conclusion : pas de navigation clavier
   if (e.key === ' ') { e.preventDefault(); play(); }
   if (e.key === 'ArrowRight') $('next').click();
   if (e.key === 'ArrowLeft') $('prev').click();
@@ -422,10 +430,11 @@ function seek(t) {
 }
 $('scrub').addEventListener('input', e => seek(fromU(e.target.value / 1000)));
 // glisser sur une courbe = se déplacer dans le temps
-for (const g of gauges) {
-  const at = e => { const r = g.cv.getBoundingClientRect(); seek(fromU(Math.min(1, Math.max(0, (e.clientX - r.left) / r.width)))); };
-  g.cv.addEventListener('pointerdown', e => { g.cv.setPointerCapture(e.pointerId); at(e); });
-  g.cv.addEventListener('pointermove', e => { if (g.cv.hasPointerCapture(e.pointerId)) at(e); });
+{
+  const cv = $('curves');
+  const at = e => { const r = cv.getBoundingClientRect(); seek(fromU(Math.min(1, Math.max(0, (e.clientX - r.left) / r.width)))); };
+  cv.addEventListener('pointerdown', e => { cv.setPointerCapture(e.pointerId); at(e); });
+  cv.addEventListener('pointermove', e => { if (cv.hasPointerCapture(e.pointerId)) at(e); });
 }
 
 // ── Caméra guidée ────────────────────────────────────────────
