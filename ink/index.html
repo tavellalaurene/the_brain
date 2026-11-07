@@ -150,7 +150,7 @@ import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 // Données assemblées par tools/build.mjs (npm run build) : entités partagées + un scénario
-const { entities: E, scenarios: SC } = window.INK_DATA;
+const { entities: E, scenarios: SC, body: BODY } = window.INK_DATA;
 const D = { ...SC['stress-aigu'], evidenceLevels: E['evidence-levels'], messengers: E.messengers,
             structures: E.structures, pathways: E.pathways, sources: E.sources, gauges: E.gauges };
 const $ = id => document.getElementById(id);
@@ -205,7 +205,7 @@ const fresnel = (color, power, intensity) => new THREE.ShaderMaterial({
 // Repères relevés sur le modèle (hauteur en mm) : sommet 2118, menton ~1840, poitrine ~1500, taille ~1360, hanches ~1150.
 // Conversion vers la scène : échelle 1/100, tête centrée près de (0, 2, 0). Face tournée vers +z.
 const bodyG = new THREE.Group(); scene.add(bodyG);   // le corps respire : on anime ce groupe
-const STATUE = { scale: .01, offset: new THREE.Vector3(1.25, -17.75, -1.8), fadeTop: -4.6, fadeBot: -7.2 };
+const STATUE = { scale: BODY.scene.scale, offset: new THREE.Vector3(...BODY.scene.offset), fadeTop: -4.6, fadeBot: -7.2 };
 const rimU = { uPulse: { value: 0 } };
 function glassStatue(mat) {
   const m = new THREE.MeshStandardMaterial({ color: 0x1a1726, roughness: .45, metalness: 0, normalMap: mat.normalMap,
@@ -242,11 +242,12 @@ const keyL = new THREE.DirectionalLight(0xe8e0ff, 1.2); keyL.position.set(4, 6, 
 const rimL = new THREE.DirectionalLight(0xa08cff, 2.2); rimL.position.set(-5, 3, -7); scene.add(rimL);   // contre-jour violet
 
 // ── Cerveau : simple contour de verre (visualisation à repenser) ──
-const BRAIN = { y: 2.37, ry: .79, rx: .84, rz: 1.09, z: 0.04 };
+const [bcx, bcy, bcz] = BODY.brain.center, [brx, bry, brz] = BODY.brain.radii;   // calculé par le build depuis la boîte MNI
+const BRAIN = { y: bcy, ry: bry, rx: brx, rz: brz, z: bcz, x: bcx };
 const brainMat = fresnel(0xffe9c8, 4.5, .18);
 const brainGeo = new THREE.SphereGeometry(1, 64, 40); brainGeo.setAttribute('aFade', new THREE.Float32BufferAttribute(new Array(brainGeo.attributes.position.count).fill(1), 1));
 const brainMesh = new THREE.Mesh(brainGeo, brainMat);
-brainMesh.scale.set(BRAIN.rx, BRAIN.ry, BRAIN.rz); brainMesh.position.set(0, BRAIN.y, BRAIN.z); bodyG.add(brainMesh);
+brainMesh.scale.set(BRAIN.rx, BRAIN.ry, BRAIN.rz); brainMesh.position.set(BRAIN.x, BRAIN.y, BRAIN.z); bodyG.add(brainMesh);
 
 // ── Structures ───────────────────────────────────────────────
 const nodes = {};
@@ -452,8 +453,7 @@ renderer.setAnimationLoop(() => {
   }
   const heart = G.coeur.fn(tNow), vig = G.vigilance.fn(tNow);
   hPhase += dt * (1.0 + heart * 1.0); bPhase += dt * (.22 + vig * .25);   // fréquences schématiques
-  const beat = Math.pow(Math.max(0, Math.sin(hPhase * Math.PI * 2)), 14), breath = Math.sin(bPhase * Math.PI * 2);
-  bodyG.scale.set(1 + .012 * breath, 1, 1 + .016 * breath);
+  const beat = Math.pow(Math.max(0, Math.sin(hPhase * Math.PI * 2)), 14);
   bodyMat.uniforms.uPulse.value = beat * (.15 + heart * .6);
   const hn = nodes.corps; hn.halo.material.opacity = Math.max(hn.halo.material.opacity, beat * (.25 + heart * .6));
   hn.halo.scale.setScalar(hn.s.size * 5 * (1 + beat * .25));

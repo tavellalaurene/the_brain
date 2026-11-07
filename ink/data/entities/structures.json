@@ -2,123 +2,174 @@
   {
     "id": "stimulus",
     "label": "Stimulus",
-    "pos": [
-      0,
-      2.3,
-      3
-    ],
-    "size": 0.12
+    "size": 0.12,
+    "anatomy": {
+      "space": "mni",
+      "mm": [
+        0,
+        260,
+        10
+      ],
+      "status": "conventionnel",
+      "note": "Point conventionnel devant le visage (le monde extérieur)."
+    }
   },
   {
     "id": "thalamus",
     "label": "Thalamus",
-    "pos": [
-      0,
-      2.23,
-      0
-    ],
-    "size": 0.15
+    "size": 0.15,
+    "anatomy": {
+      "space": "mni",
+      "mm": [
+        -10,
+        -18,
+        6
+      ],
+      "status": "a-verifier"
+    }
   },
   {
     "id": "cortex",
     "label": "Cortex sensoriel",
-    "pos": [
-      0,
-      2.9,
-      -0.53
-    ],
-    "size": 0.22
+    "size": 0.22,
+    "anatomy": {
+      "space": "mni",
+      "mm": [
+        -10,
+        -85,
+        5
+      ],
+      "status": "a-verifier",
+      "note": "Ici : cortex visuel primaire (V1)."
+    },
+    "detail": "Ici : cortex visuel primaire"
   },
   {
     "id": "pfc",
     "label": "Cortex préfrontal",
-    "pos": [
-      0,
-      2.57,
-      0.86
-    ],
-    "size": 0.24
+    "size": 0.24,
+    "anatomy": {
+      "space": "mni",
+      "mm": [
+        -44,
+        40,
+        20
+      ],
+      "status": "a-verifier",
+      "note": "Cortex préfrontal dorsolatéral (aire 46)."
+    }
   },
   {
     "id": "amygdale",
     "label": "Amygdale",
-    "pos": [
-      0.45,
-      1.78,
-      0.41
-    ],
-    "size": 0.11
+    "size": 0.11,
+    "anatomy": {
+      "space": "mni",
+      "mm": [
+        -23,
+        -5,
+        -18
+      ],
+      "status": "a-verifier"
+    }
   },
   {
     "id": "hippocampe",
     "label": "Hippocampe",
-    "pos": [
-      0.45,
-      1.89,
-      -0.23
-    ],
-    "size": 0.14
+    "size": 0.14,
+    "anatomy": {
+      "space": "mni",
+      "mm": [
+        -28,
+        -22,
+        -12
+      ],
+      "status": "a-verifier"
+    }
   },
   {
     "id": "hypothalamus",
     "label": "Hypothalamus",
-    "pos": [
-      0,
-      1.85,
-      0.26
-    ],
-    "size": 0.11
+    "size": 0.11,
+    "anatomy": {
+      "space": "mni",
+      "mm": [
+        -4,
+        -2,
+        -8
+      ],
+      "status": "a-verifier"
+    }
   },
   {
     "id": "hypophyse",
     "label": "Hypophyse",
-    "pos": [
-      0,
-      1.53,
-      0.38
-    ],
-    "size": 0.08
+    "size": 0.08,
+    "anatomy": {
+      "space": "mni",
+      "mm": [
+        0,
+        2,
+        -32
+      ],
+      "status": "source",
+      "source": "rucker-ikuta-2019"
+    }
   },
   {
     "id": "tronc",
     "label": "Tronc cérébral",
-    "pos": [
-      0,
-      1.37,
-      -0.34
-    ],
     "size": 0.14,
-    "detail": "Locus coeruleus, noyaux du nerf vague"
+    "detail": "Locus coeruleus, noyaux du nerf vague",
+    "anatomy": {
+      "space": "mni",
+      "mm": [
+        -5,
+        -36,
+        -24
+      ],
+      "status": "a-verifier",
+      "note": "Repère : locus coeruleus."
+    }
   },
   {
     "id": "corps",
     "label": "Cœur & vaisseaux",
-    "pos": [
-      1.45,
-      -2.95,
-      -1.55
-    ],
-    "size": 0.3
+    "size": 0.3,
+    "anatomy": {
+      "space": "spine",
+      "level": "T7",
+      "depth": 0.35,
+      "leftMm": 20,
+      "status": "a-verifier",
+      "note": "Centre du cœur, vers T6-T7, en avant et à gauche."
+    }
   },
   {
     "id": "medullo",
     "label": "Médullosurrénale",
-    "pos": [
-      0.95,
-      -3.95,
-      -2.8
-    ],
-    "size": 0.11
+    "size": 0.11,
+    "anatomy": {
+      "space": "spine",
+      "level": "T12",
+      "depth": 0.75,
+      "leftMm": 45,
+      "status": "a-verifier",
+      "note": "Surrénale gauche, en arrière, vers T11-T12."
+    }
   },
   {
     "id": "cortico",
     "label": "Corticosurrénale",
-    "pos": [
-      0.95,
-      -3.95,
-      -2.8
-    ],
     "size": 0.22,
-    "shell": true
+    "shell": true,
+    "anatomy": {
+      "space": "spine",
+      "level": "T12",
+      "depth": 0.75,
+      "leftMm": 45,
+      "status": "a-verifier",
+      "note": "Surrénale gauche, en arrière, vers T11-T12."
+    }
   }
 ]

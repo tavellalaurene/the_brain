@@ -9,7 +9,7 @@
     "required": [
       "id",
       "label",
-      "pos",
+      "anatomy",
       "size"
     ],
     "additionalProperties": false,
@@ -21,14 +21,6 @@
       "label": {
         "type": "string"
       },
-      "pos": {
-        "type": "array",
-        "items": {
-          "type": "number"
-        },
-        "minItems": 3,
-        "maxItems": 3
-      },
       "size": {
         "type": "number",
         "exclusiveMinimum": 0
@@ -39,7 +31,93 @@
       "shell": {
         "type": "boolean",
         "description": "Dessinée comme une enveloppe autour d'une autre structure."
+      },
+      "anatomy": {
+        "description": "Position réelle. mni : coordonnées cérébrales standard (mm, origine à la commissure antérieure, +x droite, +y avant, +z haut). spine : niveau vertébral + profondeur dans le tronc (0 = avant, 1 = arrière) + décalage à gauche (mm).",
+        "oneOf": [
+          {
+            "type": "object",
+            "required": [
+              "space",
+              "mm",
+              "status"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "space": {
+                "const": "mni"
+              },
+              "mm": {
+                "type": "array",
+                "items": {
+                  "type": "number"
+                },
+                "minItems": 3,
+                "maxItems": 3
+              },
+              "status": {
+                "enum": [
+                  "source",
+                  "a-verifier",
+                  "conventionnel"
+                ],
+                "description": "source : coordonnée tirée de la source citée. a-verifier : valeur de mémoire, à confirmer. conventionnel : point de mise en scène, pas anatomique."
+              },
+              "source": {
+                "type": "string",
+                "pattern": "^[a-z0-9-]+$"
+              },
+              "note": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "required": [
+              "space",
+              "level",
+              "depth",
+              "leftMm",
+              "status"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "space": {
+                "const": "spine"
+              },
+              "level": {
+                "type": "string",
+                "pattern": "^[TL][0-9]{1,2}$"
+              },
+              "depth": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "leftMm": {
+                "type": "number"
+              },
+              "status": {
+                "enum": [
+                  "source",
+                  "a-verifier",
+                  "conventionnel"
+                ],
+                "description": "source : coordonnée tirée de la source citée. a-verifier : valeur de mémoire, à confirmer. conventionnel : point de mise en scène, pas anatomique."
+              },
+              "source": {
+                "type": "string",
+                "pattern": "^[a-z0-9-]+$"
+              },
+              "note": {
+                "type": "string"
+              }
+            }
+          }
+        ]
       }
-    }
+    },
+    "description": "pos n'est plus saisi : il est calculé par le build à partir de anatomy et du corps choisi."
   }
 }

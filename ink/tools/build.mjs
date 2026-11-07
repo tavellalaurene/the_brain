@@ -58,11 +58,13 @@ for (const p of entities.pathways) {
   ref('messenger', p.messenger, `pathways/${p.id}.messenger`);
 }
 for (const [id, s] of Object.entries(entities.sources)) ref('evidence', s.level, `sources/${id}.level`);
+
 for (const g of entities.gauges) {
   try { const v = new Function('t', `return ${g.f};`)(60); if (!Number.isFinite(v)) throw 0; }
   catch { errors.push(`gauges/${g.id}.f : expression invalide`); }
 }
 const used = { source: new Set(), pathway: new Set(), structure: new Set() };
+for (const s of entities.structures) if (s.anatomy?.source) { ref('source', s.anatomy.source, `structures/${s.id}.anatomy.source`); used.source.add(s.anatomy.source); }
 for (const sc of Object.values(scenarios)) {
   let lastT = 0;
   for (const st of sc.steps) {
@@ -92,7 +94,35 @@ const counts = `${ids.structure.size} structures, ${ids.pathway.size} voies, ${i
 console.log(`✓ Données valides : ${counts}`);
 if (checkOnly) process.exit(0);
 
-const bundle = { entities, scenarios };
+// ── 3. Anatomie réelle → positions de scène, pour le corps choisi ──
+const body = read('bodies/venus-de-milo.json');
+const measured = read(`bodies/${body.measured}`).sections;
+const k = (read(`bodies/${body.measured}`).top - body.head.chin) / body.head.humanHeadMm;  // échelle statue / humain moyen (≈ 1,3)
+const lerp1 = (pts, h) => {   // interpolation linéaire dans une liste [[h, v], ...] triée par h
+  if (h <= pts[0][0]) return pts[0][1];
+  for (let i = 1; i < pts.length; i++) if (h <= pts[i][0]) {
+    const [h0, v0] = pts[i - 1], [h1, v1] = pts[i]; return v0 + (v1 - v0) * (h - h0) / (h1 - h0); }
+  return pts.at(-1)[1];
+};
+const toScene = ([x, y, h]) => { const { scale: s, offset: o } = body.scene;
+  return [+(x * s + o[0]).toFixed(3), +(h * s + o[1]).toFixed(3), +(-y * s + o[2]).toFixed(3)]; };
+// Origine MNI (commissure antérieure) dans le repère de la statue
+const ac = [body.head.midX, body.head.front + body.head.acBehindForeheadMm * k, body.head.chin + body.head.acAboveChinMm * k];
+// MNI : +x droite du sujet (= -x modèle), +y avant (= -y modèle), +z haut
+const fromMni = ([x, y, z]) => [ac[0] - x * k, ac[1] - y * k, ac[2] + z * k];
+const fromSpine = a => {
+  const n = +a.level.slice(1), seg = body.spine.segmentMm;
+  const h = body.spine.c7 - k * (a.level[0] === 'T' ? n * seg.T : 12 * seg.T + n * seg.L);
+  const front = lerp1(measured.map(m => [m.h, m.front]), h), back = lerp1(measured.map(m => [m.h, m.back]), h);
+  return [lerp1(body.midline.points, h) + a.leftMm * k, front + (back - front) * a.depth, h];
+};
+for (const s of entities.structures) s.pos = toScene(s.anatomy.space === 'mni' ? fromMni(s.anatomy.mm) : fromSpine(s.anatomy));
+const bm = body.brainMni;
+const brain = { center: toScene(fromMni(bm.center)), radii: [bm.radii[0], bm.radii[2], bm.radii[1]].map(r => +(r * k * body.scene.scale).toFixed(3)) };
+const toVerify = entities.structures.filter(s => s.anatomy.status === 'a-verifier').map(s => s.id);
+if (toVerify.length) console.warn(`⚠  positions à vérifier (${toVerify.length}) : ${toVerify.join(', ')}`);
+
+const bundle = { entities, scenarios, body: { id: body.id, scene: body.scene, brain } };
 writeFileSync(join(root, 'bundle.js'),
   '// FICHIER GÉNÉRÉ par tools/build.mjs : ne pas modifier à la main.\n' +
   '// Source : data/entities/*.json et data/scenarios/*.json\n' +

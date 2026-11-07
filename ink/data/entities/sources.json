@@ -38,5 +38,10 @@
     "cite": "Taylor et al. (2000). Biobehavioral responses to stress in females: tend-and-befriend, not fight-or-flight. Psychological Review.",
     "url": "https://doi.org/10.1037/0033-295X.107.3.411",
     "level": "revue"
+  },
+  "rucker-ikuta-2019": {
+    "cite": "Rucker & Ikuta (2019). Pituitary gland functional connectivity and BMI. Frontiers in Neuroscience.",
+    "url": "https://doi.org/10.3389/fnins.2019.00120",
+    "level": "etude-limitee"
   }
 }
