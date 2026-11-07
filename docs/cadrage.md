@@ -28,7 +28,9 @@ Objectifs d'apprentissage : **3D web** et **architecture orientée données**.
 | Rôle de la 3D | Montrer la **profondeur** (structures superficielles / profondes) et le **temps** |
 | Direction artistique | Hybride : lavis d'encre pour le décor et la profondeur (le *où*) + filaments colorés et pulsants pour les signaux (le *quoi* et le *quand*) |
 | Inspirations | Encre sur papier (sumi-e) ; filaments de génériques de séries ; formes mathématiques ; couleurs et pulsations |
-| Couleurs | 4–5 messagers maximum, palette lisible par les daltoniens |
+| Couleurs | Libres pour ce début de projet |
+| Emplacement | Dossier à part (`ink/`), la carte existante n'est pas touchée |
+| Techno 3D | Three.js seul, sans build (CDN), données en JSON |
 | Rigueur | Chaque affirmation liée à une source, avec un niveau de preuve |
 
 ## L'encre comme langage
@@ -70,5 +72,4 @@ La scène lit les données ; ajouter une connaissance = ajouter une entrée sour
 
 ## Questions ouvertes
 
-- Ce projet vit-il à côté de la carte existante (`index.html`) ou la remplace-t-il à terme ?
-- Choix technique 3D : Three.js « nu » ou React Three Fiber ?
+- Aucune pour l'instant.
