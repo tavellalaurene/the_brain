@@ -136,7 +136,7 @@
   <div id="ticks"></div>
 </div>
 
-<script src="data/stress-aigu.js"></script>
+<script src="data/bundle.js"></script>
 <script src="models/venus-de-milo.js"></script>
 <script type="importmap">
 { "imports": {
@@ -149,7 +149,10 @@ import * as THREE from 'three';
 import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
-const D = window.INK_SCENARIO;
+// Données assemblées par tools/build.mjs (npm run build) : entités partagées + un scénario
+const { entities: E, scenarios: SC } = window.INK_DATA;
+const D = { ...SC['stress-aigu'], evidenceLevels: E['evidence-levels'], messengers: E.messengers,
+            structures: E.structures, pathways: E.pathways, sources: E.sources, gauges: E.gauges };
 const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 

@@ -1,0 +1,42 @@
+{
+  "ulrich-lai-herman-2009": {
+    "cite": "Ulrich-Lai & Herman (2009). Neural regulation of endocrine and autonomic stress responses. Nature Reviews Neuroscience.",
+    "url": "https://doi.org/10.1038/nrn2647",
+    "level": "revue"
+  },
+  "arnsten-2009": {
+    "cite": "Arnsten (2009). Stress signalling pathways that impair prefrontal cortex structure and function. Nature Reviews Neuroscience.",
+    "url": "https://doi.org/10.1038/nrn2648",
+    "level": "revue"
+  },
+  "dickerson-kemeny-2004": {
+    "cite": "Dickerson & Kemeny (2004). Acute stressors and cortisol responses. Psychological Bulletin.",
+    "url": "https://doi.org/10.1037/0033-2909.130.3.355",
+    "level": "meta-analyse"
+  },
+  "de-kloet-2005": {
+    "cite": "de Kloet, Joëls & Holsboer (2005). Stress and the brain: from adaptation to disease. Nature Reviews Neuroscience.",
+    "url": "https://doi.org/10.1038/nrn1683",
+    "level": "revue"
+  },
+  "ledoux-pine-2016": {
+    "cite": "LeDoux & Pine (2016). Using neuroscience to help understand fear and anxiety: a two-system framework. American Journal of Psychiatry.",
+    "url": "https://doi.org/10.1176/appi.ajp.2016.16030353",
+    "level": "revue"
+  },
+  "herman-2003": {
+    "cite": "Herman et al. (2003). Central mechanisms of stress integration: hierarchical circuitry controlling hypothalamo-pituitary-adrenocortical responsiveness. Frontiers in Neuroendocrinology.",
+    "url": "https://doi.org/10.1016/j.yfrne.2003.07.001",
+    "level": "revue"
+  },
+  "mccall-2015": {
+    "cite": "McCall et al. (2015). CRH engagement of the locus coeruleus noradrenergic system mediates stress-induced anxiety. Neuron.",
+    "url": "https://doi.org/10.1016/j.neuron.2015.07.002",
+    "level": "modele-animal"
+  },
+  "taylor-2000": {
+    "cite": "Taylor et al. (2000). Biobehavioral responses to stress in females: tend-and-befriend, not fight-or-flight. Psychological Review.",
+    "url": "https://doi.org/10.1037/0033-295X.107.3.411",
+    "level": "revue"
+  }
+}

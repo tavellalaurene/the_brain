@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "messengers.schema.json",
+  "title": "Messagers",
+  "description": "Ce qui se déplace. neurotransmetteur : signal électrique le long d'une fibre puis libération à l'arrivée. hormone : la substance voyage elle-même dans le sang.",
+  "type": "object",
+  "propertyNames": {
+    "type": "string",
+    "pattern": "^[a-z0-9-]+$"
+  },
+  "additionalProperties": {
+    "type": "object",
+    "required": [
+      "label",
+      "kind",
+      "color",
+      "speed"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "label": {
+        "type": "string"
+      },
+      "kind": {
+        "enum": [
+          "neurotransmetteur",
+          "hormone"
+        ]
+      },
+      "color": {
+        "type": "string",
+        "pattern": "^#[0-9a-fA-F]{6}$"
+      },
+      "speed": {
+        "type": "number",
+        "exclusiveMinimum": 0,
+        "description": "Vitesse d'animation relative (pas une vitesse physiologique)."
+      }
+    }
+  }
+}

@@ -1,0 +1,20 @@
+[
+  {
+    "id": "coeur",
+    "label": "Rythme cardiaque",
+    "color": "#ff4d5e",
+    "f": "(1-Math.exp(-t/2))*Math.exp(-t/1500)"
+  },
+  {
+    "id": "vigilance",
+    "label": "Vigilance",
+    "color": "#ffb020",
+    "f": "(1-Math.exp(-t/0.8))*Math.exp(-t/900)"
+  },
+  {
+    "id": "cortisol",
+    "label": "Cortisol",
+    "color": "#2fd6b5",
+    "f": "Math.pow(t/1800,3)*Math.exp(3*(1-t/1800))"
+  }
+]

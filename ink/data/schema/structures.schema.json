@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "structures.schema.json",
+  "title": "Structures",
+  "description": "Régions du cerveau et organes. pos : coordonnées de scène [x, y, z] (y = haut, z = avant).",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": [
+      "id",
+      "label",
+      "pos",
+      "size"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "id": {
+        "type": "string",
+        "pattern": "^[a-z0-9-]+$"
+      },
+      "label": {
+        "type": "string"
+      },
+      "pos": {
+        "type": "array",
+        "items": {
+          "type": "number"
+        },
+        "minItems": 3,
+        "maxItems": 3
+      },
+      "size": {
+        "type": "number",
+        "exclusiveMinimum": 0
+      },
+      "detail": {
+        "type": "string"
+      },
+      "shell": {
+        "type": "boolean",
+        "description": "Dessinée comme une enveloppe autour d'une autre structure."
+      }
+    }
+  }
+}

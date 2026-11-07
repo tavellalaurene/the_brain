@@ -1,0 +1,30 @@
+{
+  "meta-analyse": {
+    "label": "Méta-analyse",
+    "rank": 5
+  },
+  "essai-randomise": {
+    "label": "Essai randomisé",
+    "rank": 4
+  },
+  "revue": {
+    "label": "Revue",
+    "rank": 4
+  },
+  "consensus": {
+    "label": "Consensus",
+    "rank": 4
+  },
+  "modele-animal": {
+    "label": "Modèle animal",
+    "rank": 2
+  },
+  "etude-limitee": {
+    "label": "Étude limitée",
+    "rank": 2
+  },
+  "temoignage": {
+    "label": "Témoignage",
+    "rank": 1
+  }
+}

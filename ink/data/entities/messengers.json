@@ -1,0 +1,56 @@
+{
+  "glutamate": {
+    "label": "Glutamate",
+    "kind": "neurotransmetteur",
+    "color": "#f2ede4",
+    "speed": 1.4
+  },
+  "gaba": {
+    "label": "GABA",
+    "kind": "neurotransmetteur",
+    "color": "#ff8fc7",
+    "speed": 1.2
+  },
+  "crf": {
+    "label": "CRH",
+    "kind": "neurotransmetteur",
+    "color": "#b07cff",
+    "speed": 1.1
+  },
+  "noradrenaline": {
+    "label": "Noradrénaline",
+    "kind": "neurotransmetteur",
+    "color": "#ffb020",
+    "speed": 1
+  },
+  "acetylcholine": {
+    "label": "Acétylcholine",
+    "kind": "neurotransmetteur",
+    "color": "#9be15d",
+    "speed": 0.9
+  },
+  "adrenaline": {
+    "label": "Adrénaline",
+    "kind": "hormone",
+    "color": "#ff4d5e",
+    "speed": 0.5
+  },
+  "crh": {
+    "label": "CRH",
+    "kind": "hormone",
+    "color": "#b07cff",
+    "speed": 0.35
+  },
+  "acth": {
+    "label": "ACTH",
+    "kind": "hormone",
+    "color": "#4da3ff",
+    "speed": 0.25
+  },
+  "cortisol": {
+    "label": "Cortisol",
+    "kind": "hormone",
+    "color": "#2fd6b5",
+    "speed": 0.18
+  }
+}

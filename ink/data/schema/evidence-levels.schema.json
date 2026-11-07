@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "evidence-levels.schema.json",
+  "title": "Niveaux de preuve",
+  "description": "Clé = identifiant du niveau. rank : solidité de 1 (faible) à 5 (forte).",
+  "type": "object",
+  "propertyNames": {
+    "type": "string",
+    "pattern": "^[a-z0-9-]+$"
+  },
+  "additionalProperties": {
+    "type": "object",
+    "required": [
+      "label",
+      "rank"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "label": {
+        "type": "string"
+      },
+      "rank": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 5
+      }
+    }
+  }
+}

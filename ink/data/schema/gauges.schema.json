@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gauges.schema.json",
+  "title": "Jauges",
+  "description": "Courbes SCHÉMATIQUES (formes et ordres de grandeur), pas des mesures. f : expression JavaScript de t (secondes), valeur 0..1.",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": [
+      "id",
+      "label",
+      "color",
+      "f"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "id": {
+        "type": "string",
+        "pattern": "^[a-z0-9-]+$"
+      },
+      "label": {
+        "type": "string"
+      },
+      "color": {
+        "type": "string",
+        "pattern": "^#[0-9a-fA-F]{6}$"
+      },
+      "f": {
+        "type": "string"
+      }
+    }
+  }
+}

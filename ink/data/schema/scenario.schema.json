@@ -1,0 +1,170 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "scenario.schema.json",
+  "title": "Scénario",
+  "description": "Une histoire : des étapes, découpées en temps courts (beats).",
+  "type": "object",
+  "required": [
+    "id",
+    "title",
+    "steps"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$"
+    },
+    "title": {
+      "type": "string"
+    },
+    "subtitle": {
+      "type": "string"
+    },
+    "intro": {
+      "type": "object",
+      "required": [
+        "lead",
+        "question"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "lead": {
+          "type": "string"
+        },
+        "question": {
+          "type": "string"
+        }
+      }
+    },
+    "outro": {
+      "type": "object",
+      "required": [
+        "lead",
+        "close"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "lead": {
+          "type": "string"
+        },
+        "close": {
+          "type": "string"
+        }
+      }
+    },
+    "steps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "time",
+          "beats",
+          "evidence",
+          "sources"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+$"
+          },
+          "title": {
+            "type": "string"
+          },
+          "time": {
+            "type": "string"
+          },
+          "camera": {
+            "type": "object",
+            "required": [
+              "az",
+              "el"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "az": {
+                "type": "number"
+              },
+              "el": {
+                "type": "number"
+              }
+            }
+          },
+          "beats": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "t",
+                "say",
+                "light",
+                "show"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "t": {
+                  "type": "number",
+                  "exclusiveMinimum": 0,
+                  "description": "Secondes depuis le stimulus."
+                },
+                "say": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "kind": {
+                  "enum": [
+                    "insight"
+                  ]
+                },
+                "light": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "pattern": "^[a-z0-9-]+$"
+                  },
+                  "description": "Structures allumées."
+                },
+                "show": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "pattern": "^[a-z0-9-]+$"
+                  },
+                  "description": "Voies animées."
+                }
+              }
+            },
+            "minItems": 1
+          },
+          "simplification": {
+            "type": "string"
+          },
+          "toVerify": {
+            "type": "string"
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z0-9-]+$"
+            },
+            "minItems": 1
+          },
+          "sources": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z0-9-]+$"
+            },
+            "minItems": 1,
+            "description": "Toute étape doit être sourcée."
+          }
+        }
+      },
+      "minItems": 1
+    }
+  }
+}

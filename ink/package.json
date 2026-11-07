@@ -1,0 +1,13 @@
+{
+  "name": "ink-brain",
+  "private": true,
+  "type": "module",
+  "description": "Visualisation de la réponse au stress aiguë, pilotée par les données.",
+  "scripts": {
+    "validate": "node tools/build.mjs --check",
+    "build": "node tools/build.mjs"
+  },
+  "devDependencies": {
+    "ajv": "8.17.1"
+  }
+}

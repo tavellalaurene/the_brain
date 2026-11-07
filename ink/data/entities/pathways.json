@@ -1,0 +1,141 @@
+[
+  {
+    "id": "p-stim-thal",
+    "from": "stimulus",
+    "to": "thalamus",
+    "messenger": "glutamate",
+    "channel": "nerfs sensoriels",
+    "effect": "transmet l'information sensorielle"
+  },
+  {
+    "id": "p-thal-amy",
+    "from": "thalamus",
+    "to": "amygdale",
+    "messenger": "glutamate",
+    "effect": "transmet l'information"
+  },
+  {
+    "id": "p-thal-ctx",
+    "from": "thalamus",
+    "to": "cortex",
+    "messenger": "glutamate",
+    "effect": "transmet pour une analyse détaillée"
+  },
+  {
+    "id": "p-ctx-amy",
+    "from": "cortex",
+    "to": "amygdale",
+    "messenger": "glutamate",
+    "effect": "transmet l'information analysée"
+  },
+  {
+    "id": "p-amy-hyp",
+    "from": "amygdale",
+    "to": "hypothalamus",
+    "messenger": "gaba",
+    "effect": "active la réponse de stress",
+    "note": "Simplifié. La sortie de l'amygdale centrale est GABAergique et passe surtout par des relais (BNST) : elle active l'hypothalamus en levant des freins. L'amygdale médiane envoie aussi du glutamate, plus directement."
+  },
+  {
+    "id": "p-amy-tronc",
+    "from": "amygdale",
+    "to": "tronc",
+    "messenger": "crf",
+    "effect": "active le locus coeruleus",
+    "note": "Montré chez le rongeur (McCall et al., 2015). Même molécule que l'hormone CRH, utilisée ici comme neurotransmetteur. D'autres signaux accompagnent la CRH sur cette voie."
+  },
+  {
+    "id": "p-lc-ctx",
+    "from": "tronc",
+    "to": "cortex",
+    "messenger": "noradrenaline",
+    "effect": "augmente la vigilance"
+  },
+  {
+    "id": "p-lc-pfc",
+    "from": "tronc",
+    "to": "pfc",
+    "messenger": "noradrenaline",
+    "effect": "modifie son fonctionnement"
+  },
+  {
+    "id": "p-hyp-med",
+    "from": "hypothalamus",
+    "to": "medullo",
+    "messenger": "acetylcholine",
+    "channel": "nerfs sympathiques",
+    "effect": "déclenche la libération d'adrénaline",
+    "note": "Relais par la moelle épinière ; la dernière fibre libère de l'acétylcholine sur la médullosurrénale."
+  },
+  {
+    "id": "p-med-corps",
+    "from": "medullo",
+    "to": "corps",
+    "messenger": "adrenaline",
+    "effect": "accélère le cœur, mobilise le glucose"
+  },
+  {
+    "id": "p-hyp-hypo",
+    "from": "hypothalamus",
+    "to": "hypophyse",
+    "messenger": "crh",
+    "effect": "stimule la production d'ACTH"
+  },
+  {
+    "id": "p-hypo-cort",
+    "from": "hypophyse",
+    "to": "cortico",
+    "messenger": "acth",
+    "effect": "stimule la production de cortisol"
+  },
+  {
+    "id": "p-cort-hip",
+    "from": "cortico",
+    "to": "hippocampe",
+    "messenger": "cortisol",
+    "effect": "se fixe sur ses récepteurs (MR, GR)"
+  },
+  {
+    "id": "p-cort-pfc",
+    "from": "cortico",
+    "to": "pfc",
+    "messenger": "cortisol",
+    "effect": "se fixe sur ses récepteurs (MR, GR)"
+  },
+  {
+    "id": "p-cort-amy",
+    "from": "cortico",
+    "to": "amygdale",
+    "messenger": "cortisol",
+    "effect": "se fixe sur ses récepteurs (MR, GR)"
+  },
+  {
+    "id": "p-cort-corps",
+    "from": "cortico",
+    "to": "corps",
+    "messenger": "cortisol",
+    "effect": "mobilise l'énergie, module l'immunité"
+  },
+  {
+    "id": "p-cort-hyp",
+    "from": "cortico",
+    "to": "hypothalamus",
+    "messenger": "cortisol",
+    "effect": "freine la production de CRH"
+  },
+  {
+    "id": "p-cort-hypo",
+    "from": "cortico",
+    "to": "hypophyse",
+    "messenger": "cortisol",
+    "effect": "freine la production d'ACTH"
+  },
+  {
+    "id": "p-tronc-corps",
+    "from": "tronc",
+    "to": "corps",
+    "messenger": "acetylcholine",
+    "channel": "nerf vague",
+    "effect": "ralentit le cœur"
+  }
+]

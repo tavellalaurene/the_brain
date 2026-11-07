@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sources.schema.json",
+  "title": "Sources",
+  "type": "object",
+  "propertyNames": {
+    "type": "string",
+    "pattern": "^[a-z0-9-]+$"
+  },
+  "additionalProperties": {
+    "type": "object",
+    "required": [
+      "cite",
+      "url",
+      "level"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "cite": {
+        "type": "string"
+      },
+      "url": {
+        "type": "string",
+        "pattern": "^https://"
+      },
+      "level": {
+        "type": "string",
+        "pattern": "^[a-z0-9-]+$"
+      }
+    }
+  }
+}

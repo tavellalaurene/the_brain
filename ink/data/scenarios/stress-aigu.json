@@ -1,0 +1,376 @@
+{
+  "id": "stress-aigu",
+  "title": "La réponse au stress aiguë",
+  "subtitle": "Des millisecondes à l'heure qui suit",
+  "intro": {
+    "lead": "Un bruit, un message, un regard. En une fraction de seconde, tout le corps se met en mouvement.",
+    "question": "Que se passe-t-il, de la première milliseconde à l'heure qui suit ?"
+  },
+  "outro": {
+    "lead": "Deux vagues : l'une électrique, en quelques secondes ; l'autre hormonale, sur une heure.",
+    "close": "Puis le corps freine sa propre réaction. Le stress aigu est une réponse d'adaptation, faite pour s'éteindre."
+  },
+  "steps": [
+    {
+      "id": "detection",
+      "camera": {
+        "az": 30,
+        "el": 6
+      },
+      "title": "Détection",
+      "time": "~ 0,1 seconde",
+      "beats": [
+        {
+          "t": 0.02,
+          "say": "Une information arrive par les sens : un bruit, un message, un regard.",
+          "light": [
+            "stimulus",
+            "thalamus"
+          ],
+          "show": [
+            "p-stim-thal"
+          ]
+        },
+        {
+          "t": 0.05,
+          "say": "Le thalamus la relaie vers le cortex, qui l'analyse en détail…",
+          "light": [
+            "thalamus",
+            "cortex"
+          ],
+          "show": [
+            "p-thal-ctx"
+          ]
+        },
+        {
+          "t": 0.1,
+          "say": "… et vers l'amygdale, qui évalue : est-ce important ? est-ce une menace ?",
+          "light": [
+            "thalamus",
+            "cortex",
+            "amygdale"
+          ],
+          "show": [
+            "p-thal-amy",
+            "p-ctx-amy"
+          ]
+        }
+      ],
+      "simplification": "L'amygdale n'est pas « le centre de la peur » : elle signale ce qui est saillant, et le ressenti conscient de peur implique d'autres circuits. La voie directe thalamus → amygdale est bien établie chez le rat, débattue chez l'humain.",
+      "evidence": [
+        "revue",
+        "modele-animal"
+      ],
+      "sources": [
+        "ledoux-pine-2016"
+      ]
+    },
+    {
+      "id": "alerte",
+      "camera": {
+        "az": 65,
+        "el": 4
+      },
+      "title": "Alerte : la voie rapide",
+      "time": "quelques secondes",
+      "beats": [
+        {
+          "t": 0.5,
+          "say": "L'amygdale active l'hypothalamus et le tronc cérébral.",
+          "light": [
+            "amygdale",
+            "hypothalamus",
+            "tronc"
+          ],
+          "show": [
+            "p-amy-hyp",
+            "p-amy-tronc"
+          ]
+        },
+        {
+          "t": 1.5,
+          "say": "Le locus coeruleus, dans le tronc cérébral, diffuse de la noradrénaline : la vigilance monte.",
+          "light": [
+            "tronc",
+            "cortex"
+          ],
+          "show": [
+            "p-lc-ctx"
+          ]
+        },
+        {
+          "t": 3,
+          "say": "Par les nerfs sympathiques, l'hypothalamus déclenche la médullosurrénale.",
+          "light": [
+            "hypothalamus",
+            "medullo"
+          ],
+          "show": [
+            "p-hyp-med"
+          ]
+        },
+        {
+          "t": 8,
+          "say": "Elle libère de l'adrénaline dans le sang : le cœur accélère, la tension monte, le glucose est mobilisé.",
+          "light": [
+            "medullo",
+            "corps"
+          ],
+          "show": [
+            "p-med-corps"
+          ]
+        }
+      ],
+      "evidence": [
+        "consensus",
+        "revue"
+      ],
+      "sources": [
+        "ulrich-lai-herman-2009",
+        "herman-2003",
+        "mccall-2015"
+      ]
+    },
+    {
+      "id": "prefrontal",
+      "camera": {
+        "az": 15,
+        "el": 12
+      },
+      "title": "Le préfrontal décroche",
+      "time": "secondes → minutes",
+      "beats": [
+        {
+          "t": 20,
+          "say": "La noradrénaline (et la dopamine) afflue dans le cortex préfrontal.",
+          "light": [
+            "tronc",
+            "pfc"
+          ],
+          "show": [
+            "p-lc-pfc"
+          ]
+        },
+        {
+          "t": 45,
+          "say": "Mémoire de travail et raisonnement flexible se dégradent : on réagit plus vite, on réfléchit moins bien. Utile face à un danger immédiat, moins face à un problème complexe.",
+          "light": [
+            "pfc"
+          ],
+          "show": [
+            "p-lc-pfc"
+          ]
+        }
+      ],
+      "simplification": "Mécanisme décrit surtout chez l'animal. Chez l'humain, les effets existent mais varient selon les tâches et les personnes. L'idée d'un basculement vers les habitudes est débattue (résultats de réplication mitigés).",
+      "evidence": [
+        "revue",
+        "modele-animal"
+      ],
+      "sources": [
+        "arnsten-2009"
+      ]
+    },
+    {
+      "id": "cascade",
+      "camera": {
+        "az": 80,
+        "el": 0
+      },
+      "title": "La cascade hormonale : la voie lente",
+      "time": "minutes",
+      "beats": [
+        {
+          "t": 90,
+          "say": "L'hypothalamus libère la CRH, qui stimule l'hypophyse.",
+          "light": [
+            "hypothalamus",
+            "hypophyse"
+          ],
+          "show": [
+            "p-hyp-hypo"
+          ]
+        },
+        {
+          "t": 300,
+          "say": "L'hypophyse libère l'ACTH dans le sang, jusqu'aux glandes surrénales.",
+          "light": [
+            "hypophyse",
+            "cortico"
+          ],
+          "show": [
+            "p-hypo-cort"
+          ]
+        },
+        {
+          "t": 900,
+          "say": "La corticosurrénale produit du cortisol. Il culmine environ 20 à 40 minutes après le début du stress.",
+          "light": [
+            "cortico"
+          ],
+          "show": [
+            "p-hypo-cort"
+          ]
+        },
+        {
+          "t": 1200,
+          "kind": "insight",
+          "say": "Ce qui fait le plus monter le cortisol : l'absence de contrôle, combinée au jugement des autres.",
+          "light": [
+            "cortico"
+          ],
+          "show": []
+        }
+      ],
+      "evidence": [
+        "consensus",
+        "meta-analyse"
+      ],
+      "sources": [
+        "ulrich-lai-herman-2009",
+        "dickerson-kemeny-2004"
+      ]
+    },
+    {
+      "id": "cortisol",
+      "camera": {
+        "az": 45,
+        "el": 8
+      },
+      "title": "Le cortisol agit",
+      "time": "minutes → heures",
+      "beats": [
+        {
+          "t": 1800,
+          "say": "Le cortisol mobilise l'énergie et module l'immunité.",
+          "light": [
+            "cortico",
+            "corps"
+          ],
+          "show": [
+            "p-cort-corps"
+          ]
+        },
+        {
+          "t": 2100,
+          "say": "Il entre dans le cerveau et se fixe sur ses récepteurs (MR et GR), nombreux dans l'hippocampe et le cortex préfrontal.",
+          "light": [
+            "cortico",
+            "hippocampe",
+            "pfc",
+            "amygdale"
+          ],
+          "show": [
+            "p-cort-hip",
+            "p-cort-pfc",
+            "p-cort-amy"
+          ]
+        },
+        {
+          "t": 2400,
+          "say": "Ses effets sont plus lents et plus durables que ceux de l'adrénaline, notamment sur la mémorisation de l'événement.",
+          "light": [
+            "hippocampe",
+            "pfc",
+            "amygdale"
+          ],
+          "show": [
+            "p-cort-hip",
+            "p-cort-pfc",
+            "p-cort-amy"
+          ]
+        }
+      ],
+      "evidence": [
+        "revue"
+      ],
+      "sources": [
+        "de-kloet-2005"
+      ]
+    },
+    {
+      "id": "retour",
+      "camera": {
+        "az": 25,
+        "el": 4
+      },
+      "title": "Retour au calme",
+      "time": "~ 1 heure",
+      "beats": [
+        {
+          "t": 3000,
+          "say": "Le cortisol freine sa propre production en agissant sur l'hypothalamus, l'hypophyse et l'hippocampe : c'est le rétrocontrôle négatif.",
+          "light": [
+            "cortico",
+            "hypothalamus",
+            "hypophyse",
+            "hippocampe"
+          ],
+          "show": [
+            "p-cort-hyp",
+            "p-cort-hypo",
+            "p-cort-hip"
+          ]
+        },
+        {
+          "t": 3600,
+          "say": "Le parasympathique, via le nerf vague, ralentit le cœur.",
+          "light": [
+            "tronc",
+            "corps"
+          ],
+          "show": [
+            "p-tronc-corps"
+          ]
+        },
+        {
+          "t": 5400,
+          "say": "En laboratoire, le cortisol revient en général vers son niveau de base dans l'heure qui suit la fin du stress.",
+          "light": [
+            "cortico"
+          ],
+          "show": []
+        }
+      ],
+      "toVerify": "Durées exactes de récupération dans Dickerson & Kemeny (2004) : à confirmer dans le texte intégral.",
+      "evidence": [
+        "consensus",
+        "meta-analyse"
+      ],
+      "sources": [
+        "de-kloet-2005",
+        "dickerson-kemeny-2004"
+      ]
+    },
+    {
+      "id": "au-dela",
+      "camera": {
+        "az": 0,
+        "el": 6
+      },
+      "title": "Au-delà de « combat ou fuite »",
+      "time": "",
+      "beats": [
+        {
+          "t": 7200,
+          "say": "La réponse au stress ne se résume pas à combattre ou fuir.",
+          "light": [],
+          "show": []
+        },
+        {
+          "t": 7200,
+          "say": "Elle peut aussi prendre la forme d'une sidération (freeze), ou d'une recherche de lien et de soutien : le « tend-and-befriend ».",
+          "light": [],
+          "show": []
+        }
+      ],
+      "simplification": "Le « tend-and-befriend » est une hypothèse théorique influente, encore discutée.",
+      "evidence": [
+        "revue"
+      ],
+      "sources": [
+        "taylor-2000"
+      ]
+    }
+  ]
+}

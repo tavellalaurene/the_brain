@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "pathways.schema.json",
+  "title": "Voies",
+  "description": "Une flèche : un messager va d'une structure à une autre, avec un effet.",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": [
+      "id",
+      "from",
+      "to",
+      "messenger",
+      "effect"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "id": {
+        "type": "string",
+        "pattern": "^[a-z0-9-]+$"
+      },
+      "from": {
+        "type": "string",
+        "pattern": "^[a-z0-9-]+$"
+      },
+      "to": {
+        "type": "string",
+        "pattern": "^[a-z0-9-]+$"
+      },
+      "messenger": {
+        "type": "string",
+        "pattern": "^[a-z0-9-]+$"
+      },
+      "effect": {
+        "type": "string"
+      },
+      "channel": {
+        "type": "string",
+        "description": "Le support (ex. nerf vague)."
+      },
+      "note": {
+        "type": "string",
+        "description": "Simplification ou nuance affichée sous la flèche."
+      },
+      "via": {
+        "type": "array",
+        "items": {
+          "type": "number"
+        },
+        "minItems": 3,
+        "maxItems": 3
+      }
+    }
+  }
+}

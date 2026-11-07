@@ -1,0 +1,124 @@
+[
+  {
+    "id": "stimulus",
+    "label": "Stimulus",
+    "pos": [
+      0,
+      2.3,
+      3
+    ],
+    "size": 0.12
+  },
+  {
+    "id": "thalamus",
+    "label": "Thalamus",
+    "pos": [
+      0,
+      2.23,
+      0
+    ],
+    "size": 0.15
+  },
+  {
+    "id": "cortex",
+    "label": "Cortex sensoriel",
+    "pos": [
+      0,
+      2.9,
+      -0.53
+    ],
+    "size": 0.22
+  },
+  {
+    "id": "pfc",
+    "label": "Cortex préfrontal",
+    "pos": [
+      0,
+      2.57,
+      0.86
+    ],
+    "size": 0.24
+  },
+  {
+    "id": "amygdale",
+    "label": "Amygdale",
+    "pos": [
+      0.45,
+      1.78,
+      0.41
+    ],
+    "size": 0.11
+  },
+  {
+    "id": "hippocampe",
+    "label": "Hippocampe",
+    "pos": [
+      0.45,
+      1.89,
+      -0.23
+    ],
+    "size": 0.14
+  },
+  {
+    "id": "hypothalamus",
+    "label": "Hypothalamus",
+    "pos": [
+      0,
+      1.85,
+      0.26
+    ],
+    "size": 0.11
+  },
+  {
+    "id": "hypophyse",
+    "label": "Hypophyse",
+    "pos": [
+      0,
+      1.53,
+      0.38
+    ],
+    "size": 0.08
+  },
+  {
+    "id": "tronc",
+    "label": "Tronc cérébral",
+    "pos": [
+      0,
+      1.37,
+      -0.34
+    ],
+    "size": 0.14,
+    "detail": "Locus coeruleus, noyaux du nerf vague"
+  },
+  {
+    "id": "corps",
+    "label": "Cœur & vaisseaux",
+    "pos": [
+      1.45,
+      -2.95,
+      -1.55
+    ],
+    "size": 0.3
+  },
+  {
+    "id": "medullo",
+    "label": "Médullosurrénale",
+    "pos": [
+      0.95,
+      -3.95,
+      -2.8
+    ],
+    "size": 0.11
+  },
+  {
+    "id": "cortico",
+    "label": "Corticosurrénale",
+    "pos": [
+      0.95,
+      -3.95,
+      -2.8
+    ],
+    "size": 0.22,
+    "shell": true
+  }
+]
