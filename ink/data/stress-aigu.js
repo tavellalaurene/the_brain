@@ -16,15 +16,17 @@ window.INK_SCENARIO = {
     "temoignage":     { "label": "Témoignage",     "rank": 1 }
   },
 
-  "_note_messengers": "kind = nerf : signal ciblé, rapide, le long d'une fibre. kind = hormone : diffusion lente dans le sang.",
+  "_note_messengers": "On montre ce qui se déplace. kind = neurotransmetteur : un signal électrique court le long de la fibre, puis libère la substance à l'arrivée. kind = hormone : la substance voyage elle-même, lentement, dans le sang.",
   "messengers": {
-    "nerf":          { "label": "Influx nerveux", "kind": "nerf",    "color": "#f2ede4", "speed": 1.4 },
-    "noradrenaline": { "label": "Noradrénaline",  "kind": "nerf",    "color": "#ffb020", "speed": 1.0 },
-    "adrenaline":    { "label": "Adrénaline",     "kind": "hormone", "color": "#ff4d5e", "speed": 0.5 },
-    "crh":           { "label": "CRH",            "kind": "hormone", "color": "#b07cff", "speed": 0.35 },
-    "acth":          { "label": "ACTH",           "kind": "hormone", "color": "#4da3ff", "speed": 0.25 },
-    "cortisol":      { "label": "Cortisol",       "kind": "hormone", "color": "#2fd6b5", "speed": 0.18 },
-    "vague":         { "label": "Nerf vague",     "kind": "nerf",    "color": "#9be15d", "speed": 0.9 }
+    "glutamate":     { "label": "Glutamate",     "kind": "neurotransmetteur", "color": "#f2ede4", "speed": 1.4 },
+    "gaba":          { "label": "GABA",          "kind": "neurotransmetteur", "color": "#ff8fc7", "speed": 1.2 },
+    "crf":           { "label": "CRH",           "kind": "neurotransmetteur", "color": "#b07cff", "speed": 1.1 },
+    "noradrenaline": { "label": "Noradrénaline", "kind": "neurotransmetteur", "color": "#ffb020", "speed": 1.0 },
+    "acetylcholine": { "label": "Acétylcholine", "kind": "neurotransmetteur", "color": "#9be15d", "speed": 0.9 },
+    "adrenaline":    { "label": "Adrénaline",    "kind": "hormone", "color": "#ff4d5e", "speed": 0.5 },
+    "crh":           { "label": "CRH",           "kind": "hormone", "color": "#b07cff", "speed": 0.35 },
+    "acth":          { "label": "ACTH",          "kind": "hormone", "color": "#4da3ff", "speed": 0.25 },
+    "cortisol":      { "label": "Cortisol",      "kind": "hormone", "color": "#2fd6b5", "speed": 0.18 }
   },
 
   "_note_positions": "Positions schématiques dans la silhouette (y = haut/bas, z = avant/arrière). Structures paires (amygdale, hippocampe, surrénales) montrées d'un seul côté.",
@@ -44,15 +46,15 @@ window.INK_SCENARIO = {
   ],
 
   "pathways": [
-    { "id": "p-stim-thal",   "from": "stimulus",     "to": "thalamus",     "messenger": "nerf",          "effect": "transmet l'information sensorielle" },
-    { "id": "p-thal-amy",    "from": "thalamus",     "to": "amygdale",     "messenger": "nerf",          "effect": "transmet l'information" },
-    { "id": "p-thal-ctx",    "from": "thalamus",     "to": "cortex",       "messenger": "nerf",          "effect": "transmet pour une analyse détaillée" },
-    { "id": "p-ctx-amy",     "from": "cortex",       "to": "amygdale",     "messenger": "nerf",          "effect": "transmet l'information analysée" },
-    { "id": "p-amy-hyp",     "from": "amygdale",     "to": "hypothalamus", "messenger": "nerf",          "effect": "active la réponse de stress" },
-    { "id": "p-amy-tronc",   "from": "amygdale",     "to": "tronc",        "messenger": "nerf",          "effect": "active le locus coeruleus" },
+    { "id": "p-stim-thal",   "from": "stimulus",     "to": "thalamus",     "messenger": "glutamate", "channel": "nerfs sensoriels",          "effect": "transmet l'information sensorielle" },
+    { "id": "p-thal-amy",    "from": "thalamus",     "to": "amygdale",     "messenger": "glutamate", "effect": "transmet l'information" },
+    { "id": "p-thal-ctx",    "from": "thalamus",     "to": "cortex",       "messenger": "glutamate", "effect": "transmet pour une analyse détaillée" },
+    { "id": "p-ctx-amy",     "from": "cortex",       "to": "amygdale",     "messenger": "glutamate", "effect": "transmet l'information analysée" },
+    { "id": "p-amy-hyp",     "from": "amygdale",     "to": "hypothalamus", "messenger": "gaba", "effect": "active la réponse de stress", "note": "Voie surtout indirecte (relais comme le BNST) : l'amygdale active l'hypothalamus en levant des freins (désinhibition). Simplifié ici." },
+    { "id": "p-amy-tronc",   "from": "amygdale",     "to": "tronc",        "messenger": "crf", "effect": "active le locus coeruleus", "note": "Décrit surtout chez le rongeur. Même molécule que l'hormone CRH, utilisée ici comme neurotransmetteur." },
     { "id": "p-lc-ctx",      "from": "tronc",        "to": "cortex",       "messenger": "noradrenaline", "effect": "augmente la vigilance" },
     { "id": "p-lc-pfc",      "from": "tronc",        "to": "pfc",          "messenger": "noradrenaline", "effect": "modifie son fonctionnement" },
-    { "id": "p-hyp-med",     "from": "hypothalamus", "to": "medullo",      "messenger": "nerf",          "effect": "déclenche la libération d'adrénaline (voie sympathique)", "via": [0.2, -1.6, -0.6] },
+    { "id": "p-hyp-med",     "from": "hypothalamus", "to": "medullo",      "messenger": "acetylcholine", "channel": "nerfs sympathiques", "effect": "déclenche la libération d'adrénaline", "note": "Relais par la moelle épinière ; la dernière fibre libère de l'acétylcholine sur la médullosurrénale.", "via": [0.2, -1.6, -0.6] },
     { "id": "p-med-corps",   "from": "medullo",      "to": "corps",        "messenger": "adrenaline",    "effect": "accélère le cœur, mobilise le glucose" },
     { "id": "p-hyp-hypo",    "from": "hypothalamus", "to": "hypophyse",    "messenger": "crh",           "effect": "stimule la production d'ACTH" },
     { "id": "p-hypo-cort",   "from": "hypophyse",    "to": "cortico",      "messenger": "acth",          "effect": "stimule la production de cortisol", "via": [-0.3, -1.6, 0.5] },
@@ -62,7 +64,7 @@ window.INK_SCENARIO = {
     { "id": "p-cort-corps",  "from": "cortico",      "to": "corps",        "messenger": "cortisol",      "effect": "mobilise l'énergie, module l'immunité" },
     { "id": "p-cort-hyp",    "from": "cortico",      "to": "hypothalamus", "messenger": "cortisol",      "effect": "freine la production de CRH", "via": [0.4, -1.4, 0.1] },
     { "id": "p-cort-hypo",   "from": "cortico",      "to": "hypophyse",    "messenger": "cortisol",      "effect": "freine la production d'ACTH", "via": [-0.4, -1.5, 0.3] },
-    { "id": "p-tronc-corps", "from": "tronc",        "to": "corps",        "messenger": "vague",         "effect": "ralentit le cœur" }
+    { "id": "p-tronc-corps", "from": "tronc",        "to": "corps",        "messenger": "acetylcholine", "channel": "nerf vague", "effect": "ralentit le cœur" }
   ],
 
   "_note_beats": "Chaque étape est découpée en temps courts (beats). t = secondes depuis le stimulus (positionne la frise et les jauges).",

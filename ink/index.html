@@ -25,11 +25,12 @@
   .sig.on { opacity: 1; }
 
   /* Jauges */
-  #gauges { position: fixed; top: 96px; left: 24px; width: 230px; }
+  #gauges { position: fixed; top: 96px; left: 16px; width: 316px; padding: 10px 8px 6px; border-radius: 12px; background: var(--panel); backdrop-filter: blur(8px); }
   .g { display: grid; grid-template-columns: 1fr auto; align-items: end; margin-bottom: 10px; }
-  .g span { font: 13px system-ui, sans-serif; color: var(--muted); }
-  .g canvas { grid-column: 1 / 3; width: 100%; height: 30px; }
-  #gauges small { font: 11px system-ui, sans-serif; color: var(--muted); opacity: .7; }
+  .g span { font: 16px system-ui, sans-serif; color: var(--ink); }
+  .g span + span { color: var(--muted); }
+  .g canvas { grid-column: 1 / 3; width: 100%; height: 46px; cursor: ew-resize; touch-action: none; }
+  #gauges small { font: 13px system-ui, sans-serif; color: var(--muted); opacity: .7; }
 
   /* Panneau */
   #panel { position: fixed; right: 24px; top: 50%; transform: translateY(-50%); width: min(440px, calc(100vw - 48px));
@@ -42,6 +43,13 @@
   #say.insight::before { content: "À retenir"; display: block; font: 12px system-ui, sans-serif; text-transform: uppercase; letter-spacing: .1em; margin-bottom: 4px; }
   .cause { font: 14px/1.4 system-ui, sans-serif; color: #d9d3c9; margin: 6px 0; }
   .cause b { font-weight: 600; }
+  .cause small { display: block; color: var(--muted); font-size: 12px; margin-top: 2px; }
+  #play { font: 14px system-ui, sans-serif; background: none; color: var(--ink); border: 1px solid var(--accent); border-radius: 8px; padding: 4px 12px; cursor: pointer; margin-right: 12px; }
+  #caption { position: fixed; left: 24px; right: 24px; bottom: 100px; text-align: center; font-size: 26px; line-height: 1.4; text-shadow: 0 0 12px #000, 0 0 4px #000; opacity: 0; transition: opacity .5s; pointer-events: none; }
+  #caption small { display: block; font: 13px system-ui, sans-serif; color: var(--accent); text-transform: uppercase; letter-spacing: .1em; }
+  body.playing #caption { opacity: 1; }
+  body.playing #panel { opacity: 0; pointer-events: none; }
+  #panel { transition: opacity .5s; }
   .cause .arrow { white-space: nowrap; font-weight: 600; }
   .dots { display: flex; gap: 6px; margin: 16px 0 0; }
   .dots i { width: 7px; height: 7px; border-radius: 50%; background: var(--line); }
@@ -97,13 +105,14 @@
   <nav>
     <button id="prev" aria-label="Précédent">←</button>
     <button id="next" class="primary">Suivant →</button>
-    <span class="hint">ou flèches du clavier</span>
+    <span class="hint">← → pour naviguer · espace pour jouer</span>
   </nav>
   <details id="more"><summary>En savoir plus</summary><div id="moreBody"></div></details>
 </aside>
 
+<div id="caption"><small id="capStep"></small><span id="capSay"></span></div>
 <div id="timeline">
-  <div class="row"><span>Fais glisser le temps</span><span id="now"></span></div>
+  <div class="row"><span><button id="play">▶ Jouer</button>Fais glisser le temps, ou une courbe</span><span id="now"></span></div>
   <input id="scrub" type="range" min="0" max="1000" step="1" aria-label="Temps écoulé depuis le stimulus">
   <div id="ticks"></div>
 </div>
@@ -212,15 +221,16 @@ for (const p of D.pathways) {
   const line = new THREE.Line(new THREE.BufferGeometry().setFromPoints(curve.getPoints(80)),
     new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0, depthWrite: false }));
   scene.add(line);
-  const nerve = m.kind === 'nerf';
+  const nerve = m.kind !== 'hormone';
   // Nerf : traits courts et nets (une tête + une traîne). Hormone : nuages larges et diffus.
   const sprites = [];
   const count = nerve ? 2 : 4, trail = nerve ? 6 : 1;
   for (let i = 0; i < count; i++) for (let k = 0; k < trail; k++)
-    sprites.push({ sp: glow(color, nerve ? .22 * (1 - k / trail) + .06 : .5), off: i / count, lag: k * .018 });
+    sprites.push({ sp: glow(nerve ? 0xffffff : color, nerve ? .22 * (1 - k / trail) + .06 : .5), off: i / count, lag: k * .018 });
   const el = document.createElement('div'); el.className = 'sig'; el.textContent = m.label; el.style.color = m.color;
-  const tag = new CSS2DObject(el); tag.position.copy(curve.getPointAt(.5)); scene.add(tag);
-  paths[p.id] = { p, m, curve, line, sprites, nerve, el, lvl: 0 };
+  const tag = new CSS2DObject(el); tag.position.copy(curve.getPointAt(nerve ? .82 : .5)); scene.add(tag);
+  const burst = nerve ? glow(color, .9) : null; if (burst) burst.position.copy(b);
+  paths[p.id] = { p, m, curve, line, sprites, nerve, el, burst, lvl: 0 };
 }
 
 // ── Temps : frise logarithmique ──────────────────────────────
@@ -246,7 +256,7 @@ function drawGauges(t) {
     const x = c.getContext('2d'); x.setTransform(dpr, 0, 0, dpr, 0, 0); x.clearRect(0, 0, w, h);
     x.beginPath();
     for (let i = 0; i <= 120; i++) { const u = i / 120, v = g.fn(fromU(u)); x.lineTo(u * w, h - 2 - v * (h - 6)); }
-    x.strokeStyle = g.color + '55'; x.lineWidth = 1.5; x.stroke();
+    x.strokeStyle = g.color + 'aa'; x.lineWidth = 1.5; x.stroke();
     const u = toU(t), v = g.fn(t);
     x.beginPath(); x.arc(u * w, h - 2 - v * (h - 6), 3.5, 0, 7); x.fillStyle = g.color; x.fill();
     $('v-' + g.id).textContent = Math.round(v * 100) + ' %';
@@ -257,9 +267,16 @@ function drawGauges(t) {
 const beats = D.steps.flatMap((step, si) => step.beats.map((b, bi) => ({ ...b, step, si, bi })));
 let cur = 0, tNow = beats[0].t, tGoal = tNow;
 
-function cause(id) {
-  const { p, m } = paths[id];
-  return `<p class="cause"><b>${esc(nodes[p.from].s.label)}</b> <span class="arrow" style="color:${m.color}">— ${esc(m.label)} →</span> <b>${esc(nodes[p.to].s.label)}</b> : ${esc(p.effect)}</p>`;
+// Regroupe les flèches de même origine, substance et effet : « A — X → B, C, D : effet »
+function causes(ids) {
+  const groups = new Map();
+  for (const id of ids) {
+    const { p } = paths[id], k = [p.from, p.messenger, p.channel, p.effect].join('|');
+    if (!groups.has(k)) groups.set(k, { p, to: [], notes: new Set() });
+    const g = groups.get(k); g.to.push(nodes[p.to].s.label); if (p.note) g.notes.add(p.note);
+  }
+  return [...groups.values()].map(({ p, to, notes }) => { const m = D.messengers[p.messenger];
+    return `<p class="cause"><b>${esc(nodes[p.from].s.label)}</b> <span class="arrow" style="color:${m.color}">— ${esc(m.label)}${p.channel ? ` (${esc(p.channel)})` : ''} →</span> <b>${esc(to.join(', '))}</b> : ${esc(p.effect)}${[...notes].map(n => `<small>${esc(n)}</small>`).join('')}</p>`; }).join('');
 }
 function more(step) {
   const note = (cls, t, s) => s ? `<div class="note ${cls}"><b>${t}</b>${esc(s)}</div>` : '';
@@ -275,7 +292,8 @@ function go(i, fromScrub = false) {
   $('kicker').textContent = b.step.time || 'En résumé';
   $('stepTitle').textContent = `${b.si + 1}. ${b.step.title}`;
   const say = $('say'); say.textContent = b.say; say.className = b.kind === 'insight' ? 'insight' : '';
-  $('causes').innerHTML = b.show.map(cause).join('');
+  $('causes').innerHTML = causes(b.show);
+  $('capStep').textContent = `${b.si + 1}. ${b.step.title}`; $('capSay').textContent = b.say;
   $('dots').innerHTML = b.step.beats.map((_, k) => `<i class="${k <= b.bi ? 'on' : ''}"></i>`).join('');
   if (b.si !== prevStep || !$('moreBody').innerHTML) { $('moreBody').innerHTML = more(b.step); $('more').open = false; }
   $('prev').disabled = cur === 0;
@@ -285,17 +303,36 @@ function go(i, fromScrub = false) {
   if (!fromScrub) { tGoal = b.t; $('scrub').value = Math.round(toU(b.t) * 1000); }
   frame(b);
 }
-$('prev').onclick = () => go(cur - 1);
-$('next').onclick = () => go(cur + 1);
+let playTimer = null;
+function stop() { clearTimeout(playTimer); playTimer = null; document.body.classList.remove('playing'); $('play').textContent = '▶ Jouer'; }
+function tick() { playTimer = setTimeout(() => { if (cur >= beats.length - 1) return stop(); go(cur + 1); tick(); }, 2600 + beats[cur].say.length * 45); }
+function play() {
+  if (playTimer) return stop();
+  if (cur >= beats.length - 1) go(0);
+  document.body.classList.add('playing'); $('play').textContent = '❚❚ Pause'; tick();
+}
+$('play').onclick = play;
+$('prev').onclick = () => { stop(); go(cur - 1); };
+$('next').onclick = () => { stop(); go(cur + 1); };
 addEventListener('keydown', e => {
-  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); go(cur + 1); }
-  if (e.key === 'ArrowLeft') go(cur - 1);
+  if (e.key === ' ') { e.preventDefault(); play(); }
+  if (e.key === 'ArrowRight') $('next').click();
+  if (e.key === 'ArrowLeft') $('prev').click();
+  if (e.key === 'Escape') stop();
 });
-$('scrub').addEventListener('input', e => {
-  tGoal = tNow = fromU(e.target.value / 1000);
+function seek(t) {
+  stop(); tGoal = tNow = Math.min(TMAX, Math.max(TMIN, t));
+  $('scrub').value = Math.round(toU(tNow) * 1000);
   let i = 0; while (i + 1 < beats.length && beats[i + 1].t <= tNow) i++;
   if (i !== cur) go(i, true);
-});
+}
+$('scrub').addEventListener('input', e => seek(fromU(e.target.value / 1000)));
+// glisser sur une courbe = se déplacer dans le temps
+for (const g of gauges) {
+  const at = e => { const r = g.cv.getBoundingClientRect(); seek(fromU(Math.min(1, Math.max(0, (e.clientX - r.left) / r.width)))); };
+  g.cv.addEventListener('pointerdown', e => { g.cv.setPointerCapture(e.pointerId); at(e); });
+  g.cv.addEventListener('pointermove', e => { if (g.cv.hasPointerCapture(e.pointerId)) at(e); });
+}
 
 // ── Caméra guidée ────────────────────────────────────────────
 const camTarget = new THREE.Vector3(0, -1, 0), camGoalT = camTarget.clone();
@@ -334,18 +371,20 @@ renderer.setAnimationLoop(() => {
   for (const n of Object.values(nodes)) {
     n.lit += ((b.light.includes(n.s.id) ? 1 : 0) - n.lit) * dt * 3;
     n.halo.material.opacity = n.lit * (.55 + .2 * Math.sin(t * 2.4));
-    n.core.material.opacity = (n.s.shell ? .05 : .07) + n.lit * (n.s.shell ? .2 : .3);
+    n.core.material.opacity = (n.s.shell ? .05 : .07) + n.lit * (n.s.shell ? .08 : .3);
   }
   for (const p of Object.values(paths)) {
     p.lvl += ((b.show.includes(p.p.id) ? 1 : 0) - p.lvl) * dt * 3;
     p.line.material.opacity = .035 + p.lvl * (p.nerve ? .55 : .3);
+    let arrive = 0;
     for (const q of p.sprites) {
       const u = ((t * p.m.speed * .4 + q.off - q.lag) % 1 + 1) % 1;
       q.sp.position.copy(p.curve.getPointAt(u));
       const env = Math.sin(u * Math.PI);
-      if (p.nerve) q.sp.material.opacity = p.lvl * env * (1 - q.lag * 25);
+      if (p.nerve) { q.sp.material.opacity = p.lvl * env * (1 - q.lag * 25); if (!q.lag) arrive = Math.max(arrive, u > .8 ? (u - .8) / .2 : 0); }
       else { q.sp.material.opacity = p.lvl * env * .55; q.sp.scale.setScalar(.35 + .7 * u); }  // l'hormone se diffuse
     }
+    if (p.burst) p.burst.material.opacity = p.lvl * arrive * arrive;  // libération du neurotransmetteur
   }
   camTarget.lerp(camGoalT, dt * 1.6);
   camDist += (camGoalD - camDist) * dt * 1.6;
