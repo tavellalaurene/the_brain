@@ -15,6 +15,7 @@ Objectifs d'apprentissage : **3D web** et **architecture orientée données**.
 - Rien n'est ajouté sans accord explicite.
 - Aucun compromis scientifique : toute simplification est signalée et sourcée.
 - Signaler tout point douteux (scientifique, éthique, moral).
+- Économiser les tokens (agents légers quand c'est possible).
 - **Aucune information personnelle dans le dépôt.** Jamais. Le contenu
   existant reste tel quel ; la règle s'applique à tout nouvel ajout.
 
@@ -38,7 +39,7 @@ Objectifs d'apprentissage : **3D web** et **architecture orientée données**.
 | Biologie | Rendu |
 |---|---|
 | Voie rapide (sympathique, adrénaline — secondes) | Trait de pinceau net et rapide |
-| Voie lente (axe HHS, cortisol — pic ~20–30 min) | Encre qui diffuse dans le papier |
+| Voie lente (axe HHS, cortisol — pic ~20–40 min) | Encre qui diffuse dans le papier |
 | Retour au calme (rétrocontrôle) | Encre qui sèche et pâlit |
 | Profondeur anatomique | Perspective du lavis : proche = sombre, lointain = pâle |
 | Niveau de preuve | Netteté du trait : solide = franc, fragile = estompé |
@@ -51,13 +52,23 @@ plus simples que la simulation d'encre.
 
 ## Niveaux de preuve
 
-`meta-analyse` · `essai-randomise` · `etude-limitee` · `consensus` · `temoignage`
+`meta-analyse` · `essai-randomise` · `revue` · `consensus` · `modele-animal` · `etude-limitee` · `temoignage`
+
+Sources : peu nombreuses, uniquement les plus solides. Une source non répliquée est écartée ou signalée.
+
+## Revue à chaque itération
+
+Vérification rapide de : qualité des sources · justesse scientifique ·
+compréhensibilité · expérience UX · visuel. Toujours en lien avec le but :
+apprendre professionnellement, enrichir le portfolio, restituer l'information.
 
 ## Jalon 1 — définition de « fini »
 
 On peut dérouler le scénario du stress aigu étape par étape ; chaque étape est
 sourcée avec son niveau de preuve ; la scène 3D est simple (formes, lumière,
-mouvement), **sans effet encre**.
+mouvement), **sans effet encre**. Leviers hors périmètre. Mention « au-delà de combat ou fuite » incluse.
+
+État : première version dans `ink/` (ouvrir `ink/index.html`).
 
 ## Modèle de données (ébauche)
 
