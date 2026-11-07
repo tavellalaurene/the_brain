@@ -87,3 +87,17 @@ La scène lit les données ; ajouter une connaissance = ajouter une entrée sour
 ## Questions ouvertes
 
 - Aucune pour l'instant.
+
+## Plus tard
+
+- Relire scientifiquement les 5 leviers (texte, choix, objectifs).
+- Vue « sous le capot » : voir les données derrière la scène.
+- Ressources pour aller plus loin / se faire aider (dans la conclusion).
+- Montrer les leviers en mode « Jouer ».
+- UX : étiquettes du cerveau qui se chevauchent en gros plan ; panneau long.
+- Fusionner les jauges dans la frise du temps ; traduire leurs données dans le corps.
+- Positions encore à vérifier : niveaux vertébraux du cœur et des surrénales, proportions de la tête.
+- Corps plus abstrait aux proportions humaines réelles (pose neutre).
+- Cerveau : visualisation à repenser.
+- Alléger le modèle 3D (gltf-transform).
+- Vérification automatique sur GitHub (GitHub Actions) à chaque push.
