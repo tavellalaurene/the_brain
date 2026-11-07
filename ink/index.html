@@ -178,61 +178,125 @@ const glow = (color, size) => {
 
 // ── Silhouette schématique : anneaux de contour ──────────────
 // Corps de révolution elliptique : (y, demi-largeur x, demi-profondeur z)
-const HEAD = { y: 1.3, ry: 1.75, rx: 1.35, rz: 1.6 };
-const BODY = [[-0.2, .69, .82], [-0.55, .5, .55], [-0.95, .55, .56], [-1.2, 1.7, .78],
-              [-1.55, 2.2, .9], [-2.4, 2.05, 1.0], [-3.4, 1.75, .95], [-4.6, 1.55, .85], [-5.6, 1.6, .82]];
+const HEAD = { y: 1.3, ry: 1.75, rx: 1.25, rz: 1.6 };
+const BODY = [[0.3, 1.03, 1.31], [-0.05, .78, .95], [-0.4, .55, .64], [-0.8, .55, .6], [-1.05, .9, .68], [-1.3, 1.55, .8],
+              [-1.6, 1.95, .9], [-2.1, 2.05, 1.0], [-3.0, 1.8, .98], [-4.0, 1.6, .9], [-5.6, 1.55, .85]];
 function radius(y) {
-  if (y > -0.2) { const k = Math.sqrt(Math.max(0, 1 - ((y - HEAD.y) / HEAD.ry) ** 2)); return [HEAD.rx * k, HEAD.rz * k]; }
+  if (y > 0.3) { const k = Math.sqrt(Math.max(0, 1 - ((y - HEAD.y) / HEAD.ry) ** 2)); return [HEAD.rx * k, HEAD.rz * k]; }
   for (let i = 0; i < BODY.length - 1; i++) {
     const [y0, x0, z0] = BODY[i], [y1, x1, z1] = BODY[i + 1];
     if (y <= y0 && y >= y1) { let u = (y0 - y) / (y0 - y1); u = u * u * (3 - 2 * u); return [x0 + (x1 - x0) * u, z0 + (z1 - z0) * u]; }
   }
   return [0, 0];
 }
-// Fibres ivoire qui épousent la surface (esprit « corps tissé »), éclairage de studio doux
-const fiberMat = new THREE.MeshStandardMaterial({ color: 0xebe4d8, roughness: .5, metalness: 0,
-  transparent: true, opacity: .32, depthWrite: false });
-const brainMat = fiberMat.clone(); brainMat.color.set(0xf4ead9); brainMat.opacity = .6;
-scene.add(new THREE.HemisphereLight(0xfff6ea, 0x1a1714, .7));
-const keyL = new THREE.DirectionalLight(0xfff1df, 1.6); keyL.position.set(4, 6, 6); scene.add(keyL);
-const rimL = new THREE.DirectionalLight(0xcfe0ff, 1.4); rimL.position.set(-5, 2, -6); scene.add(rimL);   // liseré
-const rnd = (() => { let x = 7; return () => (x = (x * 16807) % 2147483647) / 2147483647; })();       // aléa reproductible
+// ── Corps : enveloppe de verre, seuls les bords s'allument (effet de Fresnel) ──
 const bodyG = new THREE.Group(); scene.add(bodyG);   // le corps respire : on anime ce groupe
-fiberMat.emissive = new THREE.Color(0);
-function fiber(pts, mat, r) {
-  const m = new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), pts.length * 2, r, 4), mat);
-  bodyG.add(m); return m;
-}
-const YTOP = HEAD.y + HEAD.ry - .04, YBOT = -5.4;
-for (let i = 0; i < 80; i++) {
-  const a0 = i / 80 * Math.PI * 2 + rnd() * .03, swirl = .25 + rnd() * .2, ph = rnd() * 6;
-  // quelques fibres « inachevées » : elles commencent ou s'arrêtent en chemin
-  const y0 = rnd() < .2 ? YTOP - rnd() * 3 : YTOP, y1 = rnd() < .3 ? YBOT + rnd() * 3 : YBOT;
-  const pts = [];
-  for (let y = y0; y >= y1; y -= .08) {
-    const [rx, rz] = radius(y); if (rx < .03) continue;
-    const a = a0 + swirl * Math.sin(y * .7 + ph) * .3;
-    pts.push(new THREE.Vector3(Math.cos(a) * rx, y, Math.sin(a) * rz));
+const fresnelVS = `
+  attribute float aFade; varying float vFade; varying vec3 vN; varying vec3 vV;
+  void main() {
+    vFade = aFade; vN = normalize(normalMatrix * normal);
+    vec4 mv = modelViewMatrix * vec4(position, 1.0); vV = normalize(-mv.xyz);
+    gl_Position = projectionMatrix * mv;
+  }`;
+const fresnelFS = `
+  uniform vec3 uColor; uniform vec3 uWarm; uniform float uPulse; uniform float uPower; uniform float uIntensity;
+  varying float vFade; varying vec3 vN; varying vec3 vV;
+  void main() {
+    float f = pow(1.0 - abs(dot(normalize(vN), normalize(vV))), uPower);   // 0 de face, 1 sur les bords
+    gl_FragColor = vec4(mix(uColor, uWarm, uPulse), f * uIntensity * vFade);
+  }`;
+const fresnel = (color, power, intensity) => new THREE.ShaderMaterial({
+  vertexShader: fresnelVS, fragmentShader: fresnelFS, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+  uniforms: { uColor: { value: new THREE.Color(color) }, uWarm: { value: new THREE.Color(0xff6a5a) },
+              uPulse: { value: 0 }, uPower: { value: power }, uIntensity: { value: intensity } } });
+// Surface de révolution elliptique construite à partir du profil radius(y)
+function envelope(yTop, yBot, rFn, fadeFrom) {
+  const rows = Math.round((yTop - yBot) / .035), cols = 160, pos = [], fade = [], idx = [];
+  for (let i = 0; i <= rows; i++) {
+    const y = yTop - (yTop - yBot) * i / rows, [rx, rz, cz = 0] = rFn(y);
+    const fd = fadeFrom == null || y > fadeFrom ? 1 : Math.max(0, 1 - (fadeFrom - y) / (fadeFrom - yBot));
+    for (let j = 0; j <= cols; j++) { const a = j / cols * Math.PI * 2;
+      pos.push(Math.cos(a) * rx, y, cz + Math.sin(a) * rz); fade.push(fd); }
   }
-  if (pts.length > 3) fiber(pts, fiberMat, .006 + rnd() * .004);
+  for (let i = 0; i < rows; i++) for (let j = 0; j < cols; j++) {
+    const k = i * (cols + 1) + j; idx.push(k, k + cols + 1, k + 1, k + 1, k + cols + 1, k + cols + 2);
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+  g.setAttribute('aFade', new THREE.Float32BufferAttribute(fade, 1));
+  g.setIndex(idx); g.computeVertexNormals(); return g;
 }
-// Cerveau : fibres ondulées, enroulées (évoque les circonvolutions)
+const bodyMat = fresnel(0xcfdcff, 2.6, .9);
+bodyG.add(new THREE.Mesh(envelope(HEAD.y + HEAD.ry - .001, -5.4, radius, -3.6), bodyMat));
+
+// ── Cerveau : faisceaux de fibres « dans l'esprit de la tractographie » (générés, pas des données réelles) ──
 const BRAIN = { y: 1.75, ry: 1.05, rx: 1.12, rz: 1.45, z: 0.05 };
-for (let i = 1; i < 30; i++) {
-  const y = BRAIN.y - BRAIN.ry + i * (2 * BRAIN.ry / 30), k = Math.sqrt(1 - ((y - BRAIN.y) / BRAIN.ry) ** 2), pts = [];
-  for (let j = 0; j <= 120; j++) {
-    const a = j / 120 * Math.PI * 2, w = 1 + .06 * Math.sin(a * 9 + i * .7) * Math.sin(a * 4 - i);
-    pts.push(new THREE.Vector3(Math.cos(a) * BRAIN.rx * k * w, y + .04 * Math.sin(a * 6 + i), BRAIN.z + Math.sin(a) * BRAIN.rz * k * w));
+const brainMat = fresnel(0xffe9c8, 4.5, .22);
+bodyG.add(new THREE.Mesh(envelope(BRAIN.y + BRAIN.ry - .001, BRAIN.y - BRAIN.ry + .001, y => {
+  const k = Math.sqrt(Math.max(0, 1 - ((y - BRAIN.y) / BRAIN.ry) ** 2)); return [BRAIN.rx * k, BRAIN.rz * k, BRAIN.z]; }), brainMat));
+const rnd = (() => { let x = 11; return () => (x = (x * 16807) % 2147483647) / 2147483647; })();   // aléa reproductible
+const jit = (v, a) => v.clone().add(new THREE.Vector3((rnd() - .5) * a, (rnd() - .5) * a, (rnd() - .5) * a));
+const onBrain = (x, y, z) => {   // ramène un point à l'intérieur, juste sous la surface du cerveau
+  const v = new THREE.Vector3(x / BRAIN.rx, (y - BRAIN.y) / BRAIN.ry, (z - BRAIN.z) / BRAIN.rz);
+  const l = v.length(), k = .9 / Math.max(l, .001);
+  return new THREE.Vector3(x * (l > .9 ? k : 1), BRAIN.y + (y - BRAIN.y) * (l > .9 ? k : 1), BRAIN.z + (z - BRAIN.z) * (l > .9 ? k : 1));
+};
+const tractPos = [], tractCol = [], tractSeed = [];
+const pale = new THREE.Color(0xf3e6d0);
+function tract(ctrl, w = 1) {
+  const c = new THREE.CatmullRomCurve3(ctrl), pts = c.getPoints(70), seed = rnd() * 10;
+  const add = (pa, pb) => {
+    const d = pb.clone().sub(pa).normalize();
+    // couleur selon la direction (convention : x rouge, z vert, y bleu), pâlie vers l'ivoire
+    const col = new THREE.Color(Math.abs(d.x), Math.abs(d.z), Math.abs(d.y)).lerp(pale, .45).multiplyScalar(w);
+    tractPos.push(pa.x, pa.y, pa.z, pb.x, pb.y, pb.z);
+    tractCol.push(col.r, col.g, col.b, col.r, col.g, col.b); tractSeed.push(seed, seed);
+  };
+  for (let i = 0; i < pts.length - 1; i++) add(pts[i], pts[i + 1]);
+  // terminaisons ramifiées, à la manière d'un dessin à l'encre
+  const end = pts[pts.length - 1], dir = end.clone().sub(pts[pts.length - 4]).normalize();
+  for (let k = 0; k < 3; k++) {
+    let a = end.clone(), d = jit(dir, 1.4).normalize();
+    for (let s2 = 0; s2 < 4; s2++) { const b = a.clone().addScaledVector(d, .035 + rnd() * .03); add(a, b); a = b; d = jit(d, .8).normalize(); }
   }
-  fiber(pts, brainMat, .008);
 }
+const stemTop = new THREE.Vector3(0, .75, -.3);
+for (let i = 0; i < 70; i++) {   // projections : éventail du tronc cérébral vers le cortex (haut-bas)
+  const side = rnd() < .5 ? -1 : 1, th = rnd() * Math.PI * 2, ph = rnd() * 1.2;
+  const end = onBrain(Math.sin(ph) * Math.cos(th) * BRAIN.rx, BRAIN.y + Math.cos(ph) * BRAIN.ry, BRAIN.z + Math.sin(ph) * Math.sin(th) * BRAIN.rz);
+  tract([jit(stemTop, .1), jit(new THREE.Vector3(side * .3, 1.3, 0), .15), jit(end.clone().lerp(new THREE.Vector3(side * .3, 1.4, 0), .4), .15), end], .9);
+}
+for (let i = 0; i < 45; i++) {   // commissures : arches gauche-droite (corps calleux)
+  const y = 1.75 + rnd() * .55, z = (rnd() - .5) * 1.8;
+  tract([onBrain(-1.2, y + .2, z), jit(new THREE.Vector3(-.4, 2.15, z * .8), .1), jit(new THREE.Vector3(0, 2.05, z * .7), .05),
+         jit(new THREE.Vector3(.4, 2.15, z * .8), .1), onBrain(1.2, y + .2, z)], 1);
+}
+for (let i = 0; i < 44; i++) {   // associations : longues arches avant-arrière, de chaque côté
+  const x = (rnd() < .5 ? -1 : 1) * (.55 + rnd() * .3), y = 1.35 + rnd() * .6;
+  tract([onBrain(x * .9, y, 1.5), jit(new THREE.Vector3(x, y + .35, .4), .12), jit(new THREE.Vector3(x, y + .3, -.5), .12), onBrain(x * .9, y - .2, -1.5)], .95);
+}
+const tg = new THREE.BufferGeometry();
+tg.setAttribute('position', new THREE.Float32BufferAttribute(tractPos, 3));
+tg.setAttribute('color', new THREE.Float32BufferAttribute(tractCol, 3));
+tg.setAttribute('aSeed', new THREE.Float32BufferAttribute(tractSeed, 1));
+// reflets qui glissent le long des fibres (évoque la feuille d'or gravée)
+const tractMat = new THREE.ShaderMaterial({
+  transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, vertexColors: true,
+  uniforms: { uTime: { value: 0 } },
+  vertexShader: `attribute float aSeed; varying vec3 vC; varying float vS; varying vec3 vP;
+    void main() { vC = color; vS = aSeed; vP = position; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+  fragmentShader: `uniform float uTime; varying vec3 vC; varying float vS; varying vec3 vP;
+    void main() { float sheen = .35 + .65 * pow(.5 + .5 * sin(dot(vP, vec3(2.1, 3.3, 1.7)) * 2.0 - uTime * .8 + vS), 3.0);
+      gl_FragColor = vec4(vC * sheen, .75); }`,
+});
+bodyG.add(new THREE.LineSegments(tg, tractMat));
 
 // ── Structures ───────────────────────────────────────────────
 const nodes = {};
 for (const s of D.structures) {
   const core = new THREE.Mesh(new THREE.SphereGeometry(s.size, 32, 20),
     new THREE.MeshBasicMaterial({ color: 0xf2ede4, transparent: true, opacity: s.shell ? .06 : .18, depthWrite: false,
-      wireframe: !!s.shell }));
+      wireframe: false }));
   core.position.fromArray(s.pos); scene.add(core);
   const halo = glow(0xfff4e0, s.size * 5); halo.position.copy(core.position);
   const el = document.createElement('div'); el.className = 'label'; el.textContent = s.label;
@@ -430,7 +494,7 @@ renderer.setAnimationLoop(() => {
   hPhase += dt * (1.0 + heart * 1.0); bPhase += dt * (.22 + vig * .25);   // fréquences schématiques
   const beat = Math.pow(Math.max(0, Math.sin(hPhase * Math.PI * 2)), 14), breath = Math.sin(bPhase * Math.PI * 2);
   bodyG.scale.set(1 + .012 * breath, 1, 1 + .016 * breath);
-  fiberMat.emissive.setRGB(.5, .08, .1).multiplyScalar(beat * (.08 + heart * .5));
+  bodyMat.uniforms.uPulse.value = beat * (.15 + heart * .6); tractMat.uniforms.uTime.value = t;
   const hn = nodes.corps; hn.halo.material.opacity = Math.max(hn.halo.material.opacity, beat * (.25 + heart * .6));
   hn.halo.scale.setScalar(hn.s.size * 5 * (1 + beat * .25));
   for (const p of Object.values(paths)) {

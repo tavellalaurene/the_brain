@@ -30,7 +30,8 @@ Objectifs d'apprentissage : **3D web** et **architecture orientée données**.
 | Direction artistique | Hybride : lavis d'encre pour le décor et la profondeur (le *où*) + filaments colorés et pulsants pour les signaux (le *quoi* et le *quand*) |
 | Inspirations | Encre sur papier (sumi-e) ; filaments de génériques de séries ; formes mathématiques ; couleurs et pulsations |
 | Couleurs | Libres pour ce début de projet |
-| Corps | Schématique, « corps tissé » : fibres ivoire qui épousent la surface, éclairage de studio (inspiration : générique de Westworld, sans son univers robotique). Horizon possible : modèle sculpté libre de droits, si l'anatomie suit |
+| Corps | Enveloppe de verre (effet de Fresnel : seuls les bords s'allument), couleur froide et pâle |
+| Cerveau | Faisceaux fins « dans l'esprit de la tractographie » (générés, pas des données réelles), couleur selon la direction, pâlie ; reflets glissants. Référence principale : Greg Dunn (finesse, ramifications, reflets d'or) |
 | Expérience principale | Le mode « Jouer » : une histoire scénarisée qui se déroule seule. Le rythme lent peut devenir un choix contemplatif |
 | Emplacement | Dossier à part (`ink/`), la carte existante n'est pas touchée |
 | Techno 3D | Three.js seul, sans build (CDN), données en JSON |
