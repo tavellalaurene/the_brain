@@ -50,6 +50,19 @@
   body.playing #caption { opacity: 1; }
   body.playing #panel { opacity: 0; pointer-events: none; }
   #panel { transition: opacity .5s; }
+  #stage { position: fixed; inset: 0; display: flex; align-items: center; justify-content: flex-start; padding: 0 8vw;
+    background: linear-gradient(90deg, rgba(14,13,12,.85), rgba(14,13,12,.2) 60%, transparent); transition: opacity 1.2s; }
+  #stage .inner { max-width: 520px; }
+  #stage h2 { font: normal 40px/1.15 Georgia, serif; margin: 0 0 18px; }
+  #stage p { font: 21px/1.5 Georgia, serif; margin: 0 0 12px; color: #ddd6cb; }
+  #stage #stageQ { color: var(--accent); }
+  #stage .btns { display: flex; gap: 10px; margin-top: 26px; flex-wrap: wrap; }
+  #stage button { font: 16px system-ui, sans-serif; background: none; color: var(--ink); border: 1px solid var(--line); border-radius: 8px; padding: 10px 18px; cursor: pointer; }
+  #stage button.primary { border-color: var(--accent); }
+  body:not(.staged) #stage { opacity: 0; pointer-events: none; }
+  body.staged #panel, body.staged #timeline, body.staged #gauges, body.staged header { opacity: 0; pointer-events: none; }
+  #timeline, #gauges, header { transition: opacity 1s; }
+  body.staged .sig, body.staged .label { opacity: 0 !important; }
   .cause .arrow { white-space: nowrap; font-weight: 600; }
   .dots { display: flex; gap: 6px; margin: 16px 0 0; }
   .dots i { width: 7px; height: 7px; border-radius: 50%; background: var(--line); }
@@ -110,6 +123,10 @@
   <details id="more"><summary>En savoir plus</summary><div id="moreBody"></div></details>
 </aside>
 
+<div id="stage" class="sans"><div class="inner">
+  <h2 id="stageTitle"></h2><p id="stageLead"></p><p id="stageQ"></p>
+  <div class="btns"><button id="startPlay" class="primary">▶ Lancer l'histoire</button><button id="startStep">Explorer pas à pas</button></div>
+</div></div>
 <div id="caption"><small id="capStep"></small><span id="capSay"></span></div>
 <div id="timeline">
   <div class="row"><span><button id="play">▶ Jouer</button>Fais glisser le temps, ou une courbe</span><span id="now"></span></div>
@@ -180,9 +197,11 @@ scene.add(new THREE.HemisphereLight(0xfff6ea, 0x1a1714, .7));
 const keyL = new THREE.DirectionalLight(0xfff1df, 1.6); keyL.position.set(4, 6, 6); scene.add(keyL);
 const rimL = new THREE.DirectionalLight(0xcfe0ff, 1.4); rimL.position.set(-5, 2, -6); scene.add(rimL);   // liseré
 const rnd = (() => { let x = 7; return () => (x = (x * 16807) % 2147483647) / 2147483647; })();       // aléa reproductible
+const bodyG = new THREE.Group(); scene.add(bodyG);   // le corps respire : on anime ce groupe
+fiberMat.emissive = new THREE.Color(0);
 function fiber(pts, mat, r) {
   const m = new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), pts.length * 2, r, 4), mat);
-  scene.add(m); return m;
+  bodyG.add(m); return m;
 }
 const YTOP = HEAD.y + HEAD.ry - .04, YBOT = -5.4;
 for (let i = 0; i < 80; i++) {
@@ -319,7 +338,7 @@ function go(i, fromScrub = false) {
 }
 let playTimer = null;
 function stop() { clearTimeout(playTimer); playTimer = null; document.body.classList.remove('playing'); $('play').textContent = '▶ Jouer'; }
-function tick() { playTimer = setTimeout(() => { if (cur >= beats.length - 1) return stop(); go(cur + 1); tick(); }, 2600 + beats[cur].say.length * 45); }
+function tick() { playTimer = setTimeout(() => { if (cur >= beats.length - 1) return stage('outro'); go(cur + 1); tick(); }, 2600 + beats[cur].say.length * 45); }
 function play() {
   if (playTimer) return stop();
   if (cur >= beats.length - 1) go(0);
@@ -349,10 +368,13 @@ for (const g of gauges) {
 }
 
 // ── Caméra guidée ────────────────────────────────────────────
-const camTarget = new THREE.Vector3(0, -1, 0), camGoalT = camTarget.clone();
-let camDist = 14, camGoalD = 14;
-const VIEW = new THREE.Vector3(1, .22, 1.15).normalize();
+const camTarget = new THREE.Vector3(0, -.6, 0), camGoalT = camTarget.clone();
+let camDist = 17, camGoalD = 17, camAz = 0, camGoalAz = 0, camEl = 5, camGoalEl = 5;
+let mode = 'intro';   // intro | story | outro
+const deg = Math.PI / 180;
+function wide() { camGoalT.set(0, -.6, 0); camGoalD = 15; camGoalEl = 4; }
 function frame(b) {
+  if (b.step.camera) { camGoalAz = b.step.camera.az; camGoalEl = b.step.camera.el; }
   const pts = [...b.light.map(P), ...b.show.flatMap(id => [paths[id].curve.getPointAt(.5)])];
   if (!pts.length) { camGoalT.set(0, -1, 0); camGoalD = 14; return; }
   const box = new THREE.Box3().setFromPoints(pts);
@@ -367,13 +389,30 @@ function resize() {
   renderer.setSize(innerWidth, innerHeight); labels.setSize(innerWidth, innerHeight);
   camera.aspect = innerWidth / innerHeight;
   // décale la scène vers la gauche pour laisser la place au panneau
-  if (innerWidth > 860) camera.setViewOffset(innerWidth, innerHeight, 230, 0, innerWidth, innerHeight); else camera.clearViewOffset();
   camera.updateProjectionMatrix();
 }
 addEventListener('resize', resize); resize();
 $('title').textContent = D.title; $('subtitle').textContent = D.subtitle;
-go(0);
+go(0); wide();
+function stage(kind) {
+  mode = kind; stop(); wide();
+  const o = kind === 'intro' ? D.intro : D.outro;
+  $('stageTitle').textContent = kind === 'intro' ? D.title : 'En résumé';
+  $('stageLead').textContent = o.lead; $('stageQ').textContent = o.question || o.close;
+  $('startPlay').textContent = kind === 'intro' ? "▶ Lancer l'histoire" : '↺ Rejouer';
+  document.body.classList.add('staged');
+}
+function enter(playIt) {
+  document.body.classList.remove('staged'); mode = 'story';
+  if (playIt || cur === beats.length - 1) go(0); else go(cur);
+  if (playIt) play();
+}
+$('startPlay').onclick = () => enter(true);
+$('startStep').onclick = () => enter(false);
+stage('intro');
 
+const G = Object.fromEntries(gauges.map(g => [g.id, g]));
+let hPhase = 0, bPhase = 0, shift = 0;
 const clock = new THREE.Clock();
 renderer.setAnimationLoop(() => {
   const dt = Math.min(clock.getDelta(), .1), t = clock.elapsedTime, b = beats[cur];
@@ -387,6 +426,13 @@ renderer.setAnimationLoop(() => {
     n.halo.material.opacity = n.lit * (.55 + .2 * Math.sin(t * 2.4));
     n.core.material.opacity = (n.s.shell ? .05 : .07) + n.lit * (n.s.shell ? .08 : .3);
   }
+  const heart = G.coeur.fn(tNow), vig = G.vigilance.fn(tNow);
+  hPhase += dt * (1.0 + heart * 1.0); bPhase += dt * (.22 + vig * .25);   // fréquences schématiques
+  const beat = Math.pow(Math.max(0, Math.sin(hPhase * Math.PI * 2)), 14), breath = Math.sin(bPhase * Math.PI * 2);
+  bodyG.scale.set(1 + .012 * breath, 1, 1 + .016 * breath);
+  fiberMat.emissive.setRGB(.5, .08, .1).multiplyScalar(beat * (.08 + heart * .5));
+  const hn = nodes.corps; hn.halo.material.opacity = Math.max(hn.halo.material.opacity, beat * (.25 + heart * .6));
+  hn.halo.scale.setScalar(hn.s.size * 5 * (1 + beat * .25));
   for (const p of Object.values(paths)) {
     p.lvl += ((b.show.includes(p.p.id) ? 1 : 0) - p.lvl) * dt * 3;
     p.line.material.opacity = .035 + p.lvl * (p.nerve ? .55 : .3);
@@ -400,10 +446,19 @@ renderer.setAnimationLoop(() => {
     }
     if (p.burst) p.burst.material.opacity = p.lvl * arrive * arrive;  // libération du neurotransmetteur
   }
-  camTarget.lerp(camGoalT, dt * 1.6);
-  camDist += (camGoalD - camDist) * dt * 1.6;
-  camera.position.copy(camTarget).addScaledVector(VIEW, camDist).add(new THREE.Vector3(mouse.x * 1.2, -mouse.y * .8, 0));
+  // mouvements lents et amortis ; en plan large, la caméra tourne autour du corps
+  if (mode !== 'story') camGoalAz += dt * 7;
+  const k = Math.min(1, dt * (mode === 'story' ? 1.1 : .6));
+  camTarget.lerp(camGoalT, k); camDist += (camGoalD - camDist) * k;
+  camAz += (camGoalAz - camAz) * k; camEl += (camGoalEl - camEl) * k;
+  const az = (camAz + 3 * Math.sin(t * .13)) * deg, el = (camEl + 2 * Math.sin(t * .09)) * deg;
+  const view = new THREE.Vector3(Math.sin(az) * Math.cos(el), Math.sin(el), Math.cos(az) * Math.cos(el));
+  camera.position.copy(camTarget).addScaledVector(view, camDist).add(new THREE.Vector3(mouse.x * 1.2, -mouse.y * .8, 0));
   camera.lookAt(camTarget);
+  // cadrage : scène à gauche du panneau en mode histoire, à droite du texte en ouverture/conclusion
+  const shiftGoal = innerWidth > 860 ? (mode === 'story' ? 230 : -innerWidth * .2) : 0;
+  shift += (shiftGoal - shift) * k;
+  camera.setViewOffset(innerWidth, innerHeight, shift, 0, innerWidth, innerHeight);
   renderer.render(scene, camera);
   labels.render(scene, camera);
 });

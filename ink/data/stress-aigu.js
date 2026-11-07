@@ -5,6 +5,15 @@ window.INK_SCENARIO = {
   "id": "stress-aigu",
   "title": "La réponse au stress aiguë",
   "subtitle": "Des millisecondes à l'heure qui suit",
+  "intro": {
+    "lead": "Un bruit, un message, un regard. En une fraction de seconde, tout le corps se met en mouvement.",
+    "question": "Que se passe-t-il, de la première milliseconde à l'heure qui suit ?"
+  },
+  "outro": {
+    "lead": "Deux vagues : l'une électrique, en quelques secondes ; l'autre hormonale, sur une heure.",
+    "close": "Puis le corps freine sa propre réaction. Le stress aigu est une réponse d'adaptation, faite pour s'éteindre."
+  },
+  "_note_camera": "camera (optionnel, par étape) : az = angle autour du corps en degrés (0 = de face), el = élévation.",
 
   "evidenceLevels": {
     "meta-analyse":   { "label": "Méta-analyse",   "rank": 5 },
@@ -70,7 +79,7 @@ window.INK_SCENARIO = {
   "_note_beats": "Chaque étape est découpée en temps courts (beats). t = secondes depuis le stimulus (positionne la frise et les jauges).",
   "steps": [
     {
-      "id": "detection", "title": "Détection", "time": "~ 0,1 seconde",
+      "id": "detection", "camera": { "az": 30, "el": 6 }, "title": "Détection", "time": "~ 0,1 seconde",
       "beats": [
         { "t": 0.02, "say": "Une information arrive par les sens : un bruit, un message, un regard.", "light": ["stimulus", "thalamus"], "show": ["p-stim-thal"] },
         { "t": 0.05, "say": "Le thalamus la relaie vers le cortex, qui l'analyse en détail…", "light": ["thalamus", "cortex"], "show": ["p-thal-ctx"] },
@@ -81,7 +90,7 @@ window.INK_SCENARIO = {
       "sources": ["ledoux-pine-2016"]
     },
     {
-      "id": "alerte", "title": "Alerte : la voie rapide", "time": "quelques secondes",
+      "id": "alerte", "camera": { "az": 65, "el": 4 }, "title": "Alerte : la voie rapide", "time": "quelques secondes",
       "beats": [
         { "t": 0.5, "say": "L'amygdale active l'hypothalamus et le tronc cérébral.", "light": ["amygdale", "hypothalamus", "tronc"], "show": ["p-amy-hyp", "p-amy-tronc"] },
         { "t": 1.5, "say": "Le locus coeruleus, dans le tronc cérébral, diffuse de la noradrénaline : la vigilance monte.", "light": ["tronc", "cortex"], "show": ["p-lc-ctx"] },
@@ -92,7 +101,7 @@ window.INK_SCENARIO = {
       "sources": ["ulrich-lai-herman-2009", "herman-2003", "mccall-2015"]
     },
     {
-      "id": "prefrontal", "title": "Le préfrontal décroche", "time": "secondes → minutes",
+      "id": "prefrontal", "camera": { "az": 15, "el": 12 }, "title": "Le préfrontal décroche", "time": "secondes → minutes",
       "beats": [
         { "t": 20, "say": "La noradrénaline (et la dopamine) afflue dans le cortex préfrontal.", "light": ["tronc", "pfc"], "show": ["p-lc-pfc"] },
         { "t": 45, "say": "Mémoire de travail et raisonnement flexible se dégradent : on réagit plus vite, on réfléchit moins bien. Utile face à un danger immédiat, moins face à un problème complexe.", "light": ["pfc"], "show": ["p-lc-pfc"] }
@@ -102,7 +111,7 @@ window.INK_SCENARIO = {
       "sources": ["arnsten-2009"]
     },
     {
-      "id": "cascade", "title": "La cascade hormonale : la voie lente", "time": "minutes",
+      "id": "cascade", "camera": { "az": 80, "el": 0 }, "title": "La cascade hormonale : la voie lente", "time": "minutes",
       "beats": [
         { "t": 90,   "say": "L'hypothalamus libère la CRH, qui stimule l'hypophyse.", "light": ["hypothalamus", "hypophyse"], "show": ["p-hyp-hypo"] },
         { "t": 300,  "say": "L'hypophyse libère l'ACTH dans le sang, jusqu'aux glandes surrénales.", "light": ["hypophyse", "cortico"], "show": ["p-hypo-cort"] },
@@ -113,7 +122,7 @@ window.INK_SCENARIO = {
       "sources": ["ulrich-lai-herman-2009", "dickerson-kemeny-2004"]
     },
     {
-      "id": "cortisol", "title": "Le cortisol agit", "time": "minutes → heures",
+      "id": "cortisol", "camera": { "az": 45, "el": 8 }, "title": "Le cortisol agit", "time": "minutes → heures",
       "beats": [
         { "t": 1800, "say": "Le cortisol mobilise l'énergie et module l'immunité.", "light": ["cortico", "corps"], "show": ["p-cort-corps"] },
         { "t": 2100, "say": "Il entre dans le cerveau et se fixe sur ses récepteurs (MR et GR), nombreux dans l'hippocampe et le cortex préfrontal.", "light": ["cortico", "hippocampe", "pfc", "amygdale"], "show": ["p-cort-hip", "p-cort-pfc", "p-cort-amy"] },
@@ -123,7 +132,7 @@ window.INK_SCENARIO = {
       "sources": ["de-kloet-2005"]
     },
     {
-      "id": "retour", "title": "Retour au calme", "time": "~ 1 heure",
+      "id": "retour", "camera": { "az": 25, "el": 4 }, "title": "Retour au calme", "time": "~ 1 heure",
       "beats": [
         { "t": 3000, "say": "Le cortisol freine sa propre production en agissant sur l'hypothalamus, l'hypophyse et l'hippocampe : c'est le rétrocontrôle négatif.", "light": ["cortico", "hypothalamus", "hypophyse", "hippocampe"], "show": ["p-cort-hyp", "p-cort-hypo", "p-cort-hip"] },
         { "t": 3600, "say": "Le parasympathique, via le nerf vague, ralentit le cœur.", "light": ["tronc", "corps"], "show": ["p-tronc-corps"] },
@@ -134,7 +143,7 @@ window.INK_SCENARIO = {
       "sources": ["de-kloet-2005", "dickerson-kemeny-2004"]
     },
     {
-      "id": "au-dela", "title": "Au-delà de « combat ou fuite »", "time": "",
+      "id": "au-dela", "camera": { "az": 0, "el": 6 }, "title": "Au-delà de « combat ou fuite »", "time": "",
       "beats": [
         { "t": 7200, "say": "La réponse au stress ne se résume pas à combattre ou fuir.", "light": [], "show": [] },
         { "t": 7200, "say": "Elle peut aussi prendre la forme d'une sidération (freeze), ou d'une recherche de lien et de soutien : le « tend-and-befriend ».", "light": [], "show": [] }
