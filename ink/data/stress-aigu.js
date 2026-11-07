@@ -38,20 +38,20 @@ window.INK_SCENARIO = {
     "cortisol":      { "label": "Cortisol",      "kind": "hormone", "color": "#2fd6b5", "speed": 0.18 }
   },
 
-  "_note_positions": "Positions schématiques dans la silhouette (y = haut/bas, z = avant/arrière). Structures paires (amygdale, hippocampe, surrénales) montrées d'un seul côté.",
+  "_note_positions": "Positions approximatives dans la Vénus de Milo (échelle 1/100, tête centrée vers y = 2) (y = haut/bas, z = avant/arrière). Structures paires (amygdale, hippocampe, surrénales) montrées d'un seul côté.",
   "structures": [
-    { "id": "stimulus",     "label": "Stimulus",          "pos": [0, 1.6, 3.3],     "size": 0.14 },
-    { "id": "thalamus",     "label": "Thalamus",          "pos": [0, 1.55, 0],      "size": 0.2 },
-    { "id": "cortex",       "label": "Cortex sensoriel",  "pos": [0, 2.45, -0.7],   "size": 0.3 },
-    { "id": "pfc",          "label": "Cortex préfrontal", "pos": [0, 2.0, 1.15],    "size": 0.32 },
-    { "id": "amygdale",     "label": "Amygdale",          "pos": [0.6, 0.95, 0.55], "size": 0.14 },
-    { "id": "hippocampe",   "label": "Hippocampe",        "pos": [0.6, 1.1, -0.3],  "size": 0.18 },
-    { "id": "hypothalamus", "label": "Hypothalamus",      "pos": [0, 1.05, 0.35],   "size": 0.15 },
-    { "id": "hypophyse",    "label": "Hypophyse",         "pos": [0, 0.62, 0.5],    "size": 0.1 },
-    { "id": "tronc",        "label": "Tronc cérébral",    "pos": [0, 0.4, -0.45],   "size": 0.18, "detail": "Locus coeruleus, noyaux du nerf vague" },
-    { "id": "corps",        "label": "Cœur & vaisseaux",  "pos": [0.35, -2.3, 0.3], "size": 0.3 },
-    { "id": "medullo",      "label": "Médullosurrénale",  "pos": [0, -3.9, -0.35],  "size": 0.12 },
-    { "id": "cortico",      "label": "Corticosurrénale",  "pos": [0, -3.9, -0.35],  "size": 0.26, "shell": true }
+    { "id": "stimulus",     "label": "Stimulus",          "pos": [0, 2.3, 3.0],     "size": 0.12 },
+    { "id": "thalamus",     "label": "Thalamus",          "pos": [0, 2.23, 0],      "size": 0.15 },
+    { "id": "cortex",       "label": "Cortex sensoriel",  "pos": [0, 2.9, -0.53],   "size": 0.22 },
+    { "id": "pfc",          "label": "Cortex préfrontal", "pos": [0, 2.57, 0.86],    "size": 0.24 },
+    { "id": "amygdale",     "label": "Amygdale",          "pos": [0.45, 1.78, 0.41], "size": 0.11 },
+    { "id": "hippocampe",   "label": "Hippocampe",        "pos": [0.45, 1.89, -0.23],  "size": 0.14 },
+    { "id": "hypothalamus", "label": "Hypothalamus",      "pos": [0, 1.85, 0.26],   "size": 0.11 },
+    { "id": "hypophyse",    "label": "Hypophyse",         "pos": [0, 1.53, 0.38],    "size": 0.08 },
+    { "id": "tronc",        "label": "Tronc cérébral",    "pos": [0, 1.37, -0.34],   "size": 0.14, "detail": "Locus coeruleus, noyaux du nerf vague" },
+    { "id": "corps",        "label": "Cœur & vaisseaux",  "pos": [1.45, -2.95, -1.55], "size": 0.3 },
+    { "id": "medullo",      "label": "Médullosurrénale",  "pos": [0.95, -3.95, -2.8],  "size": 0.11 },
+    { "id": "cortico",      "label": "Corticosurrénale",  "pos": [0.95, -3.95, -2.8],  "size": 0.22, "shell": true }
   ],
 
   "pathways": [
@@ -63,16 +63,16 @@ window.INK_SCENARIO = {
     { "id": "p-amy-tronc",   "from": "amygdale",     "to": "tronc",        "messenger": "crf", "effect": "active le locus coeruleus", "note": "Montré chez le rongeur (McCall et al., 2015). Même molécule que l'hormone CRH, utilisée ici comme neurotransmetteur. D'autres signaux accompagnent la CRH sur cette voie." },
     { "id": "p-lc-ctx",      "from": "tronc",        "to": "cortex",       "messenger": "noradrenaline", "effect": "augmente la vigilance" },
     { "id": "p-lc-pfc",      "from": "tronc",        "to": "pfc",          "messenger": "noradrenaline", "effect": "modifie son fonctionnement" },
-    { "id": "p-hyp-med",     "from": "hypothalamus", "to": "medullo",      "messenger": "acetylcholine", "channel": "nerfs sympathiques", "effect": "déclenche la libération d'adrénaline", "note": "Relais par la moelle épinière ; la dernière fibre libère de l'acétylcholine sur la médullosurrénale.", "via": [0.2, -1.6, -0.6] },
+    { "id": "p-hyp-med",     "from": "hypothalamus", "to": "medullo",      "messenger": "acetylcholine", "channel": "nerfs sympathiques", "effect": "déclenche la libération d'adrénaline", "note": "Relais par la moelle épinière ; la dernière fibre libère de l'acétylcholine sur la médullosurrénale." },
     { "id": "p-med-corps",   "from": "medullo",      "to": "corps",        "messenger": "adrenaline",    "effect": "accélère le cœur, mobilise le glucose" },
     { "id": "p-hyp-hypo",    "from": "hypothalamus", "to": "hypophyse",    "messenger": "crh",           "effect": "stimule la production d'ACTH" },
-    { "id": "p-hypo-cort",   "from": "hypophyse",    "to": "cortico",      "messenger": "acth",          "effect": "stimule la production de cortisol", "via": [-0.3, -1.6, 0.5] },
-    { "id": "p-cort-hip",    "from": "cortico",      "to": "hippocampe",   "messenger": "cortisol",      "effect": "se fixe sur ses récepteurs (MR, GR)", "via": [0.8, -1.4, -0.4] },
-    { "id": "p-cort-pfc",    "from": "cortico",      "to": "pfc",          "messenger": "cortisol",      "effect": "se fixe sur ses récepteurs (MR, GR)", "via": [0.7, -0.8, 1.3] },
-    { "id": "p-cort-amy",    "from": "cortico",      "to": "amygdale",     "messenger": "cortisol",      "effect": "se fixe sur ses récepteurs (MR, GR)", "via": [0.9, -1.2, 0.5] },
+    { "id": "p-hypo-cort",   "from": "hypophyse",    "to": "cortico",      "messenger": "acth",          "effect": "stimule la production de cortisol" },
+    { "id": "p-cort-hip",    "from": "cortico",      "to": "hippocampe",   "messenger": "cortisol",      "effect": "se fixe sur ses récepteurs (MR, GR)" },
+    { "id": "p-cort-pfc",    "from": "cortico",      "to": "pfc",          "messenger": "cortisol",      "effect": "se fixe sur ses récepteurs (MR, GR)" },
+    { "id": "p-cort-amy",    "from": "cortico",      "to": "amygdale",     "messenger": "cortisol",      "effect": "se fixe sur ses récepteurs (MR, GR)" },
     { "id": "p-cort-corps",  "from": "cortico",      "to": "corps",        "messenger": "cortisol",      "effect": "mobilise l'énergie, module l'immunité" },
-    { "id": "p-cort-hyp",    "from": "cortico",      "to": "hypothalamus", "messenger": "cortisol",      "effect": "freine la production de CRH", "via": [0.4, -1.4, 0.1] },
-    { "id": "p-cort-hypo",   "from": "cortico",      "to": "hypophyse",    "messenger": "cortisol",      "effect": "freine la production d'ACTH", "via": [-0.4, -1.5, 0.3] },
+    { "id": "p-cort-hyp",    "from": "cortico",      "to": "hypothalamus", "messenger": "cortisol",      "effect": "freine la production de CRH" },
+    { "id": "p-cort-hypo",   "from": "cortico",      "to": "hypophyse",    "messenger": "cortisol",      "effect": "freine la production d'ACTH" },
     { "id": "p-tronc-corps", "from": "tronc",        "to": "corps",        "messenger": "acetylcholine", "channel": "nerf vague", "effect": "ralentit le cœur" }
   ],
 

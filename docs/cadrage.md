@@ -30,7 +30,7 @@ Objectifs d'apprentissage : **3D web** et **architecture orientée données**.
 | Direction artistique | Hybride : lavis d'encre pour le décor et la profondeur (le *où*) + filaments colorés et pulsants pour les signaux (le *quoi* et le *quand*) |
 | Inspirations | Encre sur papier (sumi-e) ; filaments de génériques de séries ; formes mathématiques ; couleurs et pulsations |
 | Couleurs | Libres pour ce début de projet |
-| Corps | Enveloppe de verre (effet de Fresnel : seuls les bords s'allument), couleur froide et pâle |
+| Corps | Vénus de Milo (scan du moulage SMK, CC0) rendue en verre : liseré de lumière (Fresnel), dégradé violet → bleu pâle, contre-jour violet ; le corps se dissout sous les hanches. Structures replacées dans la statue (positions approximatives) |
 | Cerveau | À repenser. Les faisceaux façon tractographie sont retirés (ils masquaient l'information). Contour de verre conservé |
 | Expérience principale | Le mode « Jouer » : une histoire scénarisée qui se déroule seule. Le rythme lent peut devenir un choix contemplatif |
 | Emplacement | Dossier à part (`ink/`), la carte existante n'est pas touchée |
