@@ -16,137 +16,138 @@ window.INK_SCENARIO = {
     "temoignage":     { "label": "Témoignage",     "rank": 1 }
   },
 
+  "_note_messengers": "kind = nerf : signal ciblé, rapide, le long d'une fibre. kind = hormone : diffusion lente dans le sang.",
   "messengers": {
-    "nerf":          { "label": "Signal nerveux",  "color": "#e8e4dc", "speed": 1.6 },
-    "noradrenaline": { "label": "Noradrénaline",   "color": "#ffb020", "speed": 1.2 },
-    "adrenaline":    { "label": "Adrénaline",      "color": "#ff4d4d", "speed": 0.8 },
-    "crh":           { "label": "CRH",             "color": "#b07cff", "speed": 0.5 },
-    "acth":          { "label": "ACTH",            "color": "#4da3ff", "speed": 0.35 },
-    "cortisol":      { "label": "Cortisol",        "color": "#2fd6b5", "speed": 0.25 },
-    "vague":         { "label": "Nerf vague",      "color": "#9be15d", "speed": 0.9 }
+    "nerf":          { "label": "Influx nerveux", "kind": "nerf",    "color": "#f2ede4", "speed": 1.4 },
+    "noradrenaline": { "label": "Noradrénaline",  "kind": "nerf",    "color": "#ffb020", "speed": 1.0 },
+    "adrenaline":    { "label": "Adrénaline",     "kind": "hormone", "color": "#ff4d5e", "speed": 0.5 },
+    "crh":           { "label": "CRH",            "kind": "hormone", "color": "#b07cff", "speed": 0.35 },
+    "acth":          { "label": "ACTH",           "kind": "hormone", "color": "#4da3ff", "speed": 0.25 },
+    "cortisol":      { "label": "Cortisol",       "kind": "hormone", "color": "#2fd6b5", "speed": 0.18 },
+    "vague":         { "label": "Nerf vague",     "kind": "nerf",    "color": "#9be15d", "speed": 0.9 }
   },
 
-  "_note_positions": "Positions schématiques (y = haut/bas, z = avant/arrière). Pas une anatomie à l'échelle.",
+  "_note_positions": "Positions schématiques dans la silhouette (y = haut/bas, z = avant/arrière). Structures paires (amygdale, hippocampe, surrénales) montrées d'un seul côté.",
   "structures": [
-    { "id": "stimulus",     "label": "Stimulus",               "pos": [0, 1.4, 3.6],   "size": 0.18, "kind": "monde" },
-    { "id": "thalamus",     "label": "Thalamus",               "pos": [0, 1.0, 0],     "size": 0.28 },
-    { "id": "cortex",       "label": "Cortex sensoriel",       "pos": [0, 2.3, -0.6],  "size": 0.4 },
-    { "id": "pfc",          "label": "Cortex préfrontal",      "pos": [0, 1.9, 1.7],   "size": 0.42 },
-    { "id": "amygdale",     "label": "Amygdale",               "pos": [1.0, 0.3, 0.6], "size": 0.22 },
-    { "id": "hippocampe",   "label": "Hippocampe",             "pos": [1.2, 0.5, -0.5],"size": 0.26 },
-    { "id": "hypothalamus", "label": "Hypothalamus",           "pos": [0, 0.25, 0.5],  "size": 0.22 },
-    { "id": "hypophyse",    "label": "Hypophyse",              "pos": [0, -0.35, 0.7], "size": 0.14 },
-    { "id": "tronc",        "label": "Tronc cérébral",         "pos": [0, -0.8, -0.7], "size": 0.26, "detail": "Locus coeruleus, noyaux du nerf vague" },
-    { "id": "medullo",      "label": "Médullosurrénale",       "pos": [0, -3.2, 0],    "size": 0.16, "kind": "corps" },
-    { "id": "cortico",      "label": "Corticosurrénale",       "pos": [0, -3.2, 0],    "size": 0.32, "kind": "corps", "shell": true },
-    { "id": "corps",        "label": "Cœur & corps",           "pos": [-1.6, -2.4, 0.4],"size": 0.36, "kind": "corps" }
+    { "id": "stimulus",     "label": "Stimulus",          "pos": [0, 1.6, 3.3],     "size": 0.14 },
+    { "id": "thalamus",     "label": "Thalamus",          "pos": [0, 1.55, 0],      "size": 0.2 },
+    { "id": "cortex",       "label": "Cortex sensoriel",  "pos": [0, 2.45, -0.7],   "size": 0.3 },
+    { "id": "pfc",          "label": "Cortex préfrontal", "pos": [0, 2.0, 1.15],    "size": 0.32 },
+    { "id": "amygdale",     "label": "Amygdale",          "pos": [0.6, 0.95, 0.55], "size": 0.14 },
+    { "id": "hippocampe",   "label": "Hippocampe",        "pos": [0.6, 1.1, -0.3],  "size": 0.18 },
+    { "id": "hypothalamus", "label": "Hypothalamus",      "pos": [0, 1.05, 0.35],   "size": 0.15 },
+    { "id": "hypophyse",    "label": "Hypophyse",         "pos": [0, 0.62, 0.5],    "size": 0.1 },
+    { "id": "tronc",        "label": "Tronc cérébral",    "pos": [0, 0.4, -0.45],   "size": 0.18, "detail": "Locus coeruleus, noyaux du nerf vague" },
+    { "id": "corps",        "label": "Cœur & vaisseaux",  "pos": [0.35, -2.3, 0.3], "size": 0.3 },
+    { "id": "medullo",      "label": "Médullosurrénale",  "pos": [0, -3.9, -0.35],  "size": 0.12 },
+    { "id": "cortico",      "label": "Corticosurrénale",  "pos": [0, -3.9, -0.35],  "size": 0.26, "shell": true }
   ],
 
   "pathways": [
-    { "id": "p-stim-thal",   "from": "stimulus",     "to": "thalamus",     "messenger": "nerf" },
-    { "id": "p-thal-amy",    "from": "thalamus",     "to": "amygdale",     "messenger": "nerf" },
-    { "id": "p-thal-ctx",    "from": "thalamus",     "to": "cortex",       "messenger": "nerf" },
-    { "id": "p-ctx-amy",     "from": "cortex",       "to": "amygdale",     "messenger": "nerf" },
-    { "id": "p-amy-hyp",     "from": "amygdale",     "to": "hypothalamus", "messenger": "nerf" },
-    { "id": "p-amy-tronc",   "from": "amygdale",     "to": "tronc",        "messenger": "nerf" },
-    { "id": "p-lc-ctx",      "from": "tronc",        "to": "cortex",       "messenger": "noradrenaline" },
-    { "id": "p-lc-pfc",      "from": "tronc",        "to": "pfc",          "messenger": "noradrenaline" },
-    { "id": "p-hyp-med",     "from": "hypothalamus", "to": "medullo",      "messenger": "nerf", "via": [0.4, -1.8, -0.4] },
-    { "id": "p-med-corps",   "from": "medullo",      "to": "corps",        "messenger": "adrenaline" },
-    { "id": "p-hyp-hypo",    "from": "hypothalamus", "to": "hypophyse",    "messenger": "crh" },
-    { "id": "p-hypo-cort",   "from": "hypophyse",    "to": "cortico",      "messenger": "acth", "via": [-0.6, -1.8, 0.8] },
-    { "id": "p-cort-hip",    "from": "cortico",      "to": "hippocampe",   "messenger": "cortisol", "via": [1.6, -1.4, 0] },
-    { "id": "p-cort-pfc",    "from": "cortico",      "to": "pfc",          "messenger": "cortisol", "via": [0.9, -0.6, 2.2] },
-    { "id": "p-cort-amy",    "from": "cortico",      "to": "amygdale",     "messenger": "cortisol", "via": [1.4, -1.2, 0.9] },
-    { "id": "p-cort-corps",  "from": "cortico",      "to": "corps",        "messenger": "cortisol" },
-    { "id": "p-cort-hyp",    "from": "cortico",      "to": "hypothalamus", "messenger": "cortisol", "via": [0.5, -1.4, 0.6] },
-    { "id": "p-cort-hypo",   "from": "cortico",      "to": "hypophyse",    "messenger": "cortisol", "via": [-0.3, -1.6, 1.1] },
-    { "id": "p-tronc-corps", "from": "tronc",        "to": "corps",        "messenger": "vague" }
+    { "id": "p-stim-thal",   "from": "stimulus",     "to": "thalamus",     "messenger": "nerf",          "effect": "transmet l'information sensorielle" },
+    { "id": "p-thal-amy",    "from": "thalamus",     "to": "amygdale",     "messenger": "nerf",          "effect": "transmet l'information" },
+    { "id": "p-thal-ctx",    "from": "thalamus",     "to": "cortex",       "messenger": "nerf",          "effect": "transmet pour une analyse détaillée" },
+    { "id": "p-ctx-amy",     "from": "cortex",       "to": "amygdale",     "messenger": "nerf",          "effect": "transmet l'information analysée" },
+    { "id": "p-amy-hyp",     "from": "amygdale",     "to": "hypothalamus", "messenger": "nerf",          "effect": "active la réponse de stress" },
+    { "id": "p-amy-tronc",   "from": "amygdale",     "to": "tronc",        "messenger": "nerf",          "effect": "active le locus coeruleus" },
+    { "id": "p-lc-ctx",      "from": "tronc",        "to": "cortex",       "messenger": "noradrenaline", "effect": "augmente la vigilance" },
+    { "id": "p-lc-pfc",      "from": "tronc",        "to": "pfc",          "messenger": "noradrenaline", "effect": "modifie son fonctionnement" },
+    { "id": "p-hyp-med",     "from": "hypothalamus", "to": "medullo",      "messenger": "nerf",          "effect": "déclenche la libération d'adrénaline (voie sympathique)", "via": [0.2, -1.6, -0.6] },
+    { "id": "p-med-corps",   "from": "medullo",      "to": "corps",        "messenger": "adrenaline",    "effect": "accélère le cœur, mobilise le glucose" },
+    { "id": "p-hyp-hypo",    "from": "hypothalamus", "to": "hypophyse",    "messenger": "crh",           "effect": "stimule la production d'ACTH" },
+    { "id": "p-hypo-cort",   "from": "hypophyse",    "to": "cortico",      "messenger": "acth",          "effect": "stimule la production de cortisol", "via": [-0.3, -1.6, 0.5] },
+    { "id": "p-cort-hip",    "from": "cortico",      "to": "hippocampe",   "messenger": "cortisol",      "effect": "se fixe sur ses récepteurs (MR, GR)", "via": [0.8, -1.4, -0.4] },
+    { "id": "p-cort-pfc",    "from": "cortico",      "to": "pfc",          "messenger": "cortisol",      "effect": "se fixe sur ses récepteurs (MR, GR)", "via": [0.7, -0.8, 1.3] },
+    { "id": "p-cort-amy",    "from": "cortico",      "to": "amygdale",     "messenger": "cortisol",      "effect": "se fixe sur ses récepteurs (MR, GR)", "via": [0.9, -1.2, 0.5] },
+    { "id": "p-cort-corps",  "from": "cortico",      "to": "corps",        "messenger": "cortisol",      "effect": "mobilise l'énergie, module l'immunité" },
+    { "id": "p-cort-hyp",    "from": "cortico",      "to": "hypothalamus", "messenger": "cortisol",      "effect": "freine la production de CRH", "via": [0.4, -1.4, 0.1] },
+    { "id": "p-cort-hypo",   "from": "cortico",      "to": "hypophyse",    "messenger": "cortisol",      "effect": "freine la production d'ACTH", "via": [-0.4, -1.5, 0.3] },
+    { "id": "p-tronc-corps", "from": "tronc",        "to": "corps",        "messenger": "vague",         "effect": "ralentit le cœur" }
   ],
 
+  "_note_beats": "Chaque étape est découpée en temps courts (beats). t = secondes depuis le stimulus (positionne la frise et les jauges).",
   "steps": [
     {
-      "id": "detection",
-      "title": "Détection",
-      "time": "~ 0,1 seconde",
-      "t": 0.1,
-      "structures": ["stimulus", "thalamus", "cortex", "amygdale"],
-      "pathways": ["p-stim-thal", "p-thal-amy", "p-thal-ctx", "p-ctx-amy"],
-      "text": "Une information arrive par les sens : un bruit, un message, un regard. Le thalamus la relaie vers le cortex et vers l'amygdale, qui évalue sa pertinence : est-ce important ? est-ce une menace ?",
+      "id": "detection", "title": "Détection", "time": "~ 0,1 seconde",
+      "beats": [
+        { "t": 0.02, "say": "Une information arrive par les sens : un bruit, un message, un regard.", "light": ["stimulus", "thalamus"], "show": ["p-stim-thal"] },
+        { "t": 0.05, "say": "Le thalamus la relaie vers le cortex, qui l'analyse en détail…", "light": ["thalamus", "cortex"], "show": ["p-thal-ctx"] },
+        { "t": 0.1,  "say": "… et vers l'amygdale, qui évalue : est-ce important ? est-ce une menace ?", "light": ["thalamus", "cortex", "amygdale"], "show": ["p-thal-amy", "p-ctx-amy"] }
+      ],
       "simplification": "L'amygdale n'est pas « le centre de la peur » : elle signale ce qui est saillant, et le ressenti conscient de peur implique d'autres circuits. La voie directe thalamus → amygdale est bien établie chez le rat, débattue chez l'humain.",
       "evidence": ["revue", "modele-animal"],
       "sources": ["ledoux-pine-2016"]
     },
     {
-      "id": "alerte",
-      "title": "Alerte : la voie rapide",
-      "time": "quelques secondes",
-      "t": 3,
-      "structures": ["amygdale", "hypothalamus", "tronc", "cortex", "medullo", "corps"],
-      "pathways": ["p-amy-hyp", "p-amy-tronc", "p-lc-ctx", "p-hyp-med", "p-med-corps"],
-      "text": "L'amygdale active l'hypothalamus et le tronc cérébral. Le locus coeruleus diffuse de la noradrénaline dans le cerveau : la vigilance augmente. Par le système nerveux sympathique, la médullosurrénale libère de l'adrénaline dans le sang : cœur plus rapide, pression artérielle en hausse, glucose mobilisé.",
+      "id": "alerte", "title": "Alerte : la voie rapide", "time": "quelques secondes",
+      "beats": [
+        { "t": 0.5, "say": "L'amygdale active l'hypothalamus et le tronc cérébral.", "light": ["amygdale", "hypothalamus", "tronc"], "show": ["p-amy-hyp", "p-amy-tronc"] },
+        { "t": 1.5, "say": "Le locus coeruleus, dans le tronc cérébral, diffuse de la noradrénaline : la vigilance monte.", "light": ["tronc", "cortex"], "show": ["p-lc-ctx"] },
+        { "t": 3,   "say": "Par les nerfs sympathiques, l'hypothalamus déclenche la médullosurrénale.", "light": ["hypothalamus", "medullo"], "show": ["p-hyp-med"] },
+        { "t": 8,   "say": "Elle libère de l'adrénaline dans le sang : le cœur accélère, la tension monte, le glucose est mobilisé.", "light": ["medullo", "corps"], "show": ["p-med-corps"] }
+      ],
       "evidence": ["consensus", "revue"],
       "sources": ["ulrich-lai-herman-2009"]
     },
     {
-      "id": "prefrontal",
-      "title": "Le préfrontal décroche",
-      "time": "secondes → minutes",
-      "t": 40,
-      "structures": ["tronc", "pfc"],
-      "pathways": ["p-lc-pfc"],
-      "text": "Un niveau élevé de noradrénaline et de dopamine modifie le fonctionnement du cortex préfrontal : la mémoire de travail et le raisonnement flexible se dégradent, au profit de réactions plus rapides et plus automatiques. Utile face à un danger immédiat, moins face à un problème complexe.",
+      "id": "prefrontal", "title": "Le préfrontal décroche", "time": "secondes → minutes",
+      "beats": [
+        { "t": 20, "say": "La noradrénaline (et la dopamine) afflue dans le cortex préfrontal.", "light": ["tronc", "pfc"], "show": ["p-lc-pfc"] },
+        { "t": 45, "say": "Mémoire de travail et raisonnement flexible se dégradent : on réagit plus vite, on réfléchit moins bien. Utile face à un danger immédiat, moins face à un problème complexe.", "light": ["pfc"], "show": ["p-lc-pfc"] }
+      ],
       "simplification": "Mécanisme décrit surtout chez l'animal. Chez l'humain, les effets existent mais varient selon les tâches et les personnes. L'idée d'un basculement vers les habitudes est débattue (résultats de réplication mitigés).",
       "evidence": ["revue", "modele-animal"],
       "sources": ["arnsten-2009"]
     },
     {
-      "id": "cascade",
-      "title": "La cascade hormonale : la voie lente",
-      "time": "minutes",
-      "t": 900,
-      "structures": ["hypothalamus", "hypophyse", "cortico"],
-      "pathways": ["p-hyp-hypo", "p-hypo-cort"],
-      "text": "L'hypothalamus libère la CRH, qui stimule l'hypophyse. L'hypophyse libère l'ACTH dans le sang. Arrivée aux glandes surrénales, l'ACTH déclenche la production de cortisol par la corticosurrénale. Le cortisol culmine environ 20 à 40 minutes après le début du stress.",
-      "insight": "Les situations qui font le plus monter le cortisol combinent deux ingrédients : l'absence de contrôle et le jugement social (méta-analyse de 208 études).",
+      "id": "cascade", "title": "La cascade hormonale : la voie lente", "time": "minutes",
+      "beats": [
+        { "t": 90,   "say": "L'hypothalamus libère la CRH, qui stimule l'hypophyse.", "light": ["hypothalamus", "hypophyse"], "show": ["p-hyp-hypo"] },
+        { "t": 300,  "say": "L'hypophyse libère l'ACTH dans le sang, jusqu'aux glandes surrénales.", "light": ["hypophyse", "cortico"], "show": ["p-hypo-cort"] },
+        { "t": 900,  "say": "La corticosurrénale produit du cortisol. Il culmine environ 20 à 40 minutes après le début du stress.", "light": ["cortico"], "show": ["p-hypo-cort"] },
+        { "t": 1200, "kind": "insight", "say": "Ce qui fait le plus monter le cortisol : l'absence de contrôle, combinée au jugement des autres.", "light": ["cortico"], "show": [] }
+      ],
       "evidence": ["consensus", "meta-analyse"],
       "sources": ["ulrich-lai-herman-2009", "dickerson-kemeny-2004"]
     },
     {
-      "id": "cortisol",
-      "title": "Le cortisol agit",
-      "time": "minutes → heures",
-      "t": 2100,
-      "structures": ["cortico", "hippocampe", "pfc", "amygdale", "corps"],
-      "pathways": ["p-cort-hip", "p-cort-pfc", "p-cort-amy", "p-cort-corps"],
-      "text": "Le cortisol mobilise l'énergie et module l'immunité. Il entre dans le cerveau et se fixe sur deux types de récepteurs (MR et GR), nombreux dans l'hippocampe et le cortex préfrontal. Ses effets sont plus lents et plus durables que ceux de l'adrénaline, notamment sur la mémorisation de l'événement.",
+      "id": "cortisol", "title": "Le cortisol agit", "time": "minutes → heures",
+      "beats": [
+        { "t": 1800, "say": "Le cortisol mobilise l'énergie et module l'immunité.", "light": ["cortico", "corps"], "show": ["p-cort-corps"] },
+        { "t": 2100, "say": "Il entre dans le cerveau et se fixe sur ses récepteurs (MR et GR), nombreux dans l'hippocampe et le cortex préfrontal.", "light": ["cortico", "hippocampe", "pfc", "amygdale"], "show": ["p-cort-hip", "p-cort-pfc", "p-cort-amy"] },
+        { "t": 2400, "say": "Ses effets sont plus lents et plus durables que ceux de l'adrénaline, notamment sur la mémorisation de l'événement.", "light": ["hippocampe", "pfc", "amygdale"], "show": ["p-cort-hip", "p-cort-pfc", "p-cort-amy"] }
+      ],
       "evidence": ["revue"],
       "sources": ["de-kloet-2005"]
     },
     {
-      "id": "retour",
-      "title": "Retour au calme",
-      "time": "~ 1 heure",
-      "t": 4000,
-      "structures": ["cortico", "hypothalamus", "hypophyse", "hippocampe", "tronc", "corps"],
-      "pathways": ["p-cort-hyp", "p-cort-hypo", "p-cort-hip", "p-tronc-corps"],
-      "text": "Le cortisol freine sa propre production : en se fixant sur ses récepteurs dans l'hypothalamus, l'hypophyse et l'hippocampe, il réduit la libération de CRH et d'ACTH (rétrocontrôle négatif). Le parasympathique, via le nerf vague, ralentit le cœur. En laboratoire, le cortisol revient en général vers son niveau de base dans l'heure qui suit la fin du stress.",
+      "id": "retour", "title": "Retour au calme", "time": "~ 1 heure",
+      "beats": [
+        { "t": 3000, "say": "Le cortisol freine sa propre production en agissant sur l'hypothalamus, l'hypophyse et l'hippocampe : c'est le rétrocontrôle négatif.", "light": ["cortico", "hypothalamus", "hypophyse", "hippocampe"], "show": ["p-cort-hyp", "p-cort-hypo", "p-cort-hip"] },
+        { "t": 3600, "say": "Le parasympathique, via le nerf vague, ralentit le cœur.", "light": ["tronc", "corps"], "show": ["p-tronc-corps"] },
+        { "t": 5400, "say": "En laboratoire, le cortisol revient en général vers son niveau de base dans l'heure qui suit la fin du stress.", "light": ["cortico"], "show": [] }
+      ],
       "toVerify": "Durées exactes de récupération dans Dickerson & Kemeny (2004) : à confirmer dans le texte intégral.",
       "evidence": ["consensus", "meta-analyse"],
       "sources": ["de-kloet-2005", "dickerson-kemeny-2004"]
     },
     {
-      "id": "au-dela",
-      "title": "Au-delà de « combat ou fuite »",
-      "time": "",
-      "t": null,
-      "structures": [],
-      "pathways": [],
-      "text": "La réponse au stress ne se résume pas à combattre ou fuir. Elle peut aussi prendre la forme d'une sidération (freeze), ou d'une recherche de lien et de soutien : le « tend-and-befriend ».",
+      "id": "au-dela", "title": "Au-delà de « combat ou fuite »", "time": "",
+      "beats": [
+        { "t": 7200, "say": "La réponse au stress ne se résume pas à combattre ou fuir.", "light": [], "show": [] },
+        { "t": 7200, "say": "Elle peut aussi prendre la forme d'une sidération (freeze), ou d'une recherche de lien et de soutien : le « tend-and-befriend ».", "light": [], "show": [] }
+      ],
       "simplification": "Le « tend-and-befriend » est une hypothèse théorique influente, encore discutée.",
       "evidence": ["revue"],
       "sources": ["taylor-2000"]
     }
+  ],
+
+  "_note_gauges": "Courbes SCHÉMATIQUES (formes et ordres de grandeur), pas des mesures. f(t), t en secondes, valeur 0..1.",
+  "gauges": [
+    { "id": "coeur",     "label": "Rythme cardiaque", "color": "#ff4d5e", "f": "(1-Math.exp(-t/2))*Math.exp(-t/1500)" },
+    { "id": "vigilance", "label": "Vigilance",        "color": "#ffb020", "f": "(1-Math.exp(-t/0.8))*Math.exp(-t/900)" },
+    { "id": "cortisol",  "label": "Cortisol",         "color": "#2fd6b5", "f": "Math.pow(t/1800,3)*Math.exp(3*(1-t/1800))" }
   ],
 
   "sources": {
