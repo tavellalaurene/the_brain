@@ -93,7 +93,7 @@
   .lever .more p { margin: 0 0 6px; }
   .goal { display: inline-block; font: 600 11px system-ui, sans-serif; padding: 1px 8px; border-radius: 99px; margin-right: 6px;
     border: 1px solid var(--gold); color: var(--gold); text-transform: uppercase; letter-spacing: .05em; }
-  #stageLevers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 20px; font: 14px/1.4 system-ui, sans-serif; color: #d9d3c9; }
+  #stageLevers { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 20px; font: 14px/1.4 system-ui, sans-serif; color: #d9d3c9; }
   #stageLevers ul { margin: 0; padding-left: 16px; }
   #stageLevers:empty { display: none; }
   #credit { position: fixed; right: 16px; bottom: 6px; font-size: 11px; color: var(--muted); opacity: .6; text-decoration: none; }
@@ -643,7 +643,8 @@ function stage(kind) {
   $('stageLead').textContent = o.lead; $('stageQ').textContent = o.question || o.close;
   $('startPlay').textContent = kind === 'intro' ? "▶ Lancer l'histoire" : '↺ Rejouer';
   $('stageLevers').innerHTML = kind === 'intro' ? '' : Object.entries(GOALS).map(([g, name]) =>
-    `<div><h3>${name}</h3><ul>${D.levers.filter(l => l.goal === g).map(l => `<li>${esc(l.label)}</li>`).join('')}</ul></div>`).join('');
+    `<div><h3>${name}</h3><ul>${D.levers.filter(l => l.horizon === 'moment' && l.goal === g).map(l => `<li>${esc(l.label)}</li>`).join('')}</ul></div>`).join('') +
+    `<div><h3>Sur le long terme</h3><ul>${D.levers.filter(l => l.horizon === 'fond').map(l => `<li>${esc(l.label)}</li>`).join('')}</ul></div>`;
   document.body.classList.add('staged');
 }
 function enter(playIt) {

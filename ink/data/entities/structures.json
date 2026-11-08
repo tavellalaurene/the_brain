@@ -165,8 +165,9 @@
       "level": "T12",
       "depth": 0.75,
       "leftMm": 45,
-      "status": "a-verifier",
-      "note": "Surrénale gauche, en arrière, vers T11-T12."
+      "status": "source",
+      "note": "Surrénale gauche, en arrière, au niveau T12 (le plus fréquent : 40 % des hommes, 51 % des femmes, scanner de 420 adultes de 50 à 84 ans).",
+      "source": "akin-2017"
     }
   },
   {
@@ -179,8 +180,9 @@
       "level": "T12",
       "depth": 0.75,
       "leftMm": 45,
-      "status": "a-verifier",
-      "note": "Surrénale gauche, en arrière, vers T11-T12."
+      "status": "source",
+      "note": "Surrénale gauche, en arrière, au niveau T12 (le plus fréquent : 40 % des hommes, 51 % des femmes, scanner de 420 adultes de 50 à 84 ans).",
+      "source": "akin-2017"
     }
   }
 ]

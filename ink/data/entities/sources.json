@@ -103,5 +103,35 @@
     "cite": "Jamieson et al. (2012). Mind over matter: reappraising arousal improves cardiovascular and cognitive responses to stress. Journal of Experimental Psychology: General.",
     "url": "https://doi.org/10.1037/a0025719",
     "level": "essai-randomise"
+  },
+  "maier-seligman-2016": {
+    "cite": "Maier & Seligman (2016). Learned helplessness at fifty: insights from neuroscience. Psychological Review.",
+    "url": "https://doi.org/10.1037/rev0000033",
+    "level": "modele-animal"
+  },
+  "kohl-2012": {
+    "cite": "Kohl, Rief & Glombiewski (2012). How effective are acceptance strategies? A meta-analytic review of experimental results. Journal of Behavior Therapy and Experimental Psychiatry.",
+    "url": "https://doi.org/10.1016/j.jbtep.2012.03.004",
+    "level": "meta-analyse"
+  },
+  "minkel-2014": {
+    "cite": "Minkel et al. (2014). Sleep deprivation potentiates HPA axis stress reactivity in healthy adults. Health Psychology.",
+    "url": "https://doi.org/10.1037/a0034219",
+    "level": "essai-randomise"
+  },
+  "mucke-2018": {
+    "cite": "Mücke et al. (2018). Influence of regular physical activity and fitness on stress reactivity as measured with the Trier Social Stress Test protocol: a systematic review. Sports Medicine.",
+    "url": "https://doi.org/10.1007/s40279-018-0979-0",
+    "level": "revue"
+  },
+  "carpenter-2018": {
+    "cite": "Carpenter et al. (2018). Cognitive behavioral therapy for anxiety and related disorders: a meta-analysis of randomized placebo-controlled trials. Depression and Anxiety.",
+    "url": "https://doi.org/10.1002/da.22728",
+    "level": "meta-analyse"
+  },
+  "akin-2017": {
+    "cite": "Akin et al. (2017). Morphometric analysis of suprarenal glands (adrenal glands) with multislice computerized tomography. International Journal of Morphology.",
+    "url": "https://doi.org/10.4067/S0717-95022017000100020",
+    "level": "etude-limitee"
   }
 }

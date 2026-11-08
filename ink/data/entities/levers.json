@@ -13,13 +13,12 @@
         "amygdale"
       ],
       "pathways": [
-        "p-ctx-amy",
-        "p-thal-amy"
+        "p-ctx-amy"
       ]
     },
-    "how": "Changer l'interprétation avant qu'elle ne s'emballe : « c'est un défi », « je peux apprendre de ça ».",
+    "how": "Changer l'interprétation avant qu'elle ne s'emballe. Exemples : « c'est un défi », « je peux apprendre de ça ».",
     "mechanism": "La réévaluation mobilise des régions de contrôle (préfrontales et pariétales) qui modulent la réponse de l'amygdale.",
-    "effect": "Effet petit à moyen sur les émotions (méta-analyse de 306 comparaisons expérimentales).",
+    "effect": "Effet petit à moyen sur les émotions en général, pas spécifiquement sur le stress (méta-analyse de 306 comparaisons expérimentales).",
     "caveat": "Le stress aigu dégrade justement cette capacité (le préfrontal décroche) : elle s'entraîne à froid, et s'utilise tôt.",
     "evidence": [
       "meta-analyse"
@@ -28,7 +27,8 @@
       "buhle-2014",
       "webb-2012",
       "raio-2013"
-    ]
+    ],
+    "horizon": "moment"
   },
   {
     "id": "controle",
@@ -39,22 +39,23 @@
     ],
     "actsOn": {
       "structures": [
-        "hypothalamus"
+        "pfc"
       ],
-      "pathways": [
-        "p-hyp-hypo"
-      ]
+      "pathways": []
     },
     "how": "Préparer, découper la tâche, savoir ce qui va se passer, repérer ce qui dépend de soi.",
-    "mechanism": "Les situations incontrôlables et jugées par les autres déclenchent les plus fortes réponses de cortisol.",
+    "mechanism": "Les situations incontrôlables et jugées par les autres déclenchent les plus fortes réponses de cortisol. Chez l'animal, détecter qu'on a du contrôle mobilise le cortex préfrontal médian, qui freine automatiquement la réponse au stress.",
     "effect": "Incontrôlabilité et jugement social : la combinaison associée aux plus fortes montées de cortisol (méta-analyse de 208 études).",
-    "caveat": "La méta-analyse montre l'effet de l'incontrôlabilité. Qu'un contrôle retrouvé réduise la réponse est une déduction raisonnable, moins testée directement.",
+    "caveat": "La méta-analyse montre l'effet de l'incontrôlabilité ; le mécanisme du contrôle est surtout établi chez l'animal. Qu'un contrôle retrouvé réduise la réponse humaine est une déduction raisonnable, moins testée directement.",
     "evidence": [
-      "meta-analyse"
+      "meta-analyse",
+      "modele-animal"
     ],
     "sources": [
-      "dickerson-kemeny-2004"
-    ]
+      "dickerson-kemeny-2004",
+      "maier-seligman-2016"
+    ],
+    "horizon": "moment"
   },
   {
     "id": "respiration",
@@ -76,7 +77,7 @@
     "how": "Quelques minutes d'expirations plus longues que les inspirations. Exemple : le soupir cyclique, deux inspirations par le nez puis une longue expiration par la bouche.",
     "mechanism": "Ralentir la respiration sollicite le parasympathique (nerf vague), qui ralentit le cœur.",
     "effect": "Essai randomisé : 5 minutes par jour pendant un mois améliorent l'humeur et réduisent la fréquence respiratoire, davantage que la méditation de pleine conscience.",
-    "caveat": "Effet mesuré sur une pratique quotidienne, pas sur l'effet immédiat en pleine situation de stress.",
+    "caveat": "Les effets immédiats sur le système nerveux autonome (variabilité cardiaque) sont décrits par la revue ; l'effet sur l'humeur est mesuré sur une pratique quotidienne d'un mois.",
     "evidence": [
       "essai-randomise",
       "revue"
@@ -84,7 +85,8 @@
     "sources": [
       "balban-2023",
       "zaccaro-2018"
-    ]
+    ],
+    "horizon": "moment"
   },
   {
     "id": "soutien",
@@ -112,7 +114,8 @@
     ],
     "sources": [
       "heinrichs-2003"
-    ]
+    ],
+    "horizon": "moment"
   },
   {
     "id": "activation-ressource",
@@ -133,13 +136,98 @@
     "how": "Se dire que le cœur qui bat et l'énergie qui monte préparent le corps à agir, plutôt que lutter contre.",
     "mechanism": "Réinterpréter l'activation physiologique comme utile modifie la réponse cardiovasculaire.",
     "effect": "Essai randomisé : profil cardiovasculaire plus adaptatif (meilleure efficacité cardiaque, moindre résistance vasculaire) et moins d'attention captée par le négatif.",
-    "caveat": "Études de taille limitée, surtout en laboratoire.",
+    "caveat": "Études de taille limitée, surtout en laboratoire. Proche de la réévaluation (on réévalue ses sensations), et ses effets mesurés relèvent aussi de « réduire ».",
     "evidence": [
       "essai-randomise",
       "etude-limitee"
     ],
     "sources": [
       "jamieson-2012"
+    ],
+    "horizon": "moment"
+  },
+  {
+    "id": "accueillir",
+    "label": "Accueillir l'inconfort",
+    "goal": "accepter",
+    "horizon": "moment",
+    "steps": [
+      "retour"
+    ],
+    "actsOn": {},
+    "how": "Laisser la sensation être là, l'observer sans chercher à la supprimer ni à la juger, en sachant qu'elle va redescendre.",
+    "mechanism": "Plutôt que de modifier l'émotion, on change sa relation à elle : on la laisse passer.",
+    "effect": "Méta-analyse de 30 études expérimentales : l'acceptation fait mieux que d'autres stratégies pour la tolérance à la douleur (effet petit à moyen) ; plusieurs études rapportent aussi moins d'émotions négatives.",
+    "caveat": "L'avantage net est établi surtout pour la tolérance à l'inconfort physique ; pour les émotions, les résultats sont plus mitigés.",
+    "evidence": [
+      "meta-analyse"
+    ],
+    "sources": [
+      "kohl-2012"
+    ]
+  },
+  {
+    "id": "sommeil",
+    "label": "Dormir suffisamment",
+    "goal": "reduire",
+    "horizon": "fond",
+    "steps": [],
+    "actsOn": {
+      "structures": [
+        "cortico"
+      ]
+    },
+    "how": "Préserver ses nuits, surtout avant une épreuve.",
+    "mechanism": "Le manque de sommeil élève le cortisol au repos et amplifie sa réponse au stress.",
+    "effect": "Expérience randomisée : après une nuit de privation de sommeil, cortisol plus élevé au repos et réponse au stress plus forte.",
+    "caveat": "Petite étude (26 adultes), privation totale d'une seule nuit.",
+    "evidence": [
+      "essai-randomise",
+      "etude-limitee"
+    ],
+    "sources": [
+      "minkel-2014"
+    ]
+  },
+  {
+    "id": "activite",
+    "label": "Bouger régulièrement",
+    "goal": "reduire",
+    "horizon": "fond",
+    "steps": [],
+    "actsOn": {
+      "structures": [
+        "corps",
+        "cortico"
+      ]
+    },
+    "how": "Une activité physique régulière, qui entretient la condition physique.",
+    "mechanism": "Une meilleure condition physique est associée à une réponse au stress atténuée.",
+    "effect": "Revue systématique (14 études) : réponse de cortisol atténuée dans 7 études sur 12, fréquence cardiaque dans 4 sur 9.",
+    "caveat": "Surtout des études transversales : une association, pas encore une preuve de cause.",
+    "evidence": [
+      "revue"
+    ],
+    "sources": [
+      "mucke-2018"
+    ]
+  },
+  {
+    "id": "therapie",
+    "label": "Se faire accompagner (TCC)",
+    "goal": "reduire",
+    "horizon": "fond",
+    "steps": [],
+    "actsOn": {},
+    "how": "Une thérapie cognitive et comportementale avec un thérapeute formé, quand le stress ou l'anxiété deviennent envahissants.",
+    "mechanism": "Elle entraîne avec méthode la réévaluation des pensées et l'exposition progressive à ce qui fait peur.",
+    "effect": "Méta-analyse de 41 essais contre placebo : effet modéré sur les troubles anxieux (g = 0,56).",
+    "caveat": "Concerne des troubles anxieux diagnostiqués, pas le stress du quotidien.",
+    "evidence": [
+      "meta-analyse"
+    ],
+    "sources": [
+      "carpenter-2018"
     ]
   }
 ]

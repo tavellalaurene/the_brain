@@ -10,6 +10,7 @@
       "id",
       "label",
       "goal",
+      "horizon",
       "steps",
       "actsOn",
       "how",
@@ -40,7 +41,7 @@
           "type": "string",
           "pattern": "^[a-z0-9-]+$"
         },
-        "minItems": 1
+        "description": "Étapes où le levier est présenté (vide pour un levier de fond)."
       },
       "actsOn": {
         "type": "object",
@@ -93,6 +94,13 @@
           "pattern": "^[a-z0-9-]+$"
         },
         "minItems": 1
+      },
+      "horizon": {
+        "enum": [
+          "moment",
+          "fond"
+        ],
+        "description": "moment : agit pendant la réaction (présenté aux étapes). fond : agit sur le long terme (présenté dans la conclusion)."
       }
     }
   }

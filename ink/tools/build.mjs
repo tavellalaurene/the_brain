@@ -84,6 +84,8 @@ const stepIds = new Set(Object.values(scenarios).flatMap(sc => sc.steps.map(s =>
 for (const l of entities.levers) {
   const w = `levers/${l.id}`;
   l.steps.forEach(s => { if (!stepIds.has(s)) errors.push(`${w}.steps : étape inconnue "${s}"`); });
+  if (l.horizon === 'moment' && !l.steps.length) errors.push(`${w}.steps : un levier « moment » doit apparaître à au moins une étape`);
+  if (l.horizon === 'fond' && l.steps.length) errors.push(`${w}.steps : un levier « fond » ne s'affiche pas aux étapes (liste vide attendue)`);
   (l.actsOn.structures || []).forEach(s => ref('structure', s, `${w}.actsOn`));
   (l.actsOn.pathways || []).forEach(p => ref('pathway', p, `${w}.actsOn`));
   l.evidence.forEach(e => ref('evidence', e, `${w}.evidence`));
