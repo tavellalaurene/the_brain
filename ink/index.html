@@ -47,6 +47,9 @@
   .cause small { display: block; color: var(--muted); font-size: 12px; margin-top: 2px; }
   #play { margin-right: 0 !important; font: 14px system-ui, sans-serif; background: none; color: var(--ink); border: 1px solid var(--accent); border-radius: 8px; padding: 4px 12px; cursor: pointer; margin-right: 12px; }
   #caption { display: none; font: 22px/1.4 Georgia, serif; color: var(--ink); margin: 0 0 14px; max-width: 60em; }
+  #caption.levers small { color: var(--gold); }
+  #caption .lv { display: block; font: 16px/1.45 system-ui, sans-serif; color: #d9d3c9; margin: 4px 0; }
+  #caption .lv b { color: var(--ink); margin-right: 4px; }
   #caption small { display: block; font: 12px system-ui, sans-serif; color: var(--accent); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 2px; }
   body.playing #caption { display: block; }
   body.playing #timeline { right: 24px; }
@@ -448,6 +451,7 @@ function go(i, fromScrub = false) {
   if ($('levers').dataset.step !== b.step.id) { $('levers').innerHTML = leversHtml(b.step); $('levers').dataset.step = b.step.id; }
   leverTargets = new Set(D.levers.filter(l => l.steps.includes(b.step.id)).flatMap(l => l.actsOn.structures || []));
   $('capStep').textContent = `${b.si + 1}. ${b.step.title}`; $('capSay').textContent = b.say;
+  $('caption').classList.remove('levers'); if (interlude !== b.step.id) interlude = null;
   $('dots').innerHTML = b.step.beats.map((_, k) => `<i class="${k <= b.bi ? 'on' : ''}"></i>`).join('');
   if (b.si !== prevStep || !$('moreBody').innerHTML) { $('moreBody').innerHTML = more(b.step); $('more').open = false; }
   $('prev').disabled = cur === 0;
@@ -460,9 +464,27 @@ function go(i, fromScrub = false) {
 }
 let playTimer = null;
 function stop() { clearTimeout(playTimer); playTimer = null; document.body.classList.remove('playing'); $('play').textContent = '▶ Jouer'; }
-function tick() { playTimer = setTimeout(() => { if (cur >= beats.length - 1) return stage('outro'); go(cur + 1); tick(); }, 2600 + beats[cur].say.length * 45); }
+// En lecture, à la fin d'une étape qui a des leviers : une pause « Où agir ici ? » avant de continuer
+let interlude = null;
+function showInterlude(step, ls) {
+  interlude = step.id;
+  $('caption').classList.add('levers');
+  $('capStep').textContent = 'Où agir ici ?';
+  $('capSay').innerHTML = ls.map(l => `<span class="lv"><span class="goal">${GOALS[l.goal]}</span><b>${esc(l.label)}</b> <span class="how">${esc(l.how)}</span></span>`).join('');
+}
+function tick() {
+  const b = beats[cur], ls = D.levers.filter(l => l.steps.includes(b.step.id));
+  const pause = interlude === b.step.id ? 3500 + ls.length * 2500 : 2600 + b.say.length * 45;
+  playTimer = setTimeout(() => {
+    const lastOfStep = b.bi === b.step.beats.length - 1;
+    if (lastOfStep && ls.length && interlude !== b.step.id) { showInterlude(b.step, ls); return tick(); }
+    if (cur >= beats.length - 1) return stage('outro');
+    go(cur + 1); tick();
+  }, pause);
+}
 function play() {
   if (playTimer) return stop();
+  interlude = null;
   if (cur >= beats.length - 1) go(0);
   document.body.classList.add('playing'); $('play').textContent = '❚❚ Pause'; tick();
 }
