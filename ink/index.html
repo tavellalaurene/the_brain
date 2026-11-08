@@ -445,10 +445,14 @@ function more(step) {
     `<b>Sources</b><ul>${step.sources.map(id => `<li><a href="${D.sources[id].url}" target="_blank" rel="noopener">${esc(D.sources[id].cite)}</a></li>`).join('')}</ul>`;
 }
 const GOALS = { eviter: 'Éviter', reduire: 'Réduire', accepter: 'Accepter' };
+// Survol (ou focus clavier) d'un levier du panneau → anneaux dorés autour des structures sur lesquelles il agit
+const showLever = id => { const l = D.levers.find(x => x.id === id); leverTargets = new Set(l ? l.actsOn.structures || [] : []); };
+for (const ev of ['mouseover', 'focusin']) $('levers').addEventListener(ev, e => showLever(e.target.closest('.lever')?.dataset.id));
+for (const ev of ['mouseleave', 'focusout']) $('levers').addEventListener(ev, () => showLever(null));
 function leversHtml(step) {
   const ls = D.levers.filter(l => l.steps.includes(step.id));
   if (!ls.length) return '';
-  return '<h3>Où agir ici ?</h3>' + ls.map(l => `<details class="lever"><summary><span class="goal">${GOALS[l.goal]}</span><b>${esc(l.label)}</b> <span class="chev">›</span></summary>
+  return '<h3>Où agir ici ?</h3>' + ls.map(l => `<details class="lever" data-id="${l.id}"><summary><span class="goal">${GOALS[l.goal]}</span><b>${esc(l.label)}</b> <span class="chev">›</span></summary>
     <div class="more"><p class="how">${esc(l.how)}</p><p>${esc(l.mechanism)}</p><p>${esc(l.effect)}</p>${l.caveat ? `<p><i>Limites : ${esc(l.caveat)}</i></p>` : ''}
     <p>${l.evidence.map(e => D.evidenceLevels[e].label).join(' · ')}</p>
     <p>${l.sources.map(id => `<a href="${D.sources[id].url}" target="_blank" rel="noopener">${esc(D.sources[id].cite)}</a>`).join('<br>')}</p></div></details>`).join('');
@@ -463,7 +467,7 @@ function go(i, fromScrub = false) {
   $('causes').innerHTML = causes(b.show);
   // ne réécrit les leviers que si l'étape change (garde ceux qu'on a dépliés)
   if ($('levers').dataset.step !== b.step.id) { $('levers').innerHTML = leversHtml(b.step); $('levers').dataset.step = b.step.id; }
-  leverTargets = new Set(D.levers.filter(l => l.steps.includes(b.step.id)).flatMap(l => l.actsOn.structures || []));
+  leverTargets = new Set();   // anneaux masqués par défaut : ils apparaissent au survol d'un levier
   $('capStep').textContent = `${b.si + 1}. ${b.step.title}`; $('capSay').textContent = b.say;
   $('caption').classList.remove('levers'); if (interlude !== b.step.id) interlude = null;
   $('dots').innerHTML = b.step.beats.map((_, k) => `<i class="${k <= b.bi ? 'on' : ''}"></i>`).join('');
@@ -482,6 +486,7 @@ function stop() { clearTimeout(playTimer); playTimer = null; document.body.class
 let interlude = null;
 function showInterlude(step, ls) {
   interlude = step.id;
+  leverTargets = new Set(ls.flatMap(l => l.actsOn.structures || []));   // en lecture : la pause « Où agir ici ? » montre les anneaux
   $('caption').classList.add('levers');
   $('capStep').textContent = 'Où agir ici ?';
   $('capSay').innerHTML = ls.map(l => `<span class="lv"><span class="goal">${GOALS[l.goal]}</span><b>${esc(l.label)}</b> <span class="how">${esc(l.how)}</span></span>`).join('');
