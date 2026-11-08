@@ -91,7 +91,6 @@ La scène lit les données ; ajouter une connaissance = ajouter une entrée sour
 ## Plus tard
 
 - Relire scientifiquement les 5 leviers (texte, choix, objectifs).
-
 - Ressources pour aller plus loin / se faire aider (dans la conclusion).
 - Montrer les leviers en mode « Jouer ».
 - UX : panneau long ; structures inactives = disques gris un peu lourds en gros plan.
@@ -100,4 +99,3 @@ La scène lit les données ; ajouter une connaissance = ajouter une entrée sour
 - Corps plus abstrait aux proportions humaines réelles (pose neutre).
 - Cerveau : visualisation à repenser.
 - Alléger le modèle 3D (gltf-transform).
-- Vérification automatique sur GitHub (GitHub Actions) à chaque push.
