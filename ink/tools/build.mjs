@@ -71,6 +71,7 @@ for (const sc of Object.values(scenarios)) {
     const w = `scenarios/${sc.id}/${st.id}`;
     st.evidence.forEach(e => ref('evidence', e, `${w}.evidence`));
     st.sources.forEach(s => { ref('source', s, `${w}.sources`); used.source.add(s); });
+    if (st.gauge && !entities.gauges.some(g => g.id === st.gauge)) errors.push(`${w}.gauge : courbe inconnue "${st.gauge}"`);
     st.beats.forEach((b, i) => {
       b.light.forEach(s => { ref('structure', s, `${w}.beats[${i}].light`); used.structure.add(s); });
       b.show.forEach(p => { ref('pathway', p, `${w}.beats[${i}].show`); used.pathway.add(p); });

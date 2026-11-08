@@ -161,6 +161,11 @@
             },
             "minItems": 1,
             "description": "Toute étape doit être sourcée."
+          },
+          "gauge": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+$",
+            "description": "Courbe mise en avant dans la frise pendant cette étape."
           }
         }
       },
