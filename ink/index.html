@@ -20,6 +20,9 @@
   .label { font: 14px/1.2 system-ui, sans-serif; color: var(--ink); white-space: nowrap;
     opacity: 0; transition: opacity .5s; pointer-events: none; text-shadow: 0 0 6px #000, 0 0 2px #000; }
   .label.on { opacity: 1; }
+  .label.hover { opacity: 1; color: var(--muted); }
+  .label.on.hover { color: var(--ink); }
+  #leaders line.hover { stroke: rgba(163,157,147,.4); }
   .label span { display: inline-block; will-change: transform; }
   #leaders { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; }
   #leaders line { stroke: rgba(242,237,228,.45); stroke-width: 1; transition: opacity .5s; }
@@ -471,6 +474,17 @@ function frame(b) {
   camGoalD = Math.max(6.5, box.getSize(new THREE.Vector3()).length() * 1.5 + 3.5);
 }
 const mouse = new THREE.Vector2();
+// Survol : affiche le nom d'une structure inactive sous la souris
+const ray = new THREE.Raycaster(), ndc = new THREE.Vector2();
+let hovered = null;
+addEventListener('pointermove', e => {
+  if (mode !== 'story' || e.target.closest('#panel, #timeline')) { if (hovered) { hovered.el.classList.remove('hover'); hovered = null; } return; }
+  ndc.set(e.clientX / innerWidth * 2 - 1, -(e.clientY / innerHeight) * 2 + 1);
+  ray.setFromCamera(ndc, camera);
+  const hit = ray.intersectObjects(Object.values(nodes).map(n => n.core))[0];
+  const n = hit && Object.values(nodes).find(n => n.core === hit.object);
+  if (n !== hovered) { hovered?.el.classList.remove('hover'); n?.el.classList.add('hover'); hovered = n || null; }
+});
 addEventListener('pointermove', e => mouse.set(e.clientX / innerWidth - .5, e.clientY / innerHeight - .5));
 
 // ── Boucle ───────────────────────────────────────────────────
@@ -563,8 +577,8 @@ function layoutLabels() {
   const W = innerWidth, H = innerHeight, f = H / 2 / Math.tan(camera.fov * Math.PI / 360);
   const on = [];
   for (const n of Object.values(nodes)) {
-    const lit = n.el.classList.contains('on');
-    n.line.style.opacity = lit ? 1 : 0;
+    const lit = n.el.classList.contains('on') || n.el.classList.contains('hover');
+    n.line.style.opacity = lit ? 1 : 0; n.line.classList.toggle('hover', !n.el.classList.contains('on'));
     if (!lit) continue;
     v3.copy(n.core.position).project(camera);
     const r = n.s.size * f / camera.position.distanceTo(n.core.position);   // rayon à l'écran (px)
