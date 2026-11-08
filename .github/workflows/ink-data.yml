@@ -1,0 +1,37 @@
+# Vérifie les données de la visualisation « ink » à chaque push et pull request.
+#  1. validation : forme (JSON Schema) et cohérence (identifiants cités, ordre du temps…)
+#  2. fraîcheur : data/bundle.js doit correspondre aux JSON (sinon : lancer `npm run build`)
+name: ink · données
+
+on:
+  push:
+    paths: ['ink/**', '.github/workflows/ink-data.yml']
+  pull_request:
+    paths: ['ink/**', '.github/workflows/ink-data.yml']
+
+permissions:
+  contents: read
+
+jobs:
+  data:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ink
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: ink/package-lock.json
+      - run: npm ci
+      - name: Valider les données
+        run: npm run validate
+      - name: Vérifier que bundle.js est à jour
+        run: |
+          npm run build
+          git diff --exit-code -- data/bundle.js || {
+            echo "::error file=ink/data/bundle.js::bundle.js n'est pas à jour : lancer « npm run build » dans ink/ et commiter le résultat."
+            exit 1
+          }
