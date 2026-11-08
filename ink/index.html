@@ -165,7 +165,7 @@
 <div id="scene"></div>
 <svg id="leaders" aria-hidden="true"></svg>
 <header><h1 id="title"></h1><p id="subtitle"></p></header>
-<a id="credit" class="sans" href="https://sketchfab.com/3d-models/venus-de-milo-statuestexturingchallenge-smk-2983d92ac4e744f485492580ca7629f2" target="_blank" rel="noopener">Vénus de Milo : scan SMK, CC0</a>
+<a id="credit" class="sans" target="_blank" rel="noopener"></a>
 
 
 <aside id="panel" aria-live="polite">
@@ -207,7 +207,6 @@
 </div>
 
 <script src="data/bundle.js"></script>
-<script src="models/venus-de-milo.js"></script>
 <script type="importmap">
 { "imports": {
   "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
@@ -275,7 +274,7 @@ const fresnel = (color, power, intensity) => new THREE.ShaderMaterial({
 // Repères relevés sur le modèle (hauteur en mm) : sommet 2118, menton ~1840, poitrine ~1500, taille ~1360, hanches ~1150.
 // Conversion vers la scène : échelle 1/100, tête centrée près de (0, 2, 0). Face tournée vers +z.
 const bodyG = new THREE.Group(); scene.add(bodyG);   // le corps respire : on anime ce groupe
-const STATUE = { scale: BODY.scene.scale, offset: new THREE.Vector3(...BODY.scene.offset), fadeTop: -4.6, fadeBot: -7.2 };
+const STATUE = { scale: BODY.scene.scale, offset: new THREE.Vector3(...BODY.scene.offset), fadeTop: BODY.fade.top, fadeBot: BODY.fade.bottom };
 const rimU = { uPulse: { value: 0 } };
 function glassStatue(mat) {
   const m = new THREE.MeshStandardMaterial({ color: 0x1a1726, roughness: .45, metalness: 0, normalMap: mat.normalMap,
@@ -298,15 +297,25 @@ function glassStatue(mat) {
   return m;
 }
 const bodyMat = { uniforms: rimU };   // utilisé par la boucle (battement)
-{
-  const bin = Uint8Array.from(atob(window.VENUS_GLB_B64), c => c.charCodeAt(0)).buffer;
+// le corps est choisi dans les données (data/settings.json) : on charge son fichier, puis on le décode
+const bodyScript = document.createElement('script'); bodyScript.src = BODY.model; document.head.appendChild(bodyScript);
+bodyScript.onload = () => {
+  const bin = Uint8Array.from(atob(window[BODY.global]), c => c.charCodeAt(0)).buffer;
   new GLTFLoader().parse(bin, '', gltf => {
     const root = gltf.scene;
-    root.traverse(o => { if (o.isMesh) o.material = glassStatue(o.material); });
+    // Pré-passe de profondeur : le corps est d'abord dessiné « invisible » pour que seule sa surface la plus
+    // proche reçoive le liseré (sinon on voit les surfaces internes : orbites, bouche). Dessiné après les
+    // structures (renderOrder), il ne les masque pas.
+    const meshes = []; root.traverse(o => { if (o.isMesh) meshes.push(o); });
+    for (const o of meshes) {
+      const depth = new THREE.Mesh(o.geometry, new THREE.MeshBasicMaterial({ colorWrite: false, depthWrite: true, transparent: true }));
+      depth.renderOrder = 10; o.add(depth);
+      o.material = glassStatue(o.material); o.material.depthFunc = THREE.LessEqualDepth; o.renderOrder = 11;
+    }
     root.scale.setScalar(STATUE.scale); root.position.copy(STATUE.offset);
     bodyG.add(root);
-  }, e => console.error('Statue non chargée', e));
-}
+  }, e => console.error('Corps non chargé', e));
+};
 scene.add(new THREE.HemisphereLight(0xd9d2ff, 0x0e0d0c, .5));
 const keyL = new THREE.DirectionalLight(0xe8e0ff, 1.2); keyL.position.set(4, 6, 6); scene.add(keyL);
 const rimL = new THREE.DirectionalLight(0xa08cff, 2.2); rimL.position.set(-5, 3, -7); scene.add(rimL);   // contre-jour violet
@@ -619,6 +628,7 @@ function resize() {
 }
 addEventListener('resize', resize); resize();
 $('title').textContent = D.title; $('subtitle').textContent = D.subtitle;
+$('credit').textContent = `${BODY.label} · ${BODY.license}`; $('credit').href = BODY.source;
 go(0); wide();
 function stage(kind) {
   mode = kind; stop(); wide();

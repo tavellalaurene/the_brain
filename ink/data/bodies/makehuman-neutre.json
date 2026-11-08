@@ -1,0 +1,68 @@
+{
+  "id": "makehuman-neutre",
+  "label": "Corps neutre MakeHuman (moyenne statistique, pose debout)",
+  "license": "CC0-1.0",
+  "source": "https://github.com/makehumancommunity/makehuman",
+  "model": "models/makehuman-neutre.js",
+  "global": "BODY_GLB_B64",
+  "measured": "makehuman-neutre.measured.json",
+  "joints": "makehuman-neutre.joints.json",
+  "axes": "Repère du modèle, en mm : z = hauteur (pieds à 0), -y = avant, +x = gauche du sujet.",
+  "scaleToHuman": 1,
+  "scene": {
+    "description": "Conversion modèle → scène : scène = (x·s + ox, z·s + oy, -y·s + oz). Échelle choisie pour une taille à l'écran proche de la Vénus.",
+    "scale": 0.0125,
+    "offset": [
+      0,
+      -17.44,
+      -0.91
+    ]
+  },
+  "fade": {
+    "top": -5.0,
+    "bottom": -7.6
+  },
+  "head": {
+    "description": "Mesuré : sommet 1666, menton 1425 (recul brusque du profil avant ; articulation de la mâchoire à 1436), front -153, tête symétrique (milieu x = 0). Modèle à taille humaine moyenne : échelle 1. Position de la commissure antérieure (origine MNI) : estimations humaines moyennes (à vérifier).",
+    "chin": 1425,
+    "front": -153,
+    "midX": 0,
+    "humanHeadMm": 241,
+    "acAboveChinMm": 130,
+    "acBehindForeheadMm": 80
+  },
+  "spine": {
+    "description": "C7 = articulation « neck » du squelette MakeHuman (1406 mm, base du cou). Hauteurs moyennes d'un segment vertébral (corps + disque).",
+    "c7": 1406,
+    "segmentMm": {
+      "T": 26,
+      "L": 37
+    }
+  },
+  "midline": {
+    "description": "Corps symétrique : ligne médiane à x = 0.",
+    "points": [
+      [
+        800,
+        0
+      ],
+      [
+        1500,
+        0
+      ]
+    ]
+  },
+  "brainMni": {
+    "description": "Boîte approximative du cerveau en MNI (mm), pour dessiner son contour.",
+    "center": [
+      0,
+      -17,
+      16
+    ],
+    "radii": [
+      70,
+      88,
+      62
+    ]
+  }
+}

@@ -22,7 +22,7 @@ const stride = (view.byteStride || 12) / 4;
 const f = new Float32Array(bin.buffer, bin.byteOffset + (view.byteOffset || 0) + (acc.byteOffset || 0), (acc.count - 1) * stride + 3);
 
 const top = acc.max[2], STEP = 20, sections = [];
-for (let h = 1000; h <= top; h += STEP) {
+for (let h = Math.round(top * .45); h <= top; h += STEP) {
   const xs = []; let front = Infinity, back = -Infinity;
   for (let i = 0; i < acc.count; i++) {
     const z = f[i * stride + 2];

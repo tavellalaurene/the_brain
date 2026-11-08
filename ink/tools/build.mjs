@@ -105,9 +105,11 @@ console.log(`✓ Données valides : ${counts}`);
 if (checkOnly) process.exit(0);
 
 // ── 3. Anatomie réelle → positions de scène, pour le corps choisi ──
-const body = read('bodies/venus-de-milo.json');
+const settings = read('settings.json');
+const body = read(`bodies/${settings.body}.json`);
 const measured = read(`bodies/${body.measured}`).sections;
-const k = (read(`bodies/${body.measured}`).top - body.head.chin) / body.head.humanHeadMm;  // échelle statue / humain moyen (≈ 1,3)
+// échelle corps / humain moyen : donnée (modèle à taille humaine) ou déduite de la hauteur de la tête (statue ≈ 1,3)
+const k = body.scaleToHuman ?? (read(`bodies/${body.measured}`).top - body.head.chin) / body.head.humanHeadMm;
 const lerp1 = (pts, h) => {   // interpolation linéaire dans une liste [[h, v], ...] triée par h
   if (h <= pts[0][0]) return pts[0][1];
   for (let i = 1; i < pts.length; i++) if (h <= pts[i][0]) {
@@ -132,7 +134,8 @@ const brain = { center: toScene(fromMni(bm.center)), radii: [bm.radii[0], bm.rad
 const toVerify = entities.structures.filter(s => s.anatomy.status === 'a-verifier').map(s => s.id);
 if (toVerify.length) console.warn(`⚠  positions à vérifier (${toVerify.length}) : ${toVerify.join(', ')}`);
 
-const bundle = { entities, scenarios, body: { id: body.id, scene: body.scene, brain } };
+const bundle = { entities, scenarios, body: { ...pickBody(body), brain } };
+function pickBody(b) { const { id, label, license, source, model, global, scene, fade } = b; return { id, label, license, source, model, global, scene, fade }; }
 writeFileSync(join(root, 'bundle.js'),
   '// FICHIER GÉNÉRÉ par tools/build.mjs : ne pas modifier à la main.\n' +
   '// Source : data/entities/*.json et data/scenarios/*.json\n' +

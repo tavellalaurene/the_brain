@@ -56,5 +56,11 @@
       88,
       62
     ]
+  },
+  "model": "models/venus-de-milo.js",
+  "global": "VENUS_GLB_B64",
+  "fade": {
+    "top": -4.6,
+    "bottom": -7.2
   }
 }
