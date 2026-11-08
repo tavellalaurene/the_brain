@@ -326,7 +326,8 @@ const BRAIN = { y: bcy, ry: bry, rx: brx, rz: brz, z: bcz, x: bcx };
 const brainMat = fresnel(0xffe9c8, 4.5, .18);
 const brainGeo = new THREE.SphereGeometry(1, 64, 40); brainGeo.setAttribute('aFade', new THREE.Float32BufferAttribute(new Array(brainGeo.attributes.position.count).fill(1), 1));
 const brainMesh = new THREE.Mesh(brainGeo, brainMat);
-brainMesh.scale.set(BRAIN.rx, BRAIN.ry, BRAIN.rz); brainMesh.position.set(BRAIN.x, BRAIN.y, BRAIN.z); bodyG.add(brainMesh);
+brainMesh.scale.set(BRAIN.rx, BRAIN.ry, BRAIN.rz); brainMesh.position.set(BRAIN.x, BRAIN.y, BRAIN.z);
+brainMesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), new THREE.Vector3(...BODY.brain.up));   // suit l'inclinaison de la tête bodyG.add(brainMesh);
 
 // ── Structures ───────────────────────────────────────────────
 const nodes = {};

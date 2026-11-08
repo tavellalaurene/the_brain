@@ -120,8 +120,30 @@ const toScene = ([x, y, h]) => { const { scale: s, offset: o } = body.scene;
   return [+(x * s + o[0]).toFixed(3), +(h * s + o[1]).toFixed(3), +(-y * s + o[2]).toFixed(3)]; };
 // Origine MNI (commissure antérieure) dans le repère de la statue
 const ac = [body.head.midX, body.head.front + body.head.acBehindForeheadMm * k, body.head.chin + body.head.acAboveChinMm * k];
-// MNI : +x droite du sujet (= -x modèle), +y avant (= -y modèle), +z haut
-const fromMni = ([x, y, z]) => [ac[0] - x * k, ac[1] - y * k, ac[2] + z * k];
+// Inclinaison de la tête : axe « haut » de la tête, estimé par régression linéaire du milieu des tranches
+// (milieu gauche-droite et milieu avant-arrière) entre le menton et le sommet. La rotation de la tête
+// sur elle-même (regard tourné) n'est pas mesurable ainsi : ignorée.
+const headUp = (() => {
+  const top = read(`bodies/${body.measured}`).top;
+  const hs = measured.filter(m => m.h > body.head.chin + 40 && m.h < top - 40);
+  if (!body.head.tiltFromSections || hs.length < 3) return [0, 0, 1];
+  const slope = f => { const n = hs.length, mh = hs.reduce((a, m) => a + m.h, 0) / n, mv = hs.reduce((a, m) => a + f(m), 0) / n;
+    return hs.reduce((a, m) => a + (m.h - mh) * (f(m) - mv), 0) / hs.reduce((a, m) => a + (m.h - mh) ** 2, 0); };
+  const u = [slope(m => m.xMid), slope(m => (m.front + m.back) / 2), 1], l = Math.hypot(...u);
+  return u.map(v => v / l);
+})();
+// rotation qui amène (0, 0, 1) sur headUp (formule de Rodrigues)
+const rot = (() => {
+  const [bx, by, bz] = headUp, v = [-by, bx, 0], c = bz, f = 1 / (1 + c);
+  return ([x, y, z]) => [
+    x * (1 - f * v[1] * v[1]) + y * (f * v[0] * v[1]) + z * v[1],
+    x * (f * v[0] * v[1]) + y * (1 - f * v[0] * v[0]) - z * v[0],
+    -x * v[1] + y * v[0] + z * (1 - f * (v[0] * v[0] + v[1] * v[1]))];
+})();
+const tiltDeg = { lateral: Math.atan2(headUp[0], headUp[2]) * 180 / Math.PI, avant: Math.atan2(-headUp[1], headUp[2]) * 180 / Math.PI };
+if (body.head.tiltFromSections) console.log(`✓ inclinaison de la tête : ${tiltDeg.lateral.toFixed(0)}° latéral, ${tiltDeg.avant.toFixed(0)}° vers l'avant`);
+// MNI : +x droite du sujet (= -x modèle), +y avant (= -y modèle), +z haut ; puis inclinaison de la tête
+const fromMni = ([x, y, z]) => { const [dx, dy, dz] = rot([-x * k, -y * k, z * k]); return [ac[0] + dx, ac[1] + dy, ac[2] + dz]; };
 const fromSpine = a => {
   const n = +a.level.slice(1), seg = body.spine.segmentMm;
   const h = body.spine.c7 - k * (a.level[0] === 'T' ? n * seg.T : 12 * seg.T + n * seg.L);
@@ -130,7 +152,7 @@ const fromSpine = a => {
 };
 for (const s of entities.structures) s.pos = toScene(s.anatomy.space === 'mni' ? fromMni(s.anatomy.mm) : fromSpine(s.anatomy));
 const bm = body.brainMni;
-const brain = { center: toScene(fromMni(bm.center)), radii: [bm.radii[0], bm.radii[2], bm.radii[1]].map(r => +(r * k * body.scene.scale).toFixed(3)) };
+const brain = { up: [headUp[0], headUp[2], -headUp[1]].map(v => +v.toFixed(4)), center: toScene(fromMni(bm.center)), radii: [bm.radii[0], bm.radii[2], bm.radii[1]].map(r => +(r * k * body.scene.scale).toFixed(3)) };
 const toVerify = entities.structures.filter(s => s.anatomy.status === 'a-verifier').map(s => s.id);
 if (toVerify.length) console.warn(`⚠  positions à vérifier (${toVerify.length}) : ${toVerify.join(', ')}`);
 

@@ -15,13 +15,14 @@
     ]
   },
   "head": {
-    "description": "Mesuré : sommet 2118 (chignon compris), menton ~1835, front ~-315, milieu ~-150. Estimations humaines moyennes (à vérifier) : hauteur de tête ~215 mm ; commissure antérieure (origine MNI) ~130 mm au-dessus du menton et ~80 mm derrière le front. La tête de la statue est inclinée : ignoré.",
+    "description": "Mesuré : sommet 2118 (chignon compris), menton ~1835, front ~-315, milieu ~-150. Estimations humaines moyennes (à vérifier) : hauteur de tête ~215 mm ; commissure antérieure (origine MNI) ~130 mm au-dessus du menton et ~80 mm derrière le front. L'inclinaison de la tête est mesurée par le build (tiltFromSections) ; sa rotation sur elle-même est ignorée.",
     "chin": 1835,
     "front": -315,
     "midX": -150,
     "humanHeadMm": 215,
     "acAboveChinMm": 130,
-    "acBehindForeheadMm": 80
+    "acBehindForeheadMm": 80,
+    "tiltFromSections": true
   },
   "spine": {
     "description": "C7 estimée ~4 vertèbres sous le menton (le menton est au niveau de C3-C4 en posture neutre). Hauteurs moyennes d'un segment vertébral (corps + disque), mises à l'échelle de la statue.",
