@@ -95,6 +95,5 @@ La scène lit les données ; ajouter une connaissance = ajouter une entrée sour
 - Rythme du mode « Jouer » : durée et nombre des pauses « Où agir ici ? ».
 - Traduire les données des courbes dans le corps (cœur, cerveau, sang).
 - Positions encore à vérifier : niveaux vertébraux du cœur et des surrénales, proportions de la tête.
-- Corps plus abstrait aux proportions humaines réelles (pose neutre).
 - Cerveau : visualisation à repenser.
 - Alléger le modèle 3D (gltf-transform).
