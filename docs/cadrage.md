@@ -94,7 +94,7 @@ La scène lit les données ; ajouter une connaissance = ajouter une entrée sour
 - Vue « sous le capot » : voir les données derrière la scène.
 - Ressources pour aller plus loin / se faire aider (dans la conclusion).
 - Montrer les leviers en mode « Jouer ».
-- UX : étiquettes du cerveau qui se chevauchent en gros plan ; panneau long.
+- UX : panneau long ; structures inactives = disques gris un peu lourds en gros plan.
 - Traduire les données des courbes dans le corps (cœur, cerveau, sang).
 - Positions encore à vérifier : niveaux vertébraux du cœur et des surrénales, proportions de la tête.
 - Corps plus abstrait aux proportions humaines réelles (pose neutre).

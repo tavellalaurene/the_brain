@@ -17,9 +17,13 @@
   header h1 { margin: 0; font-weight: normal; font-size: 26px; }
   header p { margin: 2px 0 0; color: var(--muted); font-size: 15px; }
 
-  .label { font: 13px/1.2 system-ui, sans-serif; color: var(--muted); white-space: nowrap;
-    opacity: .45; transition: opacity .5s, color .5s; pointer-events: none; text-shadow: 0 0 6px #000; }
-  .label.on { color: var(--ink); opacity: 1; }
+  .label { font: 14px/1.2 system-ui, sans-serif; color: var(--ink); white-space: nowrap;
+    opacity: 0; transition: opacity .5s; pointer-events: none; text-shadow: 0 0 6px #000, 0 0 2px #000; }
+  .label.on { opacity: 1; }
+  .label span { display: inline-block; will-change: transform; }
+  #leaders { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+  #leaders line { stroke: rgba(242,237,228,.45); stroke-width: 1; transition: opacity .5s; }
+  body.staged #leaders { opacity: 0; }
   .sig { font: 600 12px system-ui, sans-serif; padding: 1px 7px; border-radius: 99px; background: rgba(0,0,0,.6);
     border: 1px solid currentColor; opacity: 0; transition: opacity .5s; pointer-events: none; }
   .sig.on { opacity: 1; }
@@ -39,9 +43,10 @@
   .cause b { font-weight: 600; }
   .cause small { display: block; color: var(--muted); font-size: 12px; margin-top: 2px; }
   #play { margin-right: 0 !important; font: 14px system-ui, sans-serif; background: none; color: var(--ink); border: 1px solid var(--accent); border-radius: 8px; padding: 4px 12px; cursor: pointer; margin-right: 12px; }
-  #caption { position: fixed; left: 24px; right: 24px; bottom: 210px; text-align: center; font-size: 26px; line-height: 1.4; text-shadow: 0 0 12px #000, 0 0 4px #000; opacity: 0; transition: opacity .5s; pointer-events: none; }
-  #caption small { display: block; font: 13px system-ui, sans-serif; color: var(--accent); text-transform: uppercase; letter-spacing: .1em; }
-  body.playing #caption { opacity: 1; }
+  #caption { display: none; font: 22px/1.4 Georgia, serif; color: var(--ink); margin: 0 0 14px; max-width: 60em; }
+  #caption small { display: block; font: 12px system-ui, sans-serif; color: var(--accent); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 2px; }
+  body.playing #caption { display: block; }
+  body.playing #timeline { right: 24px; }
   body.playing #panel { opacity: 0; pointer-events: none; }
   #panel { transition: opacity .5s; }
   #levers:not(:empty) { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); }
@@ -124,6 +129,7 @@
 </head>
 <body>
 <div id="scene"></div>
+<svg id="leaders" aria-hidden="true"></svg>
 <header><h1 id="title"></h1><p id="subtitle"></p></header>
 <a id="credit" class="sans" href="https://sketchfab.com/3d-models/venus-de-milo-statuestexturingchallenge-smk-2983d92ac4e744f485492580ca7629f2" target="_blank" rel="noopener">Vénus de Milo : scan SMK, CC0</a>
 
@@ -147,8 +153,8 @@
   <h2 id="stageTitle"></h2><p id="stageLead"></p><p id="stageQ"></p><div id="stageLevers"></div>
   <div class="btns"><button id="startPlay" class="primary">▶ Lancer l'histoire</button><button id="startStep">Explorer pas à pas</button></div>
 </div></div>
-<div id="caption"><small id="capStep"></small><span id="capSay"></span></div>
 <div id="timeline">
+  <div id="caption" aria-live="polite"><small id="capStep"></small><span id="capSay"></span></div>
   <div class="row"><button id="play">▶ Jouer</button><span id="now"></span></div>
   <div class="main">
     <div><div id="track"><canvas id="curves" aria-hidden="true"></canvas>
@@ -280,12 +286,11 @@ for (const s of D.structures) {
       wireframe: false }));
   core.position.fromArray(s.pos); scene.add(core);
   const halo = glow(0xfff4e0, s.size * 5); halo.position.copy(core.position);
-  const el = document.createElement('div'); el.className = 'label'; el.textContent = s.label;
-  const lab = new CSS2DObject(el);
-  lab.position.set(s.shell ? 0 : s.size + .08, s.shell ? -s.size - .14 : 0, 0);
-  lab.center.set(s.shell ? .5 : 0, .5);
-  core.add(lab);
-  nodes[s.id] = { s, core, halo, el, lit: 0 };
+  // l'étiquette est ancrée au centre ; son texte (span) est décalé chaque image pour éviter les chevauchements
+  const el = document.createElement('div'); el.className = 'label'; el.innerHTML = `<span>${s.label}</span>`;
+  const lab = new CSS2DObject(el); lab.center.set(0, .5); core.add(lab);
+  const line = document.createElementNS('http://www.w3.org/2000/svg', 'line'); $('leaders').appendChild(line);
+  nodes[s.id] = { s, core, halo, el, txt: el.firstChild, line, lit: 0 };
 }
 
 // ── Anneaux des leviers : marquent les structures sur lesquelles on peut agir ──
@@ -547,8 +552,35 @@ renderer.setAnimationLoop(() => {
   shift += (shiftGoal - shift) * k;
   camera.setViewOffset(innerWidth, innerHeight, shift, 0, innerWidth, innerHeight);
   renderer.render(scene, camera);
+  layoutLabels();
   labels.render(scene, camera);
 });
+
+// Étiquettes des structures actives : à droite de leur point, empilées verticalement sans se chevaucher,
+// reliées par un trait fin. Les structures inactives n'ont pas d'étiquette.
+const GAP = 22, v3 = new THREE.Vector3();
+function layoutLabels() {
+  const W = innerWidth, H = innerHeight, f = H / 2 / Math.tan(camera.fov * Math.PI / 360);
+  const on = [];
+  for (const n of Object.values(nodes)) {
+    const lit = n.el.classList.contains('on');
+    n.line.style.opacity = lit ? 1 : 0;
+    if (!lit) continue;
+    v3.copy(n.core.position).project(camera);
+    const r = n.s.size * f / camera.position.distanceTo(n.core.position);   // rayon à l'écran (px)
+    on.push({ n, x: (v3.x + 1) / 2 * W, y: (1 - v3.y) / 2 * H, r, ly: (1 - v3.y) / 2 * H });
+  }
+  on.sort((a, b) => a.y - b.y);
+  for (let i = 1; i < on.length; i++) on[i].ly = Math.max(on[i].ly, on[i - 1].ly + GAP);
+  const drift = on.reduce((s, o) => s + o.ly - o.y, 0) / (on.length || 1);   // recentre le groupe
+  const lx = Math.max(...on.map(o => o.x + o.r), 0) + 28;                    // colonne commune, à droite du groupe
+  for (const o of on) {
+    const dy = o.ly - drift - o.y, dx = Math.max(o.r + 10, on.length > 1 ? lx - o.x : o.r + 10);
+    o.n.txt.style.transform = `translate(${dx}px, ${dy}px)`;
+    const L = o.n.line; L.setAttribute('x1', o.x + o.r * .7); L.setAttribute('y1', o.y);
+    L.setAttribute('x2', o.x + dx - 4); L.setAttribute('y2', o.y + dy);
+  }
+}
 </script>
 </body>
 </html>
