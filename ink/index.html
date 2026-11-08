@@ -44,7 +44,9 @@
   #say.insight::before { content: "À retenir"; display: block; font: 12px system-ui, sans-serif; text-transform: uppercase; letter-spacing: .1em; margin-bottom: 4px; }
   .cause { font: 14px/1.4 system-ui, sans-serif; color: #d9d3c9; margin: 6px 0; }
   .cause b { font-weight: 600; }
-  .cause small { display: block; color: var(--muted); font-size: 12px; margin-top: 2px; }
+  .nuance { display: inline; font-size: 12px; color: var(--muted); margin: 0; border: 0; padding: 0; }
+  .nuance summary { display: inline; cursor: pointer; color: var(--muted); text-decoration: underline dotted; margin-left: 6px; }
+  .nuance[open] { display: block; margin-top: 4px; }
   #play { margin-right: 0 !important; font: 14px system-ui, sans-serif; background: none; color: var(--ink); border: 1px solid var(--accent); border-radius: 8px; padding: 4px 12px; cursor: pointer; margin-right: 12px; }
   #caption { display: none; font: 22px/1.4 Georgia, serif; color: var(--ink); margin: 0 0 14px; max-width: 60em; }
   #caption.levers small { color: var(--gold); }
@@ -84,7 +86,9 @@
   .lever { margin: 0 0 8px; font: 15px/1.45 system-ui, sans-serif; }
   .lever summary { cursor: pointer; list-style: none; color: var(--ink); }
   .lever summary::-webkit-details-marker { display: none; }
-  .lever .how { color: #d9d3c9; }
+  .lever .how { color: var(--ink); }
+  .lever .chev { color: var(--muted); display: inline-block; transition: transform .2s; }
+  .lever[open] .chev { transform: rotate(90deg); }
   .lever .more { font-size: 13px; color: #cfc9bf; margin: 6px 0 4px 10px; border-left: 2px solid var(--gold); padding-left: 10px; }
   .lever .more p { margin: 0 0 6px; }
   .goal { display: inline-block; font: 600 11px system-ui, sans-serif; padding: 1px 8px; border-radius: 99px; margin-right: 6px;
@@ -110,7 +114,7 @@
   .dots { display: flex; gap: 6px; margin: 16px 0 0; }
   .dots i { width: 7px; height: 7px; border-radius: 50%; background: var(--line); }
   .dots i.on { background: var(--ink); }
-  nav { display: flex; align-items: center; gap: 8px; margin-top: 14px; }
+  nav { display: flex; align-items: center; gap: 8px; margin-top: 14px; position: sticky; bottom: -20px; padding: 10px 0 12px; background: rgb(14,13,12); z-index: 1; }
   nav button { font: 15px system-ui, sans-serif; background: none; color: var(--ink); border: 1px solid var(--line);
     border-radius: 8px; padding: 8px 16px; cursor: pointer; }
   nav button.primary { border-color: var(--accent); }
@@ -421,7 +425,7 @@ function causes(ids) {
     const g = groups.get(k); g.to.push(nodes[p.to].s.label); if (p.note) g.notes.add(p.note);
   }
   return [...groups.values()].map(({ p, to, notes }) => { const m = D.messengers[p.messenger];
-    return `<p class="cause"><b>${esc(nodes[p.from].s.label)}</b> <span class="arrow" style="color:${m.color}">— ${esc(m.label)}${p.channel ? ` (${esc(p.channel)})` : ''} →</span> <b>${esc(to.join(', '))}</b> : ${esc(p.effect)}${[...notes].map(n => `<small>${esc(n)}</small>`).join('')}</p>`; }).join('');
+    return `<p class="cause"><b>${esc(nodes[p.from].s.label)}</b> <span class="arrow" style="color:${m.color}">— ${esc(m.label)}${p.channel ? ` (${esc(p.channel)})` : ''} →</span> <b>${esc(to.join(', '))}</b> : ${esc(p.effect)}${notes.size ? `<details class="nuance"><summary>Nuance</summary>${[...notes].map(n => esc(n)).join(' ')}</details>` : ''}</p>`; }).join('');
 }
 function more(step) {
   const note = (cls, t, s) => s ? `<div class="note ${cls}"><b>${t}</b>${esc(s)}</div>` : '';
@@ -434,8 +438,8 @@ const GOALS = { eviter: 'Éviter', reduire: 'Réduire', accepter: 'Accepter' };
 function leversHtml(step) {
   const ls = D.levers.filter(l => l.steps.includes(step.id));
   if (!ls.length) return '';
-  return '<h3>Où agir ici ?</h3>' + ls.map(l => `<details class="lever"><summary><span class="goal">${GOALS[l.goal]}</span><b>${esc(l.label)}</b><br><span class="how">${esc(l.how)}</span></summary>
-    <div class="more"><p>${esc(l.mechanism)}</p><p>${esc(l.effect)}</p>${l.caveat ? `<p><i>Limites : ${esc(l.caveat)}</i></p>` : ''}
+  return '<h3>Où agir ici ?</h3>' + ls.map(l => `<details class="lever"><summary><span class="goal">${GOALS[l.goal]}</span><b>${esc(l.label)}</b> <span class="chev">›</span></summary>
+    <div class="more"><p class="how">${esc(l.how)}</p><p>${esc(l.mechanism)}</p><p>${esc(l.effect)}</p>${l.caveat ? `<p><i>Limites : ${esc(l.caveat)}</i></p>` : ''}
     <p>${l.evidence.map(e => D.evidenceLevels[e].label).join(' · ')}</p>
     <p>${l.sources.map(id => `<a href="${D.sources[id].url}" target="_blank" rel="noopener">${esc(D.sources[id].cite)}</a>`).join('<br>')}</p></div></details>`).join('');
 }
@@ -650,7 +654,8 @@ renderer.setAnimationLoop(() => {
     n.ringLvl += ((mode === 'story' && leverTargets.has(n.s.id) ? 1 : 0) - n.ringLvl) * dt * 2;
     n.ring.material.opacity = n.ringLvl * (.55 + .25 * Math.sin(t * 1.5)); n.ring.material.rotation = t * .15;
     n.halo.material.opacity = n.lit * (.55 + .2 * Math.sin(t * 2.4));
-    n.core.material.opacity = (n.s.shell ? .05 : .07) + n.lit * (n.s.shell ? .08 : .3);
+    n.core.material.opacity = (n.s.shell ? .05 : .22) + n.lit * (n.s.shell ? .08 : .2);
+    n.core.scale.setScalar(n.s.shell ? 1 : .3 + .7 * n.lit);   // inactive : petit point ; active : pleine taille
   }
   const heart = G.coeur.fn(tNow), vig = G.vigilance.fn(tNow);
   hPhase += dt * (1.0 + heart * 1.0); bPhase += dt * (.22 + vig * .25);   // fréquences schématiques
