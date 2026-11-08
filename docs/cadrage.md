@@ -91,7 +91,7 @@ La scène lit les données ; ajouter une connaissance = ajouter une entrée sour
 ## Plus tard
 
 - Relire scientifiquement les 5 leviers (texte, choix, objectifs).
-- Vue « sous le capot » : voir les données derrière la scène.
+
 - Ressources pour aller plus loin / se faire aider (dans la conclusion).
 - Montrer les leviers en mode « Jouer ».
 - UX : panneau long ; structures inactives = disques gris un peu lourds en gros plan.

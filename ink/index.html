@@ -52,6 +52,30 @@
   body.playing #timeline { right: 24px; }
   body.playing #panel { opacity: 0; pointer-events: none; }
   #panel { transition: opacity .5s; }
+  #hoodBtn { font: 14px system-ui, sans-serif; background: none; color: var(--muted); border: 1px solid var(--line); border-radius: 8px; padding: 4px 12px; cursor: pointer; margin-left: 8px; }
+  #hoodBtn[aria-pressed="true"] { color: var(--ink); border-color: var(--gold); }
+  #hood { position: fixed; left: 16px; top: 88px; bottom: 236px; width: min(460px, calc(100vw - 32px)); display: none; flex-direction: column;
+    background: rgba(10,10,12,.92); border: 1px solid var(--line); border-radius: 12px; backdrop-filter: blur(8px); font: 13px/1.5 system-ui, sans-serif; }
+  body.hood #hood { display: flex; }
+  body.hood header { opacity: 0; }
+  #hood .tabs { display: flex; gap: 4px; padding: 8px; border-bottom: 1px solid var(--line); }
+  #hood .tabs button { font: 13px system-ui, sans-serif; color: var(--muted); background: none; border: 1px solid transparent; border-radius: 6px; padding: 4px 10px; cursor: pointer; }
+  #hood .tabs button.on { color: var(--ink); border-color: var(--line); }
+  #hoodClose { margin-left: auto; }
+  #hoodBody { overflow: auto; padding: 10px 14px 14px; color: #d9d3c9; }
+  #hoodBody h4 { margin: 12px 0 4px; font: 600 11px system-ui, sans-serif; text-transform: uppercase; letter-spacing: .08em; color: var(--gold); }
+  #hoodBody h4:first-child { margin-top: 0; }
+  #hoodBody .file { font: 11px ui-monospace, monospace; color: var(--muted); }
+  #hoodBody pre { margin: 4px 0 8px; padding: 8px 10px; background: #050506; border: 1px solid #1d1b19; border-radius: 6px; overflow: auto;
+    font: 12px/1.45 ui-monospace, SFMono-Regular, Menlo, monospace; color: #cfc9bf; white-space: pre; }
+  .j-k { color: #9ecbff; } .j-s { color: #b5e3a1; } .j-n { color: #f2c46d; } .j-b { color: #ff8fc7; }
+  .j-ref { text-decoration: underline dotted; cursor: help; }
+  .pipe { display: grid; gap: 6px; margin: 6px 0 10px; }
+  .pipe div { border: 1px solid var(--line); border-radius: 8px; padding: 6px 10px; }
+  .pipe div b { display: block; font: 12px ui-monospace, monospace; color: var(--ink); }
+  .pipe .arrow { border: none; padding: 0; text-align: center; color: var(--muted); }
+  body.hood .label span::after { content: attr(data-id); display: block; font: 11px ui-monospace, monospace; color: var(--gold); }
+  @media (max-width: 860px) { #hood { top: 72px; bottom: auto; max-height: 45vh; } }
   #levers:not(:empty) { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); }
   #levers h3, #stageLevers h3 { margin: 0 0 8px; font: 12px system-ui, sans-serif; text-transform: uppercase; letter-spacing: .1em; color: var(--gold); }
   .lever { margin: 0 0 8px; font: 15px/1.45 system-ui, sans-serif; }
@@ -156,9 +180,16 @@
   <h2 id="stageTitle"></h2><p id="stageLead"></p><p id="stageQ"></p><div id="stageLevers"></div>
   <div class="btns"><button id="startPlay" class="primary">▶ Lancer l'histoire</button><button id="startStep">Explorer pas à pas</button></div>
 </div></div>
+<aside id="hood" aria-label="Sous le capot : les données">
+  <div class="tabs" role="tablist">
+    <button data-tab="moment" class="on">Ce moment</button><button data-tab="element">Élément</button><button data-tab="pipeline">Pipeline</button>
+    <button id="hoodClose" aria-label="Fermer">✕</button>
+  </div>
+  <div id="hoodBody"></div>
+</aside>
 <div id="timeline">
   <div id="caption" aria-live="polite"><small id="capStep"></small><span id="capSay"></span></div>
-  <div class="row"><button id="play">▶ Jouer</button><span id="now"></span></div>
+  <div class="row"><span><button id="play">▶ Jouer</button><button id="hoodBtn" aria-pressed="false" title="Touche D">⟨/⟩ Sous le capot</button></span><span id="now"></span></div>
   <div class="main">
     <div><div id="track"><canvas id="curves" aria-hidden="true"></canvas>
       <input id="scrub" type="range" min="0" max="1000" step="1" aria-label="Temps écoulé depuis le stimulus"></div>
@@ -290,7 +321,7 @@ for (const s of D.structures) {
   core.position.fromArray(s.pos); scene.add(core);
   const halo = glow(0xfff4e0, s.size * 5); halo.position.copy(core.position);
   // l'étiquette est ancrée au centre ; son texte (span) est décalé chaque image pour éviter les chevauchements
-  const el = document.createElement('div'); el.className = 'label'; el.innerHTML = `<span>${s.label}</span>`;
+  const el = document.createElement('div'); el.className = 'label'; el.innerHTML = `<span data-id="${s.id}">${s.label}</span>`;
   const lab = new CSS2DObject(el); lab.center.set(0, .5); core.add(lab);
   const line = document.createElementNS('http://www.w3.org/2000/svg', 'line'); $('leaders').appendChild(line);
   nodes[s.id] = { s, core, halo, el, txt: el.firstChild, line, lit: 0 };
@@ -425,6 +456,7 @@ function go(i, fromScrub = false) {
   for (const p of Object.values(paths)) p.el.classList.toggle('on', b.show.includes(p.p.id));
   if (!fromScrub) { tGoal = b.t; $('scrub').value = Math.round(toU(b.t) * 1000); }
   frame(b);
+  if (document.body.classList.contains('hood') && hoodTab === 'moment') renderHood();
 }
 let playTimer = null;
 function stop() { clearTimeout(playTimer); playTimer = null; document.body.classList.remove('playing'); $('play').textContent = '▶ Jouer'; }
@@ -459,6 +491,71 @@ $('scrub').addEventListener('input', e => seek(fromU(e.target.value / 1000)));
   cv.addEventListener('pointermove', e => { if (cv.hasPointerCapture(e.pointerId)) at(e); });
 }
 
+// ── Sous le capot : les données derrière la scène ─────────────
+let hoodTab = 'moment', selected = null;
+const pick = (o, keys) => Object.fromEntries(keys.filter(k => o[k] !== undefined).map(k => [k, o[k]]));
+// coloration JSON minimale ; les identifiants connus sont soulignés (leur libellé en infobulle)
+const known = new Map([...D.structures.map(x => [x.id, x.label]), ...D.pathways.map(x => [x.id, `${x.from} → ${x.to}`]),
+  ...Object.entries(D.messengers).map(([k, m]) => [k, m.label]), ...Object.entries(D.sources).map(([k, v]) => [k, v.cite])]);
+function json(o) {
+  return esc(JSON.stringify(o, null, 2)).replace(/(&quot;|")([^"&]*?)\1(\s*:)?|\b(-?\d+(?:\.\d+)?)\b|\b(true|false|null)\b/g, (m, q, str, colon, num, lit) => {
+    if (colon) return `<span class="j-k">"${str}"</span>${colon}`;
+    if (str !== undefined) return known.has(str) ? `<span class="j-s j-ref" title="${esc(known.get(str))}">"${str}"</span>` : `<span class="j-s">"${str}"</span>`;
+    if (num !== undefined) return `<span class="j-n">${num}</span>`;
+    return `<span class="j-b">${lit}</span>`;
+  });
+}
+const block = (title, file, obj) => `<h4>${title}</h4><div class="file">${file}</div><pre>${json(obj)}</pre>`;
+function renderHood() {
+  document.querySelectorAll('#hood .tabs [data-tab]').forEach(b => b.classList.toggle('on', b.dataset.tab === hoodTab));
+  const b = beats[cur], st = b.step, body = $('hoodBody');
+  if (hoodTab === 'moment') {
+    const levers = D.levers.filter(l => l.steps.includes(st.id)).map(l => pick(l, ['id', 'goal', 'actsOn', 'evidence']));
+    body.innerHTML =
+      block(`Temps ${b.bi + 1}/${st.beats.length} de l'étape « ${esc(st.title)} »`, `scenarios/${SC['stress-aigu'].id}.json → steps[${b.si}].beats[${b.bi}]`, pick(b, ['t', 'kind', 'say', 'light', 'show'])) +
+      block('L\'étape', `steps[${b.si}]`, pick(st, ['id', 'time', 'gauge', 'camera', 'evidence', 'sources'])) +
+      (b.show.length ? block('Voies animées', 'entities/pathways.json', b.show.map(id => D.pathways.find(p => p.id === id))) : '') +
+      (b.light.length ? block('Structures allumées', 'entities/structures.json (+ pos calculée par le build)', b.light.map(id => pick(D.structures.find(s => s.id === id), ['id', 'anatomy', 'pos']))) : '') +
+      (levers.length ? block('Leviers de cette étape', 'entities/levers.json', levers) : '');
+  } else if (hoodTab === 'element') {
+    if (!selected) { body.innerHTML = '<p>Clique sur une structure dans la scène pour voir sa fiche de données.</p>'; return; }
+    const sx = D.structures.find(s => s.id === selected);
+    const paths = D.pathways.filter(p => p.from === selected || p.to === selected).map(p => `${p.from} —${p.messenger}→ ${p.to}`);
+    const levers = D.levers.filter(l => (l.actsOn.structures || []).includes(selected)).map(l => l.id);
+    const steps = SC['stress-aigu'].steps.filter(st => st.beats.some(bt => bt.light.includes(selected))).map(st => st.id);
+    body.innerHTML = block(sx.label, 'entities/structures.json', sx) +
+      `<h4>Conversion anatomie → scène</h4><p>${sx.anatomy.space === 'mni'
+        ? `Coordonnées MNI ${sx.anatomy.mm.join(', ')} mm → origine du cerveau placée dans la tête de la statue, × l'échelle statue/humain → position de scène ${sx.pos.join(', ')}.`
+        : `Niveau vertébral ${sx.anatomy.level}, profondeur ${sx.anatomy.depth}, ${sx.anatomy.leftMm} mm à gauche → hauteur et épaisseur du tronc mesurées sur la statue → position de scène ${sx.pos.join(', ')}.`}</p>` +
+      block('Relations (calculées)', 'trouvées en parcourant les autres fichiers', { voies: paths, leviers: levers, étapes: steps });
+  } else {
+    const n = { s: D.structures.length, p: D.pathways.length, m: Object.keys(D.messengers).length, src: Object.keys(D.sources).length, l: D.levers.length };
+    const verify = D.structures.filter(s => s.anatomy.status === 'a-verifier').map(s => s.id);
+    body.innerHTML = `<h4>Du fichier à l'écran</h4><div class="pipe">
+      <div><b>data/entities/*.json · data/scenarios/*.json</b>${n.s} structures, ${n.p} voies, ${n.m} messagers, ${n.l} leviers, ${n.src} sources</div><div class="arrow">↓</div>
+      <div><b>data/schema/*.schema.json</b>forme de chaque fichier (Ajv, JSON Schema 2020-12)</div><div class="arrow">↓</div>
+      <div><b>tools/build.mjs</b>cohérence des identifiants · ordre du temps · anatomie (MNI, vertèbres) → positions de scène</div><div class="arrow">↓</div>
+      <div><b>data/bundle.js</b>un seul fichier généré, lu par la page</div><div class="arrow">↓</div>
+      <div><b>index.html · Three.js</b>la scène lit les données : aucune position ni texte n'y est écrit en dur</div>
+      <div class="arrow">↻ GitHub Actions rejoue la validation à chaque push</div></div>
+      <h4>Qualité des données</h4><p>Positions sourcées : ${n.s - verify.length}/${n.s}. À vérifier : ${verify.join(', ') || 'aucune'}.</p>
+      <h4>Corps affiché</h4><pre>${json(BODY)}</pre>`;
+  }
+}
+function setHood(on) {
+  document.body.classList.toggle('hood', on); $('hoodBtn').setAttribute('aria-pressed', on);
+  if (on) renderHood();
+}
+$('hoodBtn').onclick = () => setHood(!document.body.classList.contains('hood'));
+$('hoodClose').onclick = () => setHood(false);
+document.querySelectorAll('#hood .tabs [data-tab]').forEach(bt => bt.onclick = () => { hoodTab = bt.dataset.tab; renderHood(); });
+addEventListener('keydown', e => { if (mode === 'story' && (e.key === 'd' || e.key === 'D')) setHood(!document.body.classList.contains('hood')); });
+// clic sur une structure (vue sous le capot ouverte) → sa fiche
+$('scene').addEventListener('click', () => {
+  if (!document.body.classList.contains('hood') || !hovered) return;
+  selected = hovered.s.id; hoodTab = 'element'; renderHood();
+});
+
 // ── Caméra guidée ────────────────────────────────────────────
 const camTarget = new THREE.Vector3(0, -.6, 0), camGoalT = camTarget.clone();
 let camDist = 17, camGoalD = 17, camAz = 0, camGoalAz = 0, camEl = 5, camGoalEl = 5;
@@ -478,7 +575,7 @@ const mouse = new THREE.Vector2();
 const ray = new THREE.Raycaster(), ndc = new THREE.Vector2();
 let hovered = null;
 addEventListener('pointermove', e => {
-  if (mode !== 'story' || e.target.closest('#panel, #timeline')) { if (hovered) { hovered.el.classList.remove('hover'); hovered = null; } return; }
+  if (mode !== 'story' || e.target.closest('#panel, #timeline, #hood')) { if (hovered) { hovered.el.classList.remove('hover'); hovered = null; } return; }
   ndc.set(e.clientX / innerWidth * 2 - 1, -(e.clientY / innerHeight) * 2 + 1);
   ray.setFromCamera(ndc, camera);
   const hit = ray.intersectObjects(Object.values(nodes).map(n => n.core))[0];
@@ -562,7 +659,8 @@ renderer.setAnimationLoop(() => {
   camera.position.copy(camTarget).addScaledVector(view, camDist).add(new THREE.Vector3(mouse.x * 1.2, -mouse.y * .8, 0));
   camera.lookAt(camTarget);
   // cadrage : scène à gauche du panneau en mode histoire, à droite du texte en ouverture/conclusion
-  const shiftGoal = innerWidth > 860 ? (mode === 'story' ? 230 : -innerWidth * .2) : 0;
+  // (sous le capot ouvert : le tiroir occupe la gauche, on recentre la scène entre les deux panneaux)
+  const shiftGoal = innerWidth > 860 ? (mode === 'story' ? (document.body.classList.contains('hood') ? 0 : 230) : -innerWidth * .2) : 0;
   shift += (shiftGoal - shift) * k;
   camera.setViewOffset(innerWidth, innerHeight, shift, 0, innerWidth, innerHeight);
   renderer.render(scene, camera);
