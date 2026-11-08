@@ -1,0 +1,66 @@
+{
+  "region": "Québec",
+  "verified": "2026-11-08",
+  "intro": "Si le stress ou l'anxiété deviennent envahissants ou durent plus de quelques semaines, en parler à un professionnel est l'un des leviers les plus efficaces.",
+  "items": [
+    {
+      "id": "appelle",
+      "category": "detresse",
+      "label": "1 866 APPELLE",
+      "detail": "Prévention du suicide au Québec. Appel : 1-866-277-3553 · texto : 535353.",
+      "phone": "1-866-277-3553",
+      "url": "https://suicide.ca/"
+    },
+    {
+      "id": "988",
+      "category": "detresse",
+      "label": "988",
+      "detail": "Ligne d'aide en cas de crise de suicide (Canada).",
+      "phone": "988",
+      "url": "https://988.ca/fr"
+    },
+    {
+      "id": "911",
+      "category": "detresse",
+      "label": "911",
+      "detail": "Urgence, danger immédiat.",
+      "phone": "911"
+    },
+    {
+      "id": "info-social",
+      "category": "parler",
+      "label": "Info-Social 811",
+      "detail": "Consultation psychosociale gratuite et confidentielle, 24 h sur 24.",
+      "phone": "811",
+      "url": "https://www.quebec.ca/sante/trouver-une-ressource/info-social-811"
+    },
+    {
+      "id": "tel-jeunes",
+      "category": "parler",
+      "label": "Tel-Jeunes",
+      "detail": "Pour les jeunes. Appel : 1-800-263-2266 · texto : 514-600-1002.",
+      "phone": "1-800-263-2266",
+      "url": "https://www.teljeunes.com/"
+    },
+    {
+      "id": "ordre-psy",
+      "category": "consulter",
+      "label": "Ordre des psychologues du Québec",
+      "detail": "Où trouver un psychologue, comment choisir, combien ça coûte.",
+      "url": "https://www.ordrepsy.qc.ca/ou-trouver"
+    },
+    {
+      "id": "medecin",
+      "category": "consulter",
+      "label": "Son médecin de famille",
+      "detail": "Un premier interlocuteur pour en parler et être orienté."
+    },
+    {
+      "id": "findahelpline",
+      "category": "ailleurs",
+      "label": "Find A Helpline",
+      "detail": "Lignes d'écoute dans le monde entier, par pays.",
+      "url": "https://findahelpline.com/"
+    }
+  ]
+}

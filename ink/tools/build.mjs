@@ -26,7 +26,7 @@ const validate = (schemaId, data, file) => {
 
 // ── 1. Forme ──────────────────────────────────────────────────
 const entities = {};
-for (const name of ['evidence-levels', 'messengers', 'structures', 'pathways', 'sources', 'gauges', 'levers']) {
+for (const name of ['evidence-levels', 'messengers', 'structures', 'pathways', 'sources', 'gauges', 'levers', 'resources']) {
   entities[name] = read(`entities/${name}.json`);
   validate(`${name}.schema.json`, entities[name], `entities/${name}.json`);
 }
@@ -91,6 +91,9 @@ for (const l of entities.levers) {
   l.evidence.forEach(e => ref('evidence', e, `${w}.evidence`));
   l.sources.forEach(s => { ref('source', s, `${w}.sources`); used.source.add(s); });
 }
+// Les numéros d'aide changent : on avertit si leur vérification date de plus de 6 mois
+const age = (Date.now() - Date.parse(entities.resources.verified)) / 864e5;
+if (age > 183) warnings.push(`ressources vérifiées il y a ${Math.round(age)} jours : revérifier chaque numéro et lien`);
 // Avertissements : données présentes mais jamais utilisées (pas bloquant)
 const warnings = [];
 for (const k of ['source', 'pathway']) for (const id of ids[k]) if (!used[k].has(id)) warnings.push(`${k} jamais utilisé(e) : ${id}`);

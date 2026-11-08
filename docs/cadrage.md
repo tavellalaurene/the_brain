@@ -90,10 +90,9 @@ La scène lit les données ; ajouter une connaissance = ajouter une entrée sour
 
 ## Plus tard
 
-- Relire scientifiquement les 5 leviers (texte, choix, objectifs).
-- Ressources pour aller plus loin / se faire aider (dans la conclusion).
+- Ressources « Aller plus loin » (livres, cours) : pas pour l'instant. Revérifier les numéros d'aide tous les 6 mois (le build avertit).
 - Rythme du mode « Jouer » : durée et nombre des pauses « Où agir ici ? ».
 - Traduire les données des courbes dans le corps (cœur, cerveau, sang).
-- Positions encore à vérifier : niveaux vertébraux du cœur et des surrénales, proportions de la tête.
+- Positions encore à vérifier : niveau vertébral du cœur, proportions de la tête.
 - Cerveau : visualisation à repenser.
 - Alléger le modèle 3D (gltf-transform).

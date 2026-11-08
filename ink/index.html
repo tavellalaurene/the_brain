@@ -96,6 +96,18 @@
   #stageLevers { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 20px; font: 14px/1.4 system-ui, sans-serif; color: #d9d3c9; }
   #stageLevers ul { margin: 0; padding-left: 16px; }
   #stageLevers:empty { display: none; }
+  .helpList { font: 14px/1.45 system-ui, sans-serif; color: #d9d3c9; }
+  .helpList h3 { margin: 14px 0 4px; font: 12px system-ui, sans-serif; text-transform: uppercase; letter-spacing: .1em; color: var(--accent); }
+  .helpList p { margin: 0 0 6px; }
+  .helpList b { color: var(--ink); }
+  .helpList a { color: var(--ink); }
+  .helpList .meta { font-size: 11px; color: var(--muted); margin-top: 8px; }
+  #stageHelp { margin-top: 18px; max-width: 560px; }
+  #stageHelp:empty { display: none; }
+  #help { position: fixed; right: 16px; bottom: 26px; max-width: min(360px, calc(100vw - 32px)); z-index: 5; }
+  #help summary { cursor: pointer; font-size: 12px; color: var(--muted); text-align: right; list-style: none; }
+  #help[open] { max-height: 70vh; overflow: auto; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; backdrop-filter: blur(8px); }
+  #help[open] summary { color: var(--ink); }
   #credit { position: fixed; right: 16px; bottom: 6px; font-size: 11px; color: var(--muted); opacity: .6; text-decoration: none; }
   #stage { position: fixed; inset: 0; display: flex; align-items: center; justify-content: flex-start; padding: 0 8vw;
     background: linear-gradient(90deg, rgba(14,13,12,.85), rgba(14,13,12,.2) 60%, transparent); transition: opacity 1.2s; }
@@ -166,6 +178,7 @@
 <svg id="leaders" aria-hidden="true"></svg>
 <header><h1 id="title"></h1><p id="subtitle"></p></header>
 <a id="credit" class="sans" target="_blank" rel="noopener"></a>
+<details id="help" class="sans"><summary>Besoin d'aide ?</summary><div id="helpBody"></div></details>
 
 
 <aside id="panel" aria-live="polite">
@@ -184,7 +197,7 @@
 </aside>
 
 <div id="stage" class="sans"><div class="inner">
-  <h2 id="stageTitle"></h2><p id="stageLead"></p><p id="stageQ"></p><div id="stageLevers"></div>
+  <h2 id="stageTitle"></h2><p id="stageLead"></p><p id="stageQ"></p><div id="stageLevers"></div><div id="stageHelp"></div>
   <div class="btns"><button id="startPlay" class="primary">▶ Lancer l'histoire</button><button id="startStep">Explorer pas à pas</button></div>
 </div></div>
 <aside id="hood" aria-label="Sous le capot : les données">
@@ -221,7 +234,7 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 // Données assemblées par tools/build.mjs (npm run build) : entités partagées + un scénario
 const { entities: E, scenarios: SC, body: BODY } = window.INK_DATA;
 const D = { ...SC['stress-aigu'], evidenceLevels: E['evidence-levels'], messengers: E.messengers,
-            structures: E.structures, pathways: E.pathways, sources: E.sources, gauges: E.gauges, levers: E.levers };
+            structures: E.structures, pathways: E.pathways, sources: E.sources, gauges: E.gauges, levers: E.levers, resources: E.resources };
 const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
@@ -445,6 +458,17 @@ function more(step) {
     `<b>Sources</b><ul>${step.sources.map(id => `<li><a href="${D.sources[id].url}" target="_blank" rel="noopener">${esc(D.sources[id].cite)}</a></li>`).join('')}</ul>`;
 }
 const GOALS = { eviter: 'Éviter', reduire: 'Réduire', accepter: 'Accepter' };
+// Ressources d'aide (données vérifiées, datées) : dans la conclusion et derrière le lien « Besoin d'aide ? »
+const HELP_CATS = { detresse: 'En cas de détresse', parler: 'Parler à quelqu\'un', consulter: 'Consulter', ailleurs: 'Hors du Québec' };
+function helpHtml() {
+  const R = D.resources;
+  return `<div class="helpList"><p>${esc(R.intro)}</p>` + Object.entries(HELP_CATS).map(([c, title]) => {
+    const items = R.items.filter(i => i.category === c); if (!items.length) return '';
+    return `<h3>${title}</h3>` + items.map(i => `<p><b>${i.url ? `<a href="${i.url}" target="_blank" rel="noopener">${esc(i.label)}</a>` : esc(i.label)}</b>
+      ${i.phone ? ` · <a href="tel:${i.phone}">${i.phone}</a>` : ''}<br>${esc(i.detail)}</p>`).join('');
+  }).join('') + `<p class="meta">Ressources pour le ${esc(R.region)}, vérifiées le ${new Date(R.verified + 'T12:00').toLocaleDateString('fr-CA', { dateStyle: 'long' })}.</p></div>`;
+}
+$('helpBody').innerHTML = helpHtml();
 // Survol (ou focus clavier) d'un levier du panneau → anneaux dorés autour des structures sur lesquelles il agit
 const showLever = id => { const l = D.levers.find(x => x.id === id); leverTargets = new Set(l ? l.actsOn.structures || [] : []); };
 for (const ev of ['mouseover', 'focusin']) $('levers').addEventListener(ev, e => showLever(e.target.closest('.lever')?.dataset.id));
@@ -645,6 +669,7 @@ function stage(kind) {
   $('stageLevers').innerHTML = kind === 'intro' ? '' : Object.entries(GOALS).map(([g, name]) =>
     `<div><h3>${name}</h3><ul>${D.levers.filter(l => l.horizon === 'moment' && l.goal === g).map(l => `<li>${esc(l.label)}</li>`).join('')}</ul></div>`).join('') +
     `<div><h3>Sur le long terme</h3><ul>${D.levers.filter(l => l.horizon === 'fond').map(l => `<li>${esc(l.label)}</li>`).join('')}</ul></div>`;
+  $('stageHelp').innerHTML = kind === 'intro' ? '' : '<h3 class="sans" style="color:var(--accent);font-size:12px;letter-spacing:.1em;text-transform:uppercase">Se faire aider</h3>' + helpHtml();
   document.body.classList.add('staged');
 }
 function enter(playIt) {
